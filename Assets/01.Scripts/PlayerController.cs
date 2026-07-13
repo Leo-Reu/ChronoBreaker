@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D col;
 
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer;
 
     private void Awake()
     {
