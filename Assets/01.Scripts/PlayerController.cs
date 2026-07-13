@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private float dir;
     private bool isGround;
     private bool isDashing;
+    private bool isBounding;
 
     private int jumpCount;
     private int jumpCountMax;
@@ -52,13 +54,20 @@ public class PlayerController : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            jump();
+            if (isDashing)
+            {
+                DashJump();
+            }
+            else
+            {
+                jump();
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if(isDashing == false)
+        if(isDashing == false && isBounding == false)
         {
             Move();
         }
@@ -102,19 +111,40 @@ public class PlayerController : MonoBehaviour
         Debug.Log("대쉬 시작");
     }
 
-    void StopDash()
+    void DashJump()
     {
         isDashing = false;
         rb.gravityScale = 1f;
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.1f, jumpPower);
+        jumpCount = 1; // 대쉬 중 점프 후 한번 더 점프할 수 있도록
+        Debug.Log("대쉬 중 점프");
+    }
+
+    void StopDash(Vector2 reboundPower)
+    {
+        isDashing = false;
+        rb.gravityScale = 1f;
+
+        float power = 3f;
+        rb.linearVelocity = reboundPower * power;
+        StartCoroutine(Rebounding());   // 벽면 x축 반동을 위해 Move()함수 0.1초 억제
+
         Debug.Log("대쉬 종료");
+    }
+
+    IEnumerator Rebounding()
+    {
+        isBounding = true;
+        yield return new WaitForSeconds(0.1f);
+        isBounding = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
         {
-            StopDash();
+            Vector2 reboundPower = collision.contacts[0].normal;
+            StopDash(reboundPower);
         }
     }
 
