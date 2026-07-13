@@ -226,6 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 5
   jumpPower: 5
+  dashSpeed: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -684,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2960fe424cc5e14db090205f3cd8f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpringWeapon
+  player: {fileID: 177245889}
   maxSpringDistance: 10
   wallLayer:
     serializedVersion: 2
