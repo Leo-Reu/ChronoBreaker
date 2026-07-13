@@ -4,14 +4,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpPower;
-    [SerializeField] private float dashSpeed;
+    [SerializeField] private float moveSpeed = 4f;
+    [SerializeField] private float jumpPower = 5f;
+    [SerializeField] private float dashSpeed = 15f;
+    [SerializeField] private int playerDamage = 10;
+
+    [SerializeField] private BossMonster boss;
 
     private float dir;
     private bool isGround;
     private bool isDashing;
     private bool isBounding;
+    private bool isAttacking;
 
     private int jumpCount;
     private int jumpCountMax;
@@ -21,6 +25,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
 
+    [SerializeField] private float dashCoolTime = 1f;
+    private float dashCoolTimeTimer = 1f;
+    private bool canDash = true;
+
+    private int weaknessLayerIndex;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,17 +39,19 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        moveSpeed = 4f;
-        jumpPower = 5f;
-        dashSpeed = 15f;
-
         jumpCount = 0;
         jumpCountMax = 2;
+
+        weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+
+        StartCoroutine(DashCoolTime());
     }
 
     void Update()
     {
         dir = 0;
+
+        
 
         if (Keyboard.current.aKey.isPressed)
         {
@@ -54,11 +66,11 @@ public class PlayerController : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            if (isDashing)
+            if (isDashing && isAttacking == false)
             {
                 DashJump();
             }
-            else
+            else if(isDashing == false)
             {
                 jump();
             }
@@ -83,6 +95,13 @@ public class PlayerController : MonoBehaviour
             jumpCount = 0;
         }
     }
+
+    public bool CanDashCheck() 
+    {
+        return canDash == true && isDashing == false;
+    }
+
+
     void Move()
     {
         rb.linearVelocity = new Vector2(dir * moveSpeed, rb.linearVelocity.y);
@@ -101,8 +120,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log("점프");
     }
 
-    public void Dash(Vector2 targetPos)
+    public void Dash(Vector2 targetPos, bool isAttack)
     {
+        isAttacking = isAttack;
         Vector2 dashDir = (targetPos - (Vector2)transform.position).normalized;
         isDashing = true;
 
@@ -123,7 +143,10 @@ public class PlayerController : MonoBehaviour
     void StopDash(Vector2 reboundPower)
     {
         isDashing = false;
+        isAttacking = false;
         rb.gravityScale = 1f;
+
+        canDash = false;
 
         float power = 3f;
         rb.linearVelocity = reboundPower * power;
@@ -139,10 +162,34 @@ public class PlayerController : MonoBehaviour
         isBounding = false;
     }
 
+    IEnumerator DashCoolTime()
+    {
+        while (true)
+        {
+            yield return new WaitWhile(() => canDash);
+
+            dashCoolTimeTimer = dashCoolTime;
+
+            while (dashCoolTimeTimer > 0f)
+            {
+                dashCoolTimeTimer -= Time.deltaTime;
+                yield return null;
+            }
+            dashCoolTimeTimer = 0f;
+            canDash = true;
+
+            Debug.Log("대쉬 쿨타임 끝");
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
         {
+            if(collision.gameObject.layer == weaknessLayerIndex && boss != null)
+            {
+                boss.TakeDamage(playerDamage);
+            }
             Vector2 reboundPower = collision.contacts[0].normal;
             StopDash(reboundPower);
         }

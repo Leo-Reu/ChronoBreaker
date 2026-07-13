@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BossMonster : MonoBehaviour
 {
@@ -12,5 +12,10 @@ public class BossMonster : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Debug.Log("보스에게 공격");
     }
 }
