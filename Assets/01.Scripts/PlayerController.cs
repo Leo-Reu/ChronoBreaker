@@ -5,9 +5,11 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpPower;
+    [SerializeField] private float dashSpeed;
 
     private float dir;
     private bool isGround;
+    private bool isDashing;
 
     private int jumpCount;
     private int jumpCountMax;
@@ -25,8 +27,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        moveSpeed = 5f;
+        moveSpeed = 4f;
         jumpPower = 5f;
+        dashSpeed = 15f;
 
         jumpCount = 0;
         jumpCountMax = 2;
@@ -55,7 +58,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if(isDashing == false)
+        {
+            Move();
+        }
     }
 
     void GroundCheck()
@@ -85,6 +91,33 @@ public class PlayerController : MonoBehaviour
         jumpCount++;
         Debug.Log("점프");
     }
+
+    public void Dash(Vector2 targetPos)
+    {
+        Vector2 dashDir = (targetPos - (Vector2)transform.position).normalized;
+        isDashing = true;
+
+        rb.gravityScale = 0f;
+        rb.linearVelocity = dashDir * dashSpeed;
+        Debug.Log("대쉬 시작");
+    }
+
+    void StopDash()
+    {
+        isDashing = false;
+        rb.gravityScale = 1f;
+        rb.linearVelocity = Vector2.zero;
+        Debug.Log("대쉬 종료");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isDashing)
+        {
+            StopDash();
+        }
+    }
+
 
     private void OnDrawGizmos()
     {

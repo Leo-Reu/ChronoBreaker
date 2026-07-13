@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SpringWeapon : MonoBehaviour
 {
-    private PlayerController player;
+    [SerializeField] private PlayerController player;
 
     [SerializeField] private float maxSpringDistance = 10f;
     [SerializeField] private LayerMask wallLayer;
@@ -16,11 +17,8 @@ public class SpringWeapon : MonoBehaviour
     private bool isWallHit;
     private bool isAnchored;
 
+    private Coroutine springTimerCoroutine;
 
-    private void Awake()
-    {
-        player = GetComponent<PlayerController>();
-    }
 
     void Start()
     {
@@ -32,10 +30,23 @@ public class SpringWeapon : MonoBehaviour
         if(isAnchored == false)
             AimCheck();
 
-        if(Mouse.current.leftButton.wasPressedThisFrame && isWallHit)
+        if(isAnchored == false && Mouse.current.leftButton.wasPressedThisFrame && isWallHit)
         {
             isAnchored = true;
             anchorPoint = hitPoint;
+            Debug.Log("태엽 2초간 고정");
+
+            springTimerCoroutine = StartCoroutine(SpringTimer());
+        }
+
+        if (isAnchored && Keyboard.current.leftShiftKey.wasPressedThisFrame)
+        {
+            StopCoroutine(springTimerCoroutine);
+            isAnchored = false;
+ 
+
+
+            player.Dash(anchorPoint);
         }
     }
 
@@ -53,6 +64,13 @@ public class SpringWeapon : MonoBehaviour
         hitPoint = isWallHit == true ? hit.point : (Vector2)transform.position + (mouseDir * maxSpringDistance);
     }
 
+    IEnumerator SpringTimer()
+    {
+        yield return new WaitForSeconds(2f);
+        isAnchored = false;
+        Debug.Log("2초가 지나 태엽 자동 회수");
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = isWallHit == true ? Color.green : Color.red;
@@ -61,7 +79,7 @@ public class SpringWeapon : MonoBehaviour
 
         if (isWallHit)
         {
-            Gizmos.DrawWireSphere(anchorPoint, 0.2f);
+            Gizmos.DrawWireSphere(gizmosPos, 0.2f);
         }
     }
 }
