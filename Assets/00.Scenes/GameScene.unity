@@ -224,9 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d3b47e691e4e54394ee65ae3cf6d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 5
+  moveSpeed: 4
   jumpPower: 5
-  dashSpeed: 0
+  dashSpeed: 15
   playerDamage: 10
   boss: {fileID: 1951962785}
   groundLayer:

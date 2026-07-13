@@ -2,14 +2,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpringWeapon : MonoBehaviour
+public class SpringWeapon : Weapon
 {
     [SerializeField] private PlayerController player;
 
     [SerializeField] private float maxSpringDistance = 10f;
     [SerializeField] private LayerMask targetLayer;
-
-    private Camera camera;
 
     private Vector2 mousePos;
     private Vector2 mouseDir;
@@ -26,33 +24,28 @@ public class SpringWeapon : MonoBehaviour
 
     private int weaknessLayerIndex;
 
-    private void Start()
+    protected override void Start()
     {
-        camera = Camera.main;
+        base.Start();
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
     }
 
 
     void Update()
     {
-        if (player.CanDashCheck() == false && isAnchored == false)  // 대시 불가능일 때 조준 불가
-        {
-            isTargetHit = false;
-            return;
-        }
-
         if(isAnchored == false)
+        {
+            LookMouse();
             AimCheck();
+        }
+            
 
         if(isAnchored == false && Mouse.current.leftButton.wasPressedThisFrame && isTargetHit)
         {
-            isAnchored = true;
-            anchorPoint = hitPoint;
-            isWeaknessAnchored = isWeaknessHit;
-
-            Debug.Log("태엽 2초간 고정");
-
-            springTimerCoroutine = StartCoroutine(SpringTimer());
+            if (player.CanDashCheck() == true)
+            {
+                Fire();
+            }
         }
 
         if (isAnchored && Keyboard.current.leftShiftKey.wasPressedThisFrame)
@@ -60,10 +53,19 @@ public class SpringWeapon : MonoBehaviour
             StopCoroutine(springTimerCoroutine);
             isAnchored = false;
  
-
-
             player.Dash(anchorPoint, isWeaknessAnchored);
         }
+    }
+
+    protected override void Fire()
+    {
+        isAnchored = true;
+        anchorPoint = hitPoint;
+        isWeaknessAnchored = isWeaknessHit;
+
+        Debug.Log("태엽 2초간 고정");
+
+        springTimerCoroutine = StartCoroutine(SpringTimer());
     }
 
     void AimCheck()
