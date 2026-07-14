@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitWhile(() => canDash);
 
-            dashCoolTimeTimer = dashCoolTime;
+            dashCoolTimeTimer = setting.dashCoolTime;
 
             while (dashCoolTimeTimer > 0f)
             {
