@@ -7,6 +7,7 @@ public class SpringWeapon : Weapon
     [SerializeField] private PlayerController player;
 
     [SerializeField] private float maxSpringDistance = 10f;
+    [SerializeField] private float SpringDuration = 2f;
     [SerializeField] private LayerMask targetLayer;
 
     private Vector2 mousePos;
@@ -63,7 +64,7 @@ public class SpringWeapon : Weapon
         anchorPoint = hitPoint;
         isWeaknessAnchored = isWeaknessHit;
 
-        Debug.Log("태엽 2초간 고정");
+        Debug.Log($"태엽 {SpringDuration}초간 고정");
 
         springTimerCoroutine = StartCoroutine(SpringTimer());
     }
@@ -93,9 +94,9 @@ public class SpringWeapon : Weapon
 
     IEnumerator SpringTimer()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(SpringDuration);
         isAnchored = false;
-        Debug.Log("2초가 지나 태엽 자동 회수");
+        Debug.Log($"{SpringDuration}초가 지나 태엽 자동 회수");
     }
 
     private void OnDrawGizmos()

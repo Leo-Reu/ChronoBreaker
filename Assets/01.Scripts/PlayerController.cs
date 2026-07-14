@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 4f;
-    [SerializeField] private float jumpPower = 5f;
-    [SerializeField] private float dashSpeed = 15f;
-    [SerializeField] private int playerDamage = 10;
+    //[SerializeField] private float moveSpeed = 4f;    ScriptableObject로 구현
+    //[SerializeField] private float jumpPower = 5f;
+    //[SerializeField] private float dashSpeed = 15f;
+    //[SerializeField] private int playerDamage = 10;
 
     [SerializeField] private BossMonster boss;
+
+    private PlayerSetting setting;
 
     private float dir;
     private bool isGround;
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
 
-    [SerializeField] private float dashCoolTime = 1f;
+    //[SerializeField] private float dashCoolTime = 1f;
     private float dashCoolTimeTimer = 1f;
     private bool canDash = true;
 
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        setting = DataManager.instance.PlayerSetting;
         jumpCount = 0;
         jumpCountMax = 2;
 
@@ -104,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        rb.linearVelocity = new Vector2(dir * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dir * setting.moveSpeed, rb.linearVelocity.y);
     }
 
     void jump()
@@ -114,7 +117,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, setting.jumpPower);
 
         jumpCount++;
         Debug.Log("점프");
@@ -127,7 +130,7 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
 
         rb.gravityScale = 0f;
-        rb.linearVelocity = dashDir * dashSpeed;
+        rb.linearVelocity = dashDir * setting.dashSpeed;
         Debug.Log("대쉬 시작");
     }
 
@@ -135,7 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = false;
         rb.gravityScale = 1f;
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.1f, jumpPower);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.1f, setting.jumpPower);
         jumpCount = 1; // 대쉬 중 점프 후 한번 더 점프할 수 있도록
         Debug.Log("대쉬 중 점프");
     }
@@ -188,7 +191,7 @@ public class PlayerController : MonoBehaviour
         {
             if(collision.gameObject.layer == weaknessLayerIndex && boss != null)
             {
-                boss.TakeDamage(playerDamage);
+                boss.TakeDamage(setting.playerDamage);
             }
             Vector2 reboundPower = collision.contacts[0].normal;
             StopDash(reboundPower);

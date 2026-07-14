@@ -2,11 +2,13 @@
 
 public class CameraMove : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] private Transform target;
 
-    Vector3 velocity;
+    private Vector3 velocity;
 
-    Vector3 targetPos;
+    private Vector3 targetPos;
+
+    [SerializeField] private float smoothTime = 0.2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +21,6 @@ public class CameraMove : MonoBehaviour
     {
         targetPos = new Vector3(target.position.x, target.position.y, transform.position.z);
 
-        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, 0.2f);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
     }
 }
