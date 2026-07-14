@@ -25,15 +25,41 @@ public class SpringWeapon : Weapon
 
     private int weaknessLayerIndex;
 
+    private WindUp windUp;
+
+    private LineRenderer lr;    // 조준선
+
     protected override void Start()
     {
         base.Start();
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+
+        windUp = GetComponentInParent<WindUp>();
+        lr = GetComponent<LineRenderer>();
     }
 
 
     void Update()
     {
+        if (windUp.isWindUp)
+        {
+            isAnchored = false;
+            lr.enabled = false;
+            return;
+        }
+
+        if(lr != null)
+        {
+            if(isAnchored || isTargetHit)
+            {
+                lr.enabled = true;
+            }
+            else
+            {
+                lr.enabled = false;
+            }
+        }
+
         if(isAnchored == false)
         {
             LookMouse();
@@ -56,6 +82,26 @@ public class SpringWeapon : Weapon
  
             player.Dash(anchorPoint, isWeaknessAnchored);
         }
+
+        if (lr.enabled)
+        {
+            lr.positionCount = 2;
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, isAnchored ? anchorPoint : hitPoint);
+            Color color;
+            if (isAnchored)
+            {
+                color = isWeaknessAnchored == true ? Color.yellow : Color.green;
+            }
+
+            else
+            {
+                color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
+            }
+            lr.startColor = color;
+            lr.endColor = color;
+        }
+
     }
 
     protected override void Fire()
@@ -99,22 +145,24 @@ public class SpringWeapon : Weapon
         Debug.Log($"{SpringDuration}초가 지나 태엽 자동 회수");
     }
 
-    private void OnDrawGizmos()
-    {
-        if (isAnchored) 
-        {
-            Gizmos.color = isWeaknessAnchored == true ? Color.yellow : Color.green;
-        }
-        else 
-        {
-            Gizmos.color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
-        }
-        Vector2 gizmosPos = isAnchored ? anchorPoint : hitPoint;
-        Gizmos.DrawLine(transform.position, gizmosPos);
+    //private void OnDrawGizmos()
+    //{
+    //    if (isAnchored) 
+    //    {
+    //        Gizmos.color = isWeaknessAnchored == true ? Color.yellow : Color.green;
+    //    }
 
-        if (isTargetHit)
-        {
-            Gizmos.DrawWireSphere(gizmosPos, 0.2f);
-        }
-    }
+    //    else 
+    //    {
+    //        Gizmos.color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
+    //    }
+
+    //    Vector2 gizmosPos = isAnchored ? anchorPoint : hitPoint;
+    //    Gizmos.DrawLine(transform.position, gizmosPos);
+
+    //    if (isTargetHit)
+    //    {
+    //        Gizmos.DrawWireSphere(gizmosPos, 0.2f);
+    //    }
+    //}
 }

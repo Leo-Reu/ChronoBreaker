@@ -9,4 +9,7 @@ public class PlayerSetting : ScriptableObject
     public float dashSpeed = 15f;
     public int playerDamage = 10;
     public float dashCoolTime = 1f;
+
+    public float windUpDuration = 3f;
+    public float windUpCoolTime = 10f;
 }
