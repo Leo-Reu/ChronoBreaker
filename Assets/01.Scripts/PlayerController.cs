@@ -15,9 +15,9 @@ public class PlayerController : MonoBehaviour
 
     private float dir;
     private bool isGround;
-    private bool isDashing;
-    private bool isBounding;
-    private bool isAttacking;
+    private bool isDash;
+    private bool isBound;
+    private bool isAttack;
 
     private int jumpCount;
     private int jumpCountMax;
@@ -28,15 +28,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     //[SerializeField] private float dashCoolTime = 1f;
-    private float dashCoolTimeTimer = 1f;
+    private float dashCoolTimeTimer = 0f;
     private bool canDash = true;
 
     private int weaknessLayerIndex;
+
+    private WindUp windUp;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        windUp = GetComponent<WindUp>();
     }
 
     void Start()
@@ -52,9 +55,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        dir = 0;
+        if(windUp.isWindUp) // WindUp중 행동할수 없게
+        {
+            dir = 0;
+            return;
+        }
 
-        
+        dir = 0;
 
         if (Keyboard.current.aKey.isPressed)
         {
@@ -69,11 +76,11 @@ public class PlayerController : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            if (isDashing && isAttacking == false)
+            if (isDash && isAttack == false)
             {
                 DashJump();
             }
-            else if(isDashing == false)
+            else if(isDash == false)
             {
                 jump();
             }
@@ -82,7 +89,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDashing == false && isBounding == false)
+        if (windUp.isWindUp)    // WindUp중 행동할수 없게
+        {
+            return;
+        }
+
+        if(isDash == false && isBound == false)
         {
             Move();
         }
@@ -101,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     public bool CanDashCheck() 
     {
-        return canDash == true && isDashing == false;
+        return canDash == true && isDash == false && windUp.isWindUp == false;
     }
 
 
@@ -125,9 +137,9 @@ public class PlayerController : MonoBehaviour
 
     public void Dash(Vector2 targetPos, bool isAttack)
     {
-        isAttacking = isAttack;
+        this.isAttack = isAttack;
         Vector2 dashDir = (targetPos - (Vector2)transform.position).normalized;
-        isDashing = true;
+        isDash = true;
 
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
@@ -136,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
     void DashJump()
     {
-        isDashing = false;
+        isDash = false;
         rb.gravityScale = 1f;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.1f, setting.jumpPower);
         jumpCount = 1; // 대쉬 중 점프 후 한번 더 점프할 수 있도록
@@ -145,8 +157,8 @@ public class PlayerController : MonoBehaviour
 
     void StopDash(Vector2 reboundPower)
     {
-        isDashing = false;
-        isAttacking = false;
+        isDash = false;
+        isAttack = false;
         rb.gravityScale = 1f;
 
         canDash = false;
@@ -160,9 +172,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Rebounding()
     {
-        isBounding = true;
+        isBound = true;
         yield return new WaitForSeconds(0.1f);
-        isBounding = false;
+        isBound = false;
     }
 
     IEnumerator DashCoolTime()
@@ -187,7 +199,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isDashing)
+        if (isDash)
         {
             if(collision.gameObject.layer == weaknessLayerIndex && boss != null)
             {
