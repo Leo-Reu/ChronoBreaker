@@ -120,6 +120,8 @@ public class WindUp : MonoBehaviour
         Color color = sr.color;
         color.a = 0.4f;
         sr.color = color;
+
+        Debug.Log("역행 시작");
     }
 
     private void StopWindUp()
@@ -140,6 +142,8 @@ public class WindUp : MonoBehaviour
         history.Clear();
 
         canWindUp = false;
+
+        Debug.Log("역행 종료");
     }
 
     IEnumerator WindUpCoolTime()
