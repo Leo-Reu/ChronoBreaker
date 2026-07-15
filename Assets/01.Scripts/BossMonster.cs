@@ -1,21 +1,60 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class BossMonster : MonoBehaviour
+public abstract class BossMonster : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] protected BossSetting setting;
+
+    [SerializeField] protected float hp;
+
+    protected bool isInvincible;
+
+    protected Collider2D col;
+
+    protected virtual void Awake()
     {
+        col = GetComponent<Collider2D>();
+    }
+
+    protected virtual void Start()
+    {
+        hp = setting.maxHp;
+        isInvincible = false;
+    }
+
+    public virtual void TakeDamage(int damage)
+    {
+        if (isInvincible)
+        {
+            Debug.Log("보스 무적 상태");
+            return;
+        }
+        else
+        {
+            hp -= damage;
+            Debug.Log("보스 공격 성공");
+        }
+
+        if(hp <= 0)
+        {
+            hp = 0;
+            Die();
+        }
+        else
+        {
+            StartCoroutine(BossHitCoolTime());
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator BossHitCoolTime()
     {
-        
+        isInvincible = true;
+
+        yield return new WaitForSeconds(setting.hitCoolTime);
+
+        isInvincible = false;
     }
 
-    public void TakeDamage(int damage)
-    {
-        Debug.Log("보스에게 공격");
-    }
+    protected abstract void Die();
 }

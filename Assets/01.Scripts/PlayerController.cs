@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +10,6 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private float dashSpeed = 15f;
     //[SerializeField] private int playerDamage = 10;
 
-    [SerializeField] private BossMonster boss;
-
     private PlayerSetting setting;
 
     private float dir;
@@ -18,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private bool isBound;
     private bool isAttack;
+    private bool isInvincible;
+
+    [SerializeField] private float hp;
 
     private int jumpCount;
     private int jumpCountMax;
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         setting = DataManager.instance.PlayerSetting;
         jumpCount = 0;
         jumpCountMax = 2;
+        hp = setting.maxHp;
 
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
 
@@ -155,7 +158,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("대쉬 중 점프");
     }
 
-    void StopDash(Vector2 reboundPower)
+    void StopDash(Vector2 reboundDir)
     {
         isDash = false;
         isAttack = false;
@@ -163,9 +166,9 @@ public class PlayerController : MonoBehaviour
 
         canDash = false;
 
-        float power = 3f;
-        rb.linearVelocity = reboundPower * power;
-        StartCoroutine(Rebounding());   // 벽면 x축 반동을 위해 Move()함수 0.1초 억제
+        
+        rb.linearVelocity = reboundDir * setting.reboundPower;
+        StartCoroutine(Rebounding());   // 벽면 반동을 위해 Move()함수 0.1초 억제
 
         Debug.Log("대쉬 종료");
     }
@@ -173,7 +176,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator Rebounding()
     {
         isBound = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         isBound = false;
     }
 
@@ -196,20 +199,66 @@ public class PlayerController : MonoBehaviour
             Debug.Log("대쉬 쿨타임 끝");
         }
     }
+    IEnumerator PlayerHitCoolTime()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(setting.hitCoolTime);
+
+        isInvincible = false;
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDash)
         {
-            if(collision.gameObject.layer == weaknessLayerIndex && boss != null)
+            if(collision.gameObject.layer == weaknessLayerIndex)
             {
-                boss.TakeDamage(setting.playerDamage);
+                Debug.Log("약점과 충돌");
+                BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
+                if (boss != null)
+                {
+                    Debug.Log("보스를 공격");
+
+                    boss.TakeDamage(setting.playerDamage);
+                }
+
             }
-            Vector2 reboundPower = collision.contacts[0].normal;
-            StopDash(reboundPower);
+            Vector2 normalDir = collision.contacts[0].normal;
+            Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+            StopDash(reboundDir);
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        if (isInvincible)
+        {
+            Debug.Log("플레이어 무적 상태");
+            return;
+        }
+        else
+        {
+            hp -= damage;
+            Debug.Log("플레이어 체력 감소");
+        }
+
+        if(hp <= 0)
+        {
+            hp = 0;
+            Die();
+        }
+        else
+        {
+            StartCoroutine(PlayerHitCoolTime());
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("플레이어 사망");
+    }
 
     private void OnDrawGizmos()
     {
