@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class BossMonster : MonoBehaviour
 {
     [SerializeField] protected BossSetting setting;
+    public BossSetting Setting { get { return setting; } }
 
     [SerializeField] protected float hp;
 
@@ -44,7 +45,6 @@ public abstract class BossMonster : MonoBehaviour
         {
             StartCoroutine(BossHitCoolTime());
         }
-        
     }
 
     IEnumerator BossHitCoolTime()

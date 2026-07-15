@@ -8,8 +8,10 @@ public class PlayerSetting : ScriptableObject
     public float jumpPower = 5f;
     public float dashSpeed = 15f;
     public float dashCoolTime = 1f;
+
     public float reboundPower = 8f;
     public float upForce = 1.2f;
+    public float reboundTime = 0.5f;
 
     public float windUpDuration = 3f;
     public float windUpCoolTime = 10f;

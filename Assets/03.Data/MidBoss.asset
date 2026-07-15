@@ -15,3 +15,10 @@ MonoBehaviour:
   maxHp: 100
   hitCoolTime: 0.5
   bossDamage: 1
+  speed: 3
+  idleDuration: 1.5
+  groggyDuration: 3
+  chargeDuration: 2
+  dashSpeed: 10
+  dashDuration: 2
+  dashCoolTime: 5
