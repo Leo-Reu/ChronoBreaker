@@ -1,0 +1,53 @@
+﻿using System.Collections;
+using UnityEngine;
+
+public class MidBoss_DashState : IState<MidBoss>
+{
+    private bool isDash;
+    private float dashDirX;
+    private float timer;
+
+    public void Enter(MidBoss obj)
+    {
+        Debug.Log("Dash상태 돌입");
+        timer = 0f;
+        isDash = false;
+
+        obj.Stop();
+
+        if (obj.PlayerTransform != null)
+        {
+            dashDirX = obj.PlayerTransform.position.x > obj.transform.position.x ? 1f : -1f;
+        }
+    }
+    public void Update(MidBoss obj)
+    {
+        timer += Time.deltaTime;
+        if (isDash == false)
+        {
+            if (timer >= obj.Setting.chargeDuration)
+            {
+                isDash = true;
+                timer = 0f;
+                obj.Dash(dashDirX);
+                Debug.Log("중간 보스 돌진");
+            }
+        }
+        else
+        {
+            if (timer >= obj.Setting.dashDuration)
+            {
+                isDash = false;
+                Debug.Log("허공에 돌진");
+                obj.stateMachine.ChangeState(obj.idleState);
+            }
+        }
+    }
+
+    public void Exit(MidBoss obj)
+    {
+        Debug.Log("Dash상태 종료");
+        obj.DashCoolTime();
+        obj.Stop();
+    }
+}

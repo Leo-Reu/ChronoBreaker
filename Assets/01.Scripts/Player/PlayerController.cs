@@ -2,6 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.LowLevelPhysics2D.PhysicsLayers;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private float dashSpeed = 15f;
     //[SerializeField] private int playerDamage = 10;
 
-    private PlayerSetting setting;
+    [SerializeField] private PlayerSetting setting;
 
     private float dir;
     private bool isGround;
@@ -176,7 +177,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator Rebounding()
     {
         isBound = true;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(setting.reboundTime);
         isBound = false;
     }
 
@@ -211,9 +212,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        int hitLayer = collision.collider.gameObject.layer;
+        string layerName = LayerMask.LayerToName(hitLayer);
+
         if (isDash)
         {
-            if(collision.gameObject.layer == weaknessLayerIndex)
+            if(hitLayer == weaknessLayerIndex)
             {
                 Debug.Log("약점과 충돌");
                 BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
@@ -223,11 +227,30 @@ public class PlayerController : MonoBehaviour
 
                     boss.TakeDamage(setting.playerDamage);
                 }
-
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+                StopDash(reboundDir);
+                return;
             }
-            Vector2 normalDir = collision.contacts[0].normal;
-            Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
-            StopDash(reboundDir);
+            if (layerName == "Ground" || layerName == "Wall")
+            {
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;
+                StopDash(reboundDir);
+                return;
+            }
+        }
+        else
+        {
+            BossMonster boss = collision.gameObject.GetComponent<BossMonster>();
+            if (boss == null)
+            {
+                boss = collision.gameObject.GetComponentInParent<BossMonster>();  
+            }
+            if (boss != null)
+            {
+                TakeDamage(boss.Setting.bossDamage);
+            }
         }
     }
 
