@@ -13,12 +13,12 @@ public class MidBoss : BossMonster
     public MidBoss_DashState dashState;
     public MidBoss_GroggyState groggyState;
 
-    private int wallLayerIndex;
-
     private float dashCoolTimer;
     public bool canDash;
 
     private Rigidbody2D rb;
+
+    private Vector3 localScale;
 
     protected override void Awake()
     {
@@ -37,10 +37,10 @@ public class MidBoss : BossMonster
 
         stateMachine = new StateMachine<MidBoss>(this, idleState);
 
-        wallLayerIndex = LayerMask.NameToLayer("Wall");
-
         dashCoolTimer = 2f;
         canDash = false;
+
+        localScale = transform.localScale;
     }
 
     public void Update()
@@ -63,9 +63,23 @@ public class MidBoss : BossMonster
         canDash = false;
     }
 
+    bool CheckFlip()
+    {
+        return transform.position.x > playerTransform.position.x ? true : false;
+    }
+
     public void Move(float dirX)
     {
         rb.linearVelocity = new Vector2(dirX * setting.speed, rb.linearVelocity.y);
+
+        if (CheckFlip())
+        {
+            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+        }
     }
 
     public void Stop()
@@ -76,17 +90,14 @@ public class MidBoss : BossMonster
     public void Dash(float dashDirX)
     {
         rb.linearVelocity = new Vector2(dashDirX * setting.dashSpeed, rb.linearVelocity.y);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (stateMachine.CurrentState == dashState)
+        
+        if (CheckFlip())
         {
-            if(collision.gameObject.layer == wallLayerIndex)
-            {
-                Debug.Log("벽과 충돌해 그로기 상태");
-                stateMachine.ChangeState(groggyState);
-            }
+            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
         }
     }
 

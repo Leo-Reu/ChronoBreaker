@@ -15,6 +15,6 @@ public class BossSetting : ScriptableObject
 
     public float chargeDuration = 2f;
     public float dashSpeed = 10f;
-    public float dashDuration = 2.5f;
+    public float dashDuration = 3f;
     public float dashCoolTime = 4f;
 }

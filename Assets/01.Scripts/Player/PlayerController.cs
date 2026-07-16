@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
 
     private WindUp windUp;
 
+    private Vector3 localScale;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -53,6 +55,8 @@ public class PlayerController : MonoBehaviour
         hp = setting.maxHp;
 
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+
+        localScale = transform.localScale;
 
         StartCoroutine(DashCoolTime());
     }
@@ -124,6 +128,10 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         rb.linearVelocity = new Vector2(dir * setting.moveSpeed, rb.linearVelocity.y);
+        if (dir != 0f)
+        {
+            transform.localScale = new Vector3(dir * localScale.x, localScale.y, localScale.z);
+        }
     }
 
     void jump()
