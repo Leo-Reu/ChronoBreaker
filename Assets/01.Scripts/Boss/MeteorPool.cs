@@ -1,3 +1,6 @@
 ﻿using UnityEngine;
 
-public class MeteorPool : GObjectPool<Meteor> { }
+public class MeteorPool : GObjectPool<Meteor> 
+{
+
+}
