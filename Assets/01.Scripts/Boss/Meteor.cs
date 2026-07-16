@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour, IPoolable
 {
-    [SerializeField] private int damage = 1;
     [SerializeField] private float fallSpeed = 6f;
+    private int damage;
 
     private Rigidbody2D rb;
 
@@ -18,6 +18,11 @@ public class Meteor : MonoBehaviour, IPoolable
     public void Init(Action<Component> returnAction)
     {
         reAction = returnAction;
+    }
+
+    public void SetDamage(int Bossdamage)
+    {
+        damage = Bossdamage;
     }
 
     public void OnSpawn()
@@ -44,8 +49,10 @@ public class Meteor : MonoBehaviour, IPoolable
             if(layerName == "Player")
             {
                 PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-                player.TakeDamage(damage);
-                
+                if (player != null)
+                {
+                    player.TakeDamage(damage);
+                }
             }
             reAction?.Invoke(this);
         }

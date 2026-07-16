@@ -1,3 +1,6 @@
 ﻿using UnityEngine;
 
-public class MeteorWarningPool : GObjectPool<MeteorWarning> { }
+public class MeteorWarningPool : GObjectPool<MeteorWarning> 
+{
+
+}
