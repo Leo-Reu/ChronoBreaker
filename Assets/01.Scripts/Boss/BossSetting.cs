@@ -10,11 +10,13 @@ public class BossSetting : ScriptableObject
     public int bossDamage = 1;
     public float speed = 3f;
 
-    public float idleDuration = 1f;
-    public float groggyDuration = 3.0f;
+    public float midBossIdleDuration = 2f;
+    public float groggyDuration = 3f;
 
     public float chargeDuration = 2f;
     public float dashSpeed = 10f;
     public float dashDuration = 3f;
     public float dashCoolTime = 4f;
+
+    public float finalBossIdleDuration = 3f;
 }

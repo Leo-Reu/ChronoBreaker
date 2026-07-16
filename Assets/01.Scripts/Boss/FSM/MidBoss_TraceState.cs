@@ -8,7 +8,7 @@ public class MidBoss_TraceState : IState<MidBoss>
 
     public void Enter(MidBoss obj)
     {
-        Debug.Log("Trace상태 돌입");
+        Debug.Log("중간보스 Trace상태 돌입");
         playerTransform = obj.PlayerTransform;
     }
     public void Update(MidBoss obj)
@@ -25,7 +25,7 @@ public class MidBoss_TraceState : IState<MidBoss>
 
     public void Exit(MidBoss obj)
     {
-        Debug.Log("Trace상태 종료");
+        Debug.Log("중간보스 Trace상태 종료");
         obj.Stop();
     }
 }
