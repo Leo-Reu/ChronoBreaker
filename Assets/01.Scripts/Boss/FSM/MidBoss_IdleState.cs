@@ -6,7 +6,7 @@ public class MidBoss_IdleState : IState<MidBoss>
 
     public void Enter(MidBoss obj)
     {
-        Debug.Log("Idle상태 돌입");
+        Debug.Log("중간보스 Idle상태 돌입");
         timer = 0f;
         obj.Stop();
     }
@@ -14,13 +14,13 @@ public class MidBoss_IdleState : IState<MidBoss>
     public void Update(MidBoss obj)
     {
         timer += Time.deltaTime;
-        if(timer >= obj.Setting.idleDuration)
+        if(timer >= obj.Setting.midBossIdleDuration)
         {
             obj.stateMachine.ChangeState(obj.traceState);
         }
     }
     public void Exit(MidBoss obj)
     {
-        Debug.Log("Idle상태 종료");
+        Debug.Log("중간보스 Idle상태 종료");
     }
 }

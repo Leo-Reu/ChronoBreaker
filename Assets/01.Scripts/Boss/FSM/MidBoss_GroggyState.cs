@@ -6,7 +6,7 @@ public class MidBoss_GroggyState : IState<MidBoss>
 
     public void Enter(MidBoss obj)
     {
-        Debug.Log("Groggy상태 돌입");
+        Debug.Log("중간보스 Groggy상태 돌입");
         timer = 0f;
         obj.Stop();
     }
@@ -21,6 +21,6 @@ public class MidBoss_GroggyState : IState<MidBoss>
     }
     public void Exit(MidBoss obj)
     {
-        Debug.Log("Groggy상태 종료");
+        Debug.Log("중간보스 Groggy상태 종료");
     }
 }

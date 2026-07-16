@@ -9,7 +9,7 @@ public class MidBoss_DashState : IState<MidBoss>
 
     public void Enter(MidBoss obj)
     {
-        Debug.Log("Dash상태 돌입");
+        Debug.Log("중간보스 Dash상태 돌입");
         timer = 0f;
         isDash = false;
 
@@ -54,7 +54,7 @@ public class MidBoss_DashState : IState<MidBoss>
 
     public void Exit(MidBoss obj)
     {
-        Debug.Log("Dash상태 종료");
+        Debug.Log("중간보스 Dash상태 종료");
         obj.DashCoolTime();
         obj.Stop();
     }

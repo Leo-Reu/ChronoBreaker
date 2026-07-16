@@ -602,7 +602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &748811050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,6 +1417,52 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1777786187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1777786189}
+  - component: {fileID: 1777786188}
+  m_Layer: 0
+  m_Name: MeteorWarningPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1777786188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777786187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef913ee55ed803c42ae2a01b18d82e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeteorWarningPool
+  objects: {fileID: 1148270552807494118, guid: c1f72b0667fc974459b5c032a6584343, type: 3}
+  poolSize: 5
+--- !u!4 &1777786189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777786187}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1783998845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1601,52 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1939662821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939662823}
+  - component: {fileID: 1939662822}
+  m_Layer: 0
+  m_Name: MeteorPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1939662822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939662821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a859fb5c0c45446ba30099f5ec9a27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeteorPool
+  objects: {fileID: 6714774216219852982, guid: 0dc60d9df8a7c1f4a833ead52dcb0c18, type: 3}
+  poolSize: 5
+--- !u!4 &1939662823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939662821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1951962781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1951962782
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1710,6 +1802,9 @@ MonoBehaviour:
   setting: {fileID: 11400000, guid: 59670942a9f6f0f40901a6310127f720, type: 2}
   hp: 100
   weakness: {fileID: 431702107}
+  playerTransform: {fileID: 177245891}
+  meteorPool: {fileID: 1939662822}
+  meteorWarningPool: {fileID: 1777786188}
 --- !u!1 &2019862317
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,3 +1991,5 @@ SceneRoots:
   - {fileID: 1951962784}
   - {fileID: 748811053}
   - {fileID: 2140593247}
+  - {fileID: 1939662823}
+  - {fileID: 1777786189}
