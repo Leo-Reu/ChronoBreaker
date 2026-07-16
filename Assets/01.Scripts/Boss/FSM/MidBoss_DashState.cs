@@ -35,6 +35,14 @@ public class MidBoss_DashState : IState<MidBoss>
         }
         else
         {
+            Vector2 rayDirection = new Vector2(dashDirX, 0);
+            RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, rayDirection, 1.1f, LayerMask.GetMask("Wall"));
+            if( hit.collider != null)
+            {
+                Debug.Log("벽과 충돌해 그로기 상태");
+                obj.stateMachine.ChangeState(obj.groggyState);
+                return;
+            }
             if (timer >= obj.Setting.dashDuration)
             {
                 isDash = false;
