@@ -52,6 +52,8 @@ public class FinalBoss : BossMonster
         stateMachine?.Update();
     }
 
+    public override BossType BossType { get { return BossType.FinalBoss; } }
+
     public void FallMeteor()
     {
         StartCoroutine(Meteor());
@@ -222,6 +224,10 @@ public class FinalBoss : BossMonster
     protected override void Die()
     {
         Debug.Log("최종보스 처치");
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.BossDead(this);
+        }
         Destroy(gameObject);
     }
 }

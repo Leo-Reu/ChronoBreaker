@@ -1,6 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+public enum BossType
+{
+    MidBoss,
+    FinalBoss
+}
+
 public abstract class BossMonster : MonoBehaviour
 {
     [SerializeField] protected BossSetting setting;
@@ -11,6 +17,7 @@ public abstract class BossMonster : MonoBehaviour
     protected bool isInvincible;
 
     protected Collider2D col;
+
 
     protected virtual void Awake()
     {
@@ -57,4 +64,6 @@ public abstract class BossMonster : MonoBehaviour
     }
 
     protected abstract void Die();
+
+    public abstract BossType BossType { get; }
 }
