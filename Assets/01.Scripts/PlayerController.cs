@@ -35,6 +35,13 @@ public class PlayerController : MonoBehaviour
 
     private WindUp windUp;
 
+<<<<<<< Updated upstream:Assets/01.Scripts/PlayerController.cs
+=======
+    private Vector3 localScale;
+
+    private Coroutine dashTimeout;
+
+>>>>>>> Stashed changes:Assets/01.Scripts/Player/PlayerController.cs
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -144,6 +151,26 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
         Debug.Log("대쉬 시작");
+
+        if(dashTimeout != null)
+        {
+            StopCoroutine(dashTimeout);
+        }
+        dashTimeout = StartCoroutine(DashTimeout(targetPos, dashDir));
+    }
+
+    private IEnumerator DashTimeout(Vector2 targetPos, Vector2 dashDir)
+    {
+        float distance = Vector2.Distance(transform.position, targetPos);
+        float maxDuration = (distance / setting.dashSpeed) + 0.2f;
+
+        yield return new WaitForSeconds(maxDuration);
+
+        if (isDash)
+        {
+            Vector2 reboundDir = new Vector2(-dashDir.x, setting.upForce).normalized;
+            StopDash(reboundDir);
+        }
     }
 
     void DashJump()
@@ -157,6 +184,11 @@ public class PlayerController : MonoBehaviour
 
     void StopDash(Vector2 reboundPower)
     {
+        if (dashTimeout != null)
+        {
+            StopCoroutine(dashTimeout);
+        }
+
         isDash = false;
         isAttack = false;
         rb.gravityScale = 1f;
@@ -203,7 +235,41 @@ public class PlayerController : MonoBehaviour
         {
             if(collision.gameObject.layer == weaknessLayerIndex && boss != null)
             {
+<<<<<<< Updated upstream:Assets/01.Scripts/PlayerController.cs
                 boss.TakeDamage(setting.playerDamage);
+=======
+                Debug.Log("약점과 충돌");
+                BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
+                if (boss != null)
+                {
+                    Debug.Log("보스를 공격");
+
+                    boss.TakeDamage(setting.playerDamage);
+                }
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+                StopDash(reboundDir);
+                return;
+            }
+            if (layerName == "Ground" || layerName == "Wall" || layerName == "Monster")
+            {
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;
+                StopDash(reboundDir);
+                return;
+            }
+        }
+        else
+        {
+            BossMonster boss = collision.gameObject.GetComponent<BossMonster>();
+            if (boss == null)
+            {
+                boss = collision.gameObject.GetComponentInParent<BossMonster>();  
+            }
+            if (boss != null)
+            {
+                TakeDamage(boss.Setting.bossDamage);
+>>>>>>> Stashed changes:Assets/01.Scripts/Player/PlayerController.cs
             }
             Vector2 reboundPower = collision.contacts[0].normal;
             StopDash(reboundPower);

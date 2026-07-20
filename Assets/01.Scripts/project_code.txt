@@ -1,0 +1,1967 @@
+﻿// === Portal.cs ===
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class Portal : MonoBehaviour
+{
+    [SerializeField] private string targetScene;
+    private bool isInPortal;
+
+    private void Start()
+    {
+        if(GameManager.instance != null)
+        {
+            GameManager.instance.SetPortal(this);
+        }
+        gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        if(isInPortal && Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            Debug.Log($"포탈 작동 {targetScene}으로 이동합니다");
+            if(SceneChanger.instance != null)
+            {
+                SceneChanger.instance.ChangeScene(targetScene);
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isInPortal = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isInPortal = false;
+        }
+    }
+}
+
+
+// === Tutorial.cs ===
+using System.Collections;
+using UnityEngine;
+
+public class Tutorial : MonoBehaviour
+{
+    WaitForSeconds openDelay = new WaitForSeconds(5f);
+
+    private void Start()
+    {
+        StartCoroutine(OpenPortalDelay());
+    }
+
+    private IEnumerator OpenPortalDelay()
+    {
+        yield return openDelay;
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.OpenPortal();
+        }
+    }
+}
+
+
+// === IPoolable.cs ===
+using System;
+using UnityEngine;
+
+public interface IPoolable
+{
+    void Init(Action<Component> returnAction);
+
+    void OnSpawn();
+
+    void OnDeSpawn();
+}
+
+
+// === GObjectPool.cs ===
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GObjectPool<T> : MonoBehaviour where T : Component, IPoolable
+{
+    [SerializeField] private T objects;
+    [SerializeField] private int poolSize = 5;
+
+    private Queue<T> pool = new Queue<T>();
+
+    void Start()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            T obj = Instantiate(objects, transform);
+            obj.Init(ReturnPool);
+
+            obj.gameObject.SetActive(false);
+            pool.Enqueue(obj);
+        }
+    }
+
+    public T GetObject(Vector3 position)
+    {
+        T obj;
+
+        if (pool.Count > 0)
+        {
+            obj = pool.Dequeue();
+        }
+        else
+        {
+            obj = Instantiate(objects, transform);
+            obj.Init(ReturnPool);
+        }
+
+        obj.transform.position = position;
+        obj.gameObject.SetActive(true);
+        obj.OnSpawn();
+
+        return obj;
+    }
+
+    public void ReturnPool(Component comp)
+    {
+        T obj = comp as T;
+        if (obj != null)
+        {
+            obj.OnDeSpawn();
+            obj.gameObject.SetActive(false);
+
+            pool.Enqueue(obj);
+        }
+    }
+}
+
+
+
+// === MeteorWarning.cs ===
+using System;
+using UnityEngine;
+
+public class MeteorWarning : MonoBehaviour, IPoolable
+{
+    private Action<Component> reAction;
+
+    public void Init(Action<Component> returnAction)
+    {
+        reAction = returnAction;
+    }
+
+    public void OnSpawn()
+    {
+
+    }
+
+    public void OnDeSpawn()
+    {
+
+    }
+}
+
+
+// === Meteor.cs ===
+using System;
+using UnityEngine;
+
+public class Meteor : MonoBehaviour, IPoolable
+{
+    [SerializeField] private float fallSpeed = 6f;
+    private int damage;
+
+    private Rigidbody2D rb;
+
+    private Action<Component> reAction;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Init(Action<Component> returnAction)
+    {
+        reAction = returnAction;
+    }
+
+    public void SetDamage(int Bossdamage)
+    {
+        damage = Bossdamage;
+    }
+
+    public void OnSpawn()
+    {
+        Debug.Log("메테오 생성");
+    }
+
+    public void OnDeSpawn()
+    {
+        Debug.Log("메테오 회수");
+    }
+
+    void Update()
+    {
+        rb.linearVelocity = new Vector2(0, -fallSpeed);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        int hitLayer = collision.collider.gameObject.layer;
+        string layerName = LayerMask.LayerToName(hitLayer);
+        if (layerName == "Ground" || layerName == "Player")
+        {
+            if(layerName == "Player")
+            {
+                PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+                if (player != null)
+                {
+                    player.TakeDamage(damage);
+                }
+            }
+            reAction?.Invoke(this);
+        }
+    }
+}
+
+
+// === Laser.cs ===
+using System;
+using UnityEngine;
+
+public class Laser : MonoBehaviour, IPoolable
+{
+    private int damage;
+
+    private Action<Component> reAction;
+
+    public void Init(Action<Component> returnAction)
+    {
+        reAction = returnAction;
+    }
+
+    public void OnSpawn()
+    {
+        Debug.Log("레이저 발사");
+    }
+
+    public void OnDeSpawn()
+    {
+        Debug.Log("레이저 종료");
+    }
+    public void SetDamage(int Bossdamage)
+    {
+        damage = Bossdamage;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        int hitLayer = collision.gameObject.layer;
+        string layerName = LayerMask.LayerToName(hitLayer);
+
+        if (layerName == "Player")
+        {
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+            }
+        }
+    }
+}
+
+
+// === LaserWarning.cs ===
+using System;
+using UnityEngine;
+
+public class LaserWarning : MonoBehaviour, IPoolable
+{
+    private Action<Component> reAction;
+
+    public void Init(Action<Component> returnAction)
+    {
+        reAction = returnAction;
+    }
+
+    public void OnSpawn()
+    {
+
+    }
+
+    public void OnDeSpawn()
+    {
+
+    }
+}
+
+
+// === LaserWarningPool.cs ===
+using UnityEngine;
+
+public class LaserWarningPool : GObjectPool<LaserWarning> 
+{
+
+}
+
+
+// === MeteorWarningPool.cs ===
+using UnityEngine;
+
+public class MeteorWarningPool : GObjectPool<MeteorWarning> 
+{
+
+}
+
+
+// === MeteorPool.cs ===
+using UnityEngine;
+
+public class MeteorPool : GObjectPool<Meteor> 
+{
+
+}
+
+
+// === LaserPool.cs ===
+using UnityEngine;
+
+public class LaserPool : GObjectPool<Laser> 
+{
+
+}
+
+
+// === BossSetting.cs ===
+using System;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "BossSetting", menuName = "Data/BossSetting")]
+public class BossSetting : ScriptableObject
+{
+    public float maxHp = 100;
+    public float hitCoolTime = 0.5f;
+
+    public int bossDamage = 1;
+    public float speed = 3f;
+
+    public float midBossIdleDuration = 2f;
+    public float groggyDuration = 3f;
+
+    public float chargeDuration = 2f;
+    public float dashSpeed = 10f;
+    public float dashDuration = 3f;
+    public float dashCoolTime = 4f;
+
+    public float finalBossIdleDuration = 3f;
+}
+
+
+// === BossMonster.cs ===
+using System.Collections;
+using UnityEngine;
+
+public enum BossType
+{
+    MidBoss,
+    FinalBoss
+}
+
+public abstract class BossMonster : MonoBehaviour
+{
+    [SerializeField] protected BossSetting setting;
+    public BossSetting Setting { get { return setting; } }
+
+    [SerializeField] protected float hp;
+
+    protected bool isInvincible;
+
+    protected Collider2D col;
+
+
+    protected virtual void Awake()
+    {
+        col = GetComponent<Collider2D>();
+    }
+
+    protected virtual void Start()
+    {
+        hp = setting.maxHp;
+        isInvincible = false;
+    }
+
+    public virtual void TakeDamage(int damage)
+    {
+        if (isInvincible)
+        {
+            Debug.Log("보스 무적 상태");
+            return;
+        }
+        else
+        {
+            hp -= damage;
+            Debug.Log("보스 공격 성공");
+        }
+
+        if(hp <= 0)
+        {
+            hp = 0;
+            Die();
+        }
+        else
+        {
+            StartCoroutine(BossHitCoolTime());
+        }
+    }
+
+    IEnumerator BossHitCoolTime()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(setting.hitCoolTime);
+
+        isInvincible = false;
+    }
+
+    protected abstract void Die();
+
+    public abstract BossType BossType { get; }
+}
+
+
+// === FinalBoss.cs ===
+using System.Collections;
+using UnityEngine;
+
+public class FinalBoss : BossMonster
+{
+    [SerializeField] GameObject weakness;
+    [SerializeField] private Transform playerTransform;
+    public Transform PlayerTransform { get { return playerTransform; } }
+
+    [SerializeField] float groundYPos = -3.5f;
+
+    public StateMachine<FinalBoss> stateMachine;
+
+    public FinalBoss_IdleState idleState;
+    public FinalBoss_LaserState laserState;
+    public FinalBoss_MeteorState meteorState;
+    public FinalBoss_GroggyState groggyState;
+
+    [SerializeField] private GObjectPool<Meteor> meteorPool;
+    [SerializeField] private GObjectPool<MeteorWarning> meteorWarningPool;
+    [SerializeField] private GObjectPool<Laser> laserPool;
+    [SerializeField] private GObjectPool<LaserWarning> laserWarningPool;
+
+    private WaitForSeconds waitTwo = new WaitForSeconds(2f);
+    private WaitForSeconds waitOne = new WaitForSeconds(1f);
+
+    private MeteorWarning[] normalWarning = new MeteorWarning[3];
+    private MeteorWarning[] finalWarning = new MeteorWarning[5];
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        idleState = new FinalBoss_IdleState();
+        laserState = new FinalBoss_LaserState();
+        meteorState = new FinalBoss_MeteorState();
+        groggyState = new FinalBoss_GroggyState();
+
+        stateMachine = new StateMachine<FinalBoss>(this, idleState);
+
+        isInvincible = true;    // 평소엔 무적(약점이 노출될때만 공격가능)
+
+        weakness.SetActive(false);  // 약점 비활성화
+    }
+    public void Update()
+    {
+        stateMachine?.Update();
+    }
+
+    public override BossType BossType { get { return BossType.FinalBoss; } }
+
+    public void FallMeteor()
+    {
+        StartCoroutine(Meteor());
+    }
+
+    public void ShootLaser()
+    {
+        StartCoroutine(Laser());
+    }
+
+    private IEnumerator Meteor()
+    {
+        int normalCount = 3;
+        float normalSpacing = 2.5f;
+
+        for (int i = 0; i < 2; i++)
+        {
+            // 일반 메테오(캐릭터 좌표에 2초 후에 발사)
+            if (PlayerTransform == null)
+            {
+                yield break;
+            }
+
+            Debug.Log($"{i + 1}번째 일반 메테오 발사 준비 (3개)");
+            float targetXPos = PlayerTransform.position.x;
+
+            for (int j = 0; j < normalCount; j++)
+            {
+                float spacing = (j - 1) * normalSpacing;
+                Vector3 warningSpawnPos = new Vector3(targetXPos + spacing, groundYPos, 0);
+                normalWarning[j] = meteorWarningPool.GetObject(warningSpawnPos);
+            }
+            yield return waitTwo;
+
+            for (int j = 0; j < normalCount; j++)
+            {
+                if (normalWarning[j] != null)
+                {
+                    meteorWarningPool.ReturnPool(normalWarning[j]);
+                }
+
+                float spacing = (j - 1) * normalSpacing;
+                Vector3 meteorSpawnPos = new Vector3(targetXPos + spacing, 10f, 0); // Y축 10 위에서 소환
+                Meteor meteor = meteorPool.GetObject(meteorSpawnPos);
+                if (meteor != null && setting != null)
+                {
+                    meteor.SetDamage(setting.bossDamage);
+                }
+            }
+            yield return waitOne;
+        }
+
+        if (PlayerTransform != null)
+        {
+            Vector3 InitTrackingPos = new Vector3(PlayerTransform.position.x, groundYPos, 0);
+            MeteorWarning trackingWarning = meteorWarningPool.GetObject(InitTrackingPos);
+            float timer = 0f;
+
+            while (timer < 2f)
+            {
+                if (PlayerTransform == null || trackingWarning == null)
+                {
+                    yield break;
+                }
+
+                trackingWarning.transform.position = new Vector3(PlayerTransform.position.x, groundYPos, 0);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            Debug.Log($"유도형 메테오 좌표 고정");
+            Vector3 lockedPosition = trackingWarning.transform.position;
+
+            meteorWarningPool.ReturnPool(trackingWarning);
+
+            int trackingCount = 5;
+            float trackingSpacing = 2.5f;
+
+            for (int j = 0; j < trackingCount; j++)
+            {
+                float spacing = (j - 2) * trackingSpacing;
+                Vector3 warningSpawnPos = lockedPosition + new Vector3(spacing, 0, 0);
+                finalWarning[j] = meteorWarningPool.GetObject(warningSpawnPos);
+            }
+
+            yield return waitOne;
+
+            Debug.Log($"유도형 메테오 5개 동시 발사");
+
+            for (int j = 0; j < trackingCount; j++)
+            {
+                if (finalWarning[j] != null)
+                {
+                    meteorWarningPool.ReturnPool(finalWarning[j]);
+                }
+
+                float spacing = (j - 2) * trackingSpacing;
+                Vector3 meteorSpawnPos = lockedPosition + new Vector3(spacing, 10f, 0);
+                Meteor meteor = meteorPool.GetObject(meteorSpawnPos);
+                if (meteor != null && setting != null)
+                {
+                    meteor.SetDamage(setting.bossDamage);
+                }
+            }
+        }
+        yield return waitTwo;
+        stateMachine.ChangeState(laserState);
+    }
+
+    private IEnumerator Laser()
+    {
+        if (PlayerTransform == null) 
+        {
+            yield break;
+        }
+
+        Vector3 spawnPos = new Vector3(0f, groundYPos, 0f);
+
+        Quaternion horizontalRotation = Quaternion.Euler(0f, 0f, 90f);
+
+        LaserWarning warning = laserWarningPool.GetObject(spawnPos);
+        if (warning != null)
+        {
+            warning.transform.rotation = horizontalRotation;
+        }
+
+        yield return waitTwo;
+
+        if (warning != null)
+        {
+            laserWarningPool.ReturnPool(warning);
+        }
+
+        Laser laser = laserPool.GetObject(spawnPos);
+        if (laser != null)
+        {
+            laser.transform.rotation = horizontalRotation;
+            if (setting != null)
+            {
+                laser.SetDamage(setting.bossDamage);
+            }
+        }
+
+        yield return waitOne;
+
+        if (laser != null)
+        {
+            laserPool.ReturnPool(laser);
+        }
+
+        yield return waitTwo;
+        stateMachine.ChangeState(groggyState);
+    }
+
+    public void EnterGroggy()
+    {
+        isInvincible = false;
+        weakness.SetActive(true);
+    }
+
+    public void ExitGroggy()
+    {
+        isInvincible = true;
+        weakness.SetActive(false);
+    }
+
+
+    protected override void Die()
+    {
+        Debug.Log("최종보스 처치");
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.BossDead(this);
+        }
+        Destroy(gameObject);
+    }
+}
+
+
+// === MidBoss.cs ===
+using UnityEngine;
+
+public class MidBoss : BossMonster
+{
+    [SerializeField] GameObject weakness;
+    [SerializeField] private Transform playerTransform;
+    public Transform PlayerTransform { get { return playerTransform; } }
+
+    public StateMachine<MidBoss> stateMachine;
+
+    public MidBoss_IdleState idleState;
+    public MidBoss_TraceState traceState;
+    public MidBoss_DashState dashState;
+    public MidBoss_GroggyState groggyState;
+
+    private float dashCoolTimer;
+    public bool canDash;
+
+    private Rigidbody2D rb;
+
+    private Vector3 localScale;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        idleState = new MidBoss_IdleState();
+        traceState = new MidBoss_TraceState();
+        dashState = new MidBoss_DashState();
+        groggyState = new MidBoss_GroggyState();
+
+        stateMachine = new StateMachine<MidBoss>(this, idleState);
+
+        dashCoolTimer = 2f;
+        canDash = false;
+
+        localScale = transform.localScale;
+    }
+
+    public void Update()
+    {
+        stateMachine?.Update();
+
+        if(dashCoolTimer > 0f)
+        {
+            dashCoolTimer -= Time.deltaTime;
+            if (dashCoolTimer <= 0f)
+            {
+                canDash = true;
+            }
+        }
+    }
+
+    public override BossType BossType { get { return BossType.MidBoss; } }
+
+    public void DashCoolTime()
+    {
+        dashCoolTimer = setting.dashCoolTime;
+        canDash = false;
+    }
+
+    bool CheckFlip()
+    {
+        return transform.position.x > playerTransform.position.x ? true : false;
+    }
+
+    public void Move(float dirX)
+    {
+        rb.linearVelocity = new Vector2(dirX * setting.speed, rb.linearVelocity.y);
+
+        if (CheckFlip())
+        {
+            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+        }
+    }
+
+    public void Stop()
+    {
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+    }
+
+    public void Dash(float dashDirX)
+    {
+        rb.linearVelocity = new Vector2(dashDirX * setting.dashSpeed, rb.linearVelocity.y);
+        
+        if (CheckFlip())
+        {
+            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+        }
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("중간보스 처치");
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.BossDead(this);
+        }
+        Destroy(gameObject);
+    }
+}
+
+
+// === StateMachine.cs ===
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class StateMachine<T>
+{
+    public IState<T> CurrentState { get; private set; }
+    protected IState<T> currentState;
+    private T obj;
+
+    public StateMachine(T _obj, IState<T> state)
+    {
+        obj = _obj;
+        currentState = state;
+        currentState?.Enter(obj);
+    }
+
+    public void ChangeState(IState<T> state)
+    {
+        if(currentState == state)
+        {
+            return;
+        }
+        currentState.Exit(obj);
+        currentState = state;
+        currentState.Enter(obj);
+    }
+
+    public void Update()
+    {
+        currentState?.Update(obj);
+    }
+}
+
+
+// === IState.cs ===
+using UnityEngine;
+
+public interface IState<T>
+{
+    public void Enter(T obj);
+    public void Update(T obj);
+    public void Exit(T obj);
+}
+
+
+// === MidBoss_TraceState.cs ===
+using UnityEngine;
+
+public class MidBoss_TraceState : IState<MidBoss>
+{
+    private Transform playerTransform;
+
+    private float dashRange = 5f;
+
+    public void Enter(MidBoss obj)
+    {
+        Debug.Log("중간보스 Trace상태 돌입");
+        playerTransform = obj.PlayerTransform;
+    }
+    public void Update(MidBoss obj)
+    {
+        float distance = Vector2.Distance(obj.transform.position, playerTransform.position);
+        if(distance <= dashRange && obj.canDash)
+        {
+            obj.stateMachine.ChangeState(obj.dashState);
+            return;
+        }
+        float dirX = playerTransform.position.x > obj.transform.position.x ? 1f : - 1f;
+        obj.Move(dirX);
+    }
+
+    public void Exit(MidBoss obj)
+    {
+        Debug.Log("중간보스 Trace상태 종료");
+        obj.Stop();
+    }
+}
+
+
+// === MidBoss_DashState.cs ===
+using System.Collections;
+using UnityEngine;
+
+public class MidBoss_DashState : IState<MidBoss>
+{
+    private bool isDash;
+    private float dashDirX;
+    private float timer;
+
+    public void Enter(MidBoss obj)
+    {
+        Debug.Log("중간보스 Dash상태 돌입");
+        timer = 0f;
+        isDash = false;
+
+        obj.Stop();
+
+        if (obj.PlayerTransform != null)
+        {
+            dashDirX = obj.PlayerTransform.position.x > obj.transform.position.x ? 1f : -1f;
+        }
+    }
+    public void Update(MidBoss obj)
+    {
+        timer += Time.deltaTime;
+        if (isDash == false)
+        {
+            if (timer >= obj.Setting.chargeDuration)
+            {
+                isDash = true;
+                timer = 0f;
+                obj.Dash(dashDirX);
+                Debug.Log("중간 보스 돌진");
+            }
+        }
+        else
+        {
+            Vector2 rayDirection = new Vector2(dashDirX, 0);
+            RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, rayDirection, 1.1f, LayerMask.GetMask("Wall"));
+            if( hit.collider != null)
+            {
+                Debug.Log("벽과 충돌해 그로기 상태");
+                obj.stateMachine.ChangeState(obj.groggyState);
+                return;
+            }
+            if (timer >= obj.Setting.dashDuration)
+            {
+                isDash = false;
+                Debug.Log("허공에 돌진");
+                obj.stateMachine.ChangeState(obj.idleState);
+            }
+        }
+    }
+
+    public void Exit(MidBoss obj)
+    {
+        Debug.Log("중간보스 Dash상태 종료");
+        obj.DashCoolTime();
+        obj.Stop();
+    }
+}
+
+
+// === MidBoss_GroggyState.cs ===
+using UnityEngine;
+
+public class MidBoss_GroggyState : IState<MidBoss>
+{
+    private float timer;
+
+    public void Enter(MidBoss obj)
+    {
+        Debug.Log("중간보스 Groggy상태 돌입");
+        timer = 0f;
+        obj.Stop();
+    }
+
+    public void Update(MidBoss obj)
+    {
+        timer += Time.deltaTime;
+        if(timer > obj.Setting.groggyDuration)
+        {
+            obj.stateMachine.ChangeState(obj.idleState);
+        }
+    }
+    public void Exit(MidBoss obj)
+    {
+        Debug.Log("중간보스 Groggy상태 종료");
+    }
+}
+
+
+// === MidBoss_IdleState.cs ===
+using UnityEngine;
+
+public class MidBoss_IdleState : IState<MidBoss>
+{
+    private float timer;
+
+    public void Enter(MidBoss obj)
+    {
+        Debug.Log("중간보스 Idle상태 돌입");
+        timer = 0f;
+        obj.Stop();
+    }
+
+    public void Update(MidBoss obj)
+    {
+        timer += Time.deltaTime;
+        if(timer >= obj.Setting.midBossIdleDuration)
+        {
+            obj.stateMachine.ChangeState(obj.traceState);
+        }
+    }
+    public void Exit(MidBoss obj)
+    {
+        Debug.Log("중간보스 Idle상태 종료");
+    }
+}
+
+
+// === FinalBoss_IdleState.cs ===
+using UnityEngine;
+
+public class FinalBoss_IdleState : IState<FinalBoss>
+{
+    private float timer;
+
+    public void Enter(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Idle상태 돌입");
+        timer = 0f;
+    }
+    public void Update(FinalBoss obj)
+    {
+        timer += Time.deltaTime;
+        if(timer >= obj.Setting.finalBossIdleDuration)
+        {
+            obj.stateMachine.ChangeState(obj.meteorState);
+        }
+    }
+
+    public void Exit(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Idle상태 종료");
+    }
+}
+
+
+// === FinalBoss_MeteorState.cs ===
+using UnityEngine;
+
+public class FinalBoss_MeteorState : IState<FinalBoss>
+{
+    public void Enter(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Meteor패턴 시작");
+        obj.FallMeteor();
+    }
+    public void Update(FinalBoss obj)
+    {
+
+    }
+
+    public void Exit(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Meteor패턴 종료");
+    }
+}
+
+
+// === FinalBoss_LaserState.cs ===
+using UnityEngine;
+
+public class FinalBoss_LaserState : IState<FinalBoss>
+{
+    public void Enter(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Laser패턴 시작");
+        obj.ShootLaser();
+    }
+    public void Update(FinalBoss obj)
+    {
+
+    }
+
+    public void Exit(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Laser패턴 종료");
+    }
+}
+
+
+// === FinalBoss_GroggyState.cs ===
+using UnityEngine;
+
+public class FinalBoss_GroggyState : IState<FinalBoss>
+{
+    float timer;
+
+    public void Enter(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Groggy상태 돌입");
+        timer = 0f;
+        obj.EnterGroggy();
+    }
+    public void Update(FinalBoss obj)
+    {
+        timer += Time.deltaTime;
+
+        if(timer >= obj.Setting.groggyDuration)
+        {
+            obj.stateMachine.ChangeState(obj.idleState);
+        }
+    }
+
+    public void Exit(FinalBoss obj)
+    {
+        Debug.Log("최종보스 Groggy상태 종료");
+        obj.ExitGroggy();
+    }
+}
+
+
+// === CameraMove.cs ===
+using UnityEngine;
+
+public class CameraMove : MonoBehaviour
+{
+    [SerializeField] private Transform target;
+
+    private Vector3 velocity;
+
+    private Vector3 targetPos;
+
+    [SerializeField] private float smoothTime = 0.2f;
+
+    void Start()
+    {
+        velocity = Vector3.zero;
+    }
+
+    void LateUpdate()
+    {
+        targetPos = new Vector3(target.position.x, target.position.y, transform.position.z);
+
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+    }
+}
+
+
+// === SpringWeapon.cs ===
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class SpringWeapon : Weapon
+{
+    [SerializeField] private PlayerController player;
+
+    [SerializeField] private float maxSpringDistance = 10f;
+    [SerializeField] private float SpringDuration = 2f;
+    [SerializeField] private LayerMask targetLayer;
+
+    private Vector2 mousePos;
+    private Vector2 mouseDir;
+    private Vector2 hitPoint;
+    private Vector2 anchorPoint;
+
+    private bool isTargetHit;
+    private bool isAnchored;
+
+    private bool isWeaknessHit;
+    private bool isWeaknessAnchored;
+
+    private Coroutine springTimerCoroutine;
+
+    private int weaknessLayerIndex;
+
+    private WindUp windUp;
+
+    private LineRenderer lr;    // 조준선
+
+    protected override void Start()
+    {
+        base.Start();
+        weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+
+        windUp = GetComponentInParent<WindUp>();
+        lr = GetComponent<LineRenderer>();
+    }
+
+
+    void Update()
+    {
+        if (windUp.isWindUp)
+        {
+            isAnchored = false;
+            lr.enabled = false;
+            return;
+        }
+
+        if(lr != null)
+        {
+            if(isAnchored || isTargetHit)
+            {
+                lr.enabled = true;
+            }
+            else
+            {
+                lr.enabled = false;
+            }
+        }
+
+        if(isAnchored == false)
+        {
+            LookMouse();
+            AimCheck();
+        }
+            
+
+        if(isAnchored == false && Mouse.current.leftButton.wasPressedThisFrame && isTargetHit)
+        {
+            if (player.CanDashCheck() == true)
+            {
+                Fire();
+            }
+        }
+
+        if (isAnchored && Keyboard.current.leftShiftKey.wasPressedThisFrame)
+        {
+            StopCoroutine(springTimerCoroutine);
+            isAnchored = false;
+ 
+            player.Dash(anchorPoint, isWeaknessAnchored);
+        }
+
+        if (lr.enabled)
+        {
+            lr.positionCount = 2;
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, isAnchored ? anchorPoint : hitPoint);
+            Color color;
+            if (isAnchored)
+            {
+                color = isWeaknessAnchored == true ? Color.yellow : Color.green;
+            }
+
+            else
+            {
+                color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
+            }
+            lr.startColor = color;
+            lr.endColor = color;
+        }
+
+    }
+
+    protected override void Fire()
+    {
+        isAnchored = true;
+        anchorPoint = hitPoint;
+        isWeaknessAnchored = isWeaknessHit;
+
+        Debug.Log($"태엽 {SpringDuration}초간 고정");
+
+        springTimerCoroutine = StartCoroutine(SpringTimer());
+    }
+
+    void AimCheck()
+    {
+        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        mousePos = camera.ScreenToWorldPoint(mouseScreenPos);
+
+        mouseDir = (mousePos - (Vector2)transform.position).normalized;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, mouseDir, maxSpringDistance, targetLayer);
+
+        isTargetHit = hit.collider == null ? false : true;
+
+        if (isTargetHit)
+        {
+            hitPoint = hit.point;
+            isWeaknessHit = (hit.collider.gameObject.layer == weaknessLayerIndex);
+        }
+        else
+        {
+            hitPoint = (Vector2)transform.position + (mouseDir * maxSpringDistance);
+            isWeaknessHit = false;
+        }
+    }
+
+    IEnumerator SpringTimer()
+    {
+        yield return new WaitForSeconds(SpringDuration);
+        isAnchored = false;
+        Debug.Log($"{SpringDuration}초가 지나 태엽 자동 회수");
+    }
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (isAnchored) 
+    //    {
+    //        Gizmos.color = isWeaknessAnchored == true ? Color.yellow : Color.green;
+    //    }
+
+    //    else 
+    //    {
+    //        Gizmos.color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
+    //    }
+
+    //    Vector2 gizmosPos = isAnchored ? anchorPoint : hitPoint;
+    //    Gizmos.DrawLine(transform.position, gizmosPos);
+
+    //    if (isTargetHit)
+    //    {
+    //        Gizmos.DrawWireSphere(gizmosPos, 0.2f);
+    //    }
+    //}
+}
+
+
+// === Weapon.cs ===
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public abstract class Weapon : MonoBehaviour
+{
+    protected new Camera camera;
+
+    protected virtual void Start()
+    {
+        camera = Camera.main;
+    }
+
+    protected abstract void Fire();
+
+    protected void LookMouse()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+
+        Vector3 worldPos = camera.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0f;
+
+        Vector2 dir = worldPos - transform.position;
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+}
+
+
+// === WindUp.cs ===
+using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using System.Collections;
+
+public struct WindUpData
+{
+    public Vector2 position;
+    public Quaternion rotation;
+    public Quaternion weaponRotation;
+    
+    public WindUpData(Vector2 _position, Quaternion _rotation, Quaternion _weaponRotation)
+    {
+        position = _position;
+        rotation = _rotation;
+        weaponRotation = _weaponRotation;   // 무기
+        // 애니메이션은 추가예정
+    }
+}
+
+public class WindUp : MonoBehaviour
+{
+    private PlayerSetting setting;
+
+    private List<WindUpData> history;
+
+    private Rigidbody2D rb;
+    private Collider2D col;
+    private SpriteRenderer sr;
+    private Animator anim;
+
+    private Transform weaponTransform;
+
+    private float windUpCoolTimeTimer = 0f;
+    private bool canWindUp = true;
+
+    public bool isWindUp { get; private set; }
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        weaponTransform = GetComponentInChildren<SpringWeapon>().transform;
+    }
+
+    void Start()
+    {
+        setting = DataManager.instance.PlayerSetting;
+        history = new List<WindUpData>();
+        isWindUp = false;
+
+        StartCoroutine(WindUpCoolTime());
+    }
+
+    void Update()
+    {
+        if (Keyboard.current.rKey.wasPressedThisFrame && isWindUp == false && canWindUp) // R키를 누르고 WindUp중이 아니면 Start
+        {
+            StartWindUp();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isWindUp)   // isWindUp이 true이면 Play
+        {
+            PlayWindUp();
+        }
+        else           // 아니면 녹화
+        {
+            RecordHistory();
+        }
+    }
+
+    private void RecordHistory()
+    {
+        float maxCount = setting.windUpDuration / Time.fixedDeltaTime;  // 설정된시간 / fixedDeltaTime(0.02초) 만큼 저장
+
+        if(history.Count >= maxCount)   // windUpDuration을 넘어가면 오래된 데이터부터 삭제
+        {
+            history.RemoveAt(0);
+        }
+
+        // 현재 상태 리스트에 추가
+        WindUpData data = new WindUpData(transform.position, transform.rotation, weaponTransform.rotation);
+        history.Add(data);
+    }
+
+    private void PlayWindUp()
+    {
+        if(history.Count > 0)
+        {
+            int lastidx = history.Count - 1;
+            WindUpData target = history[lastidx];
+
+            transform.position = target.position;
+            transform.rotation = target.rotation;
+            weaponTransform.rotation = target.weaponRotation;
+
+            history.RemoveAt(lastidx);
+        }
+        else
+        {
+            StopWindUp();
+        }
+    }
+
+    private void StartWindUp()
+    {
+        isWindUp = true;
+
+        // 중력 영향 X, 장애물 영향 X, 속도 영향X
+        rb.gravityScale = 0f;
+        col.isTrigger = true;
+        rb.linearVelocity = Vector2.zero;
+
+        // WindUp중 약간 투명하게
+        Color color = sr.color;
+        color.a = 0.4f;
+        sr.color = color;
+
+        Debug.Log("역행 시작");
+    }
+
+    private void StopWindUp()
+    {
+        isWindUp = false;
+
+        // 원상복구
+        rb.gravityScale = 1f;
+        col.isTrigger = false;
+        rb.linearVelocity = Vector2.zero;
+
+
+        // 투명도 되돌리기
+        Color color = sr.color;
+        color.a = 1f;
+        sr.color = color;
+
+        history.Clear();
+
+        canWindUp = false;
+
+        Debug.Log("역행 종료");
+    }
+
+    IEnumerator WindUpCoolTime()
+    {
+        while (true)
+        {
+            yield return new WaitWhile(() => canWindUp);
+
+            windUpCoolTimeTimer = setting.windUpCoolTime;
+
+            while (windUpCoolTimeTimer > 0f)
+            {
+                windUpCoolTimeTimer -= Time.deltaTime;
+                yield return null;
+            }
+            windUpCoolTimeTimer = 0f;
+            canWindUp = true;
+
+            Debug.Log("시간역행 쿨타임 끝");
+        }
+    }
+}
+
+
+// === PlayerSetting.cs ===
+using System;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "PlayerSetting", menuName = "Data/PlayerSetting")]
+public class PlayerSetting : ScriptableObject
+{
+    public float moveSpeed = 4f;
+    public float jumpPower = 5f;
+    public float dashSpeed = 15f;
+    public float dashCoolTime = 1f;
+
+    public float reboundPower = 8f;
+    public float upForce = 1.2f;
+    public float reboundTime = 0.5f;
+
+    public float windUpDuration = 3f;
+    public float windUpCoolTime = 10f;
+
+    public float maxHp = 10;
+    public int playerDamage = 10;
+    public float hitCoolTime = 1.0f;
+}
+
+
+// === PlayerController.cs ===
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.LowLevelPhysics2D.PhysicsLayers;
+
+public class PlayerController : MonoBehaviour
+{
+    //[SerializeField] private float moveSpeed = 4f;    ScriptableObject로 구현
+    //[SerializeField] private float jumpPower = 5f;
+    //[SerializeField] private float dashSpeed = 15f;
+    //[SerializeField] private int playerDamage = 10;
+
+    [SerializeField] private PlayerSetting setting;
+
+    private float dir;
+    private bool isGround;
+    private bool isDash;
+    private bool isBound;
+    private bool isAttack;
+    private bool isInvincible;
+    private bool isDead = false;
+
+    [SerializeField] private float hp;
+
+    private int jumpCount;
+    private int jumpCountMax;
+
+    private Rigidbody2D rb;
+    private Collider2D col;
+
+    [SerializeField] private LayerMask groundLayer;
+
+    //[SerializeField] private float dashCoolTime = 1f;
+    private float dashCoolTimeTimer = 0f;
+    private bool canDash = true;
+
+    private int weaknessLayerIndex;
+
+    private WindUp windUp;
+
+    private Vector3 localScale;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
+        windUp = GetComponent<WindUp>();
+    }
+
+    void Start()
+    {
+        setting = DataManager.instance.PlayerSetting;
+        jumpCount = 0;
+        jumpCountMax = 2;
+        hp = setting.maxHp;
+
+        weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+
+        localScale = transform.localScale;
+
+        StartCoroutine(DashCoolTime());
+    }
+
+    void Update()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        if(windUp.isWindUp) // WindUp중 행동할수 없게
+        {
+            dir = 0;
+            return;
+        }
+
+        dir = 0;
+
+        if (Keyboard.current.aKey.isPressed)
+        {
+            dir += -1;
+        }
+        if (Keyboard.current.dKey.isPressed)
+        {
+            dir += 1;
+        }
+
+        GroundCheck();
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            if (isDash && isAttack == false)
+            {
+                DashJump();
+            }
+            else if(isDash == false)
+            {
+                jump();
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        if (windUp.isWindUp)    // WindUp중 행동할수 없게
+        {
+            return;
+        }
+
+        if(isDash == false && isBound == false)
+        {
+            Move();
+        }
+    }
+
+    void GroundCheck()
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 0.3f, Vector2.down, 0.8f, groundLayer);
+
+        isGround = hit.collider == null ? false : true;
+        if(isGround && rb.linearVelocity.y <= 0.01f)
+        {
+            jumpCount = 0;
+        }
+    }
+
+    public bool CanDashCheck() 
+    {
+        return canDash == true && isDash == false && windUp.isWindUp == false;
+    }
+
+
+    void Move()
+    {
+        rb.linearVelocity = new Vector2(dir * setting.moveSpeed, rb.linearVelocity.y);
+        if (dir != 0f)
+        {
+            transform.localScale = new Vector3(dir * localScale.x, localScale.y, localScale.z);
+        }
+    }
+
+    void jump()
+    {
+        if (jumpCount >= jumpCountMax)
+        {
+            return;
+        }
+
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, setting.jumpPower);
+
+        jumpCount++;
+        Debug.Log("점프");
+    }
+
+    public void Dash(Vector2 targetPos, bool isAttack)
+    {
+        this.isAttack = isAttack;
+        Vector2 dashDir = (targetPos - (Vector2)transform.position).normalized;
+        isDash = true;
+
+        rb.gravityScale = 0f;
+        rb.linearVelocity = dashDir * setting.dashSpeed;
+        Debug.Log("대쉬 시작");
+    }
+
+    void DashJump()
+    {
+        isDash = false;
+        rb.gravityScale = 1f;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.1f, setting.jumpPower);
+        jumpCount = 1; // 대쉬 중 점프 후 한번 더 점프할 수 있도록
+        Debug.Log("대쉬 중 점프");
+    }
+
+    void StopDash(Vector2 reboundDir)
+    {
+        isDash = false;
+        isAttack = false;
+        rb.gravityScale = 1f;
+
+        canDash = false;
+
+        
+        rb.linearVelocity = reboundDir * setting.reboundPower;
+        StartCoroutine(Rebounding());   // 벽면 반동을 위해 Move()함수 0.1초 억제
+
+        Debug.Log("대쉬 종료");
+    }
+
+    IEnumerator Rebounding()
+    {
+        isBound = true;
+        yield return new WaitForSeconds(setting.reboundTime);
+        isBound = false;
+    }
+
+    IEnumerator DashCoolTime()
+    {
+        while (true)
+        {
+            yield return new WaitWhile(() => canDash);
+
+            dashCoolTimeTimer = setting.dashCoolTime;
+
+            while (dashCoolTimeTimer > 0f)
+            {
+                dashCoolTimeTimer -= Time.deltaTime;
+                yield return null;
+            }
+            dashCoolTimeTimer = 0f;
+            canDash = true;
+
+            Debug.Log("대쉬 쿨타임 끝");
+        }
+    }
+    IEnumerator PlayerHitCoolTime()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(setting.hitCoolTime);
+
+        isInvincible = false;
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        int hitLayer = collision.collider.gameObject.layer;
+        string layerName = LayerMask.LayerToName(hitLayer);
+
+        if (isDash)
+        {
+            if(hitLayer == weaknessLayerIndex)
+            {
+                Debug.Log("약점과 충돌");
+                BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
+                if (boss != null)
+                {
+                    Debug.Log("보스를 공격");
+
+                    boss.TakeDamage(setting.playerDamage);
+                }
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+                StopDash(reboundDir);
+                return;
+            }
+            if (layerName == "Ground" || layerName == "Wall")
+            {
+                Vector2 normalDir = collision.contacts[0].normal;
+                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;
+                StopDash(reboundDir);
+                return;
+            }
+        }
+        else
+        {
+            BossMonster boss = collision.gameObject.GetComponent<BossMonster>();
+            if (boss == null)
+            {
+                boss = collision.gameObject.GetComponentInParent<BossMonster>();  
+            }
+            if (boss != null)
+            {
+                TakeDamage(boss.Setting.bossDamage);
+            }
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isInvincible)
+        {
+            Debug.Log("플레이어 무적 상태");
+            return;
+        }
+        else
+        {
+            hp -= damage;
+            Debug.Log("플레이어 체력 감소");
+        }
+
+        if(hp <= 0)
+        {
+            hp = 0;
+            Die();
+        }
+        else
+        {
+            StartCoroutine(PlayerHitCoolTime());
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("플레이어 사망");
+        if (isDead)
+        {
+            return;
+        }
+        isDead = true;
+
+        StartCoroutine(PlayerDie());
+    }
+
+    private IEnumerator PlayerDie()
+    {
+        rb.linearVelocity = Vector3.zero;
+
+        BossMonster boss = FindFirstObjectByType<BossMonster>();
+        if(boss != null)
+        {
+            boss.StopAllCoroutines();
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        Time.timeScale = 0f;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position - new Vector3(0, 0.8f, 0), 0.3f);
+    }
+}
+
+
+// === DataManager.cs ===
+using UnityEngine;
+
+public class DataManager : MonoBehaviour
+{
+    public static DataManager instance;
+
+    [SerializeField] private PlayerSetting playerSetting;
+
+    public PlayerSetting PlayerSetting { get { return playerSetting; } }
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+}
+
+
+// === SceneChanger.cs ===
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneChanger : MonoBehaviour
+{
+    public static SceneChanger instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void RestartScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+}
+
+
+// === GameManager.cs ===
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance;
+
+    private Portal currentPortal;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void SetPortal(Portal portal)
+    {
+        currentPortal = portal;
+    }
+
+    public void OpenPortal()
+    {
+        if(currentPortal != null)
+        {
+            Debug.Log("포탈 활성화");
+            currentPortal.gameObject.SetActive(true);
+        }
+    }
+
+    public void BossDead(BossMonster boss)
+    {
+        if(boss.BossType == BossType.MidBoss || boss.BossType == BossType.FinalBoss)
+        {
+            OpenPortal();
+        }
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("게임 오버");
+    }
+}
+
+
