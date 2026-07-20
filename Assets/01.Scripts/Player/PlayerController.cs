@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool isBound;
     private bool isAttack;
     private bool isInvincible;
+    private bool isDead = false;
 
     [SerializeField] private float hp;
 
@@ -63,6 +64,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         if(windUp.isWindUp) // WindUp중 행동할수 없게
         {
             dir = 0;
@@ -97,6 +103,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         if (windUp.isWindUp)    // WindUp중 행동할수 없게
         {
             return;
@@ -289,6 +300,28 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         Debug.Log("플레이어 사망");
+        if (isDead)
+        {
+            return;
+        }
+        isDead = true;
+
+        StartCoroutine(PlayerDie());
+    }
+
+    private IEnumerator PlayerDie()
+    {
+        rb.linearVelocity = Vector3.zero;
+
+        BossMonster boss = FindFirstObjectByType<BossMonster>();
+        if(boss != null)
+        {
+            boss.StopAllCoroutines();
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        Time.timeScale = 0f;
     }
 
     private void OnDrawGizmos()
