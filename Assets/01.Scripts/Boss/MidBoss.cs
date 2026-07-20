@@ -57,6 +57,8 @@ public class MidBoss : BossMonster
         }
     }
 
+    public override BossType BossType { get { return BossType.MidBoss; } }
+
     public void DashCoolTime()
     {
         dashCoolTimer = setting.dashCoolTime;
@@ -104,6 +106,10 @@ public class MidBoss : BossMonster
     protected override void Die()
     {
         Debug.Log("중간보스 처치");
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.BossDead(this);
+        }
         Destroy(gameObject);
     }
 }
