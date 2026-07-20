@@ -7,6 +7,8 @@ public class FinalBoss : BossMonster
     [SerializeField] private Transform playerTransform;
     public Transform PlayerTransform { get { return playerTransform; } }
 
+    [SerializeField] float groundYPos = -3.5f;
+
     public StateMachine<FinalBoss> stateMachine;
 
     public FinalBoss_IdleState idleState;
@@ -74,12 +76,12 @@ public class FinalBoss : BossMonster
             }
 
             Debug.Log($"{i + 1}번째 일반 메테오 발사 준비 (3개)");
-            Vector3 targetPos = PlayerTransform.position;
+            float targetXPos = PlayerTransform.position.x;
 
             for (int j = 0; j < normalCount; j++)
             {
                 float spacing = (j - 1) * normalSpacing;
-                Vector3 warningSpawnPos = targetPos + new Vector3(spacing, 0, 0);
+                Vector3 warningSpawnPos = new Vector3(targetXPos + spacing, groundYPos, 0);
                 normalWarning[j] = meteorWarningPool.GetObject(warningSpawnPos);
             }
             yield return waitTwo;
@@ -92,7 +94,7 @@ public class FinalBoss : BossMonster
                 }
 
                 float spacing = (j - 1) * normalSpacing;
-                Vector3 meteorSpawnPos = targetPos + new Vector3(spacing, 10f, 0); // Y축 10 위에서 소환
+                Vector3 meteorSpawnPos = new Vector3(targetXPos + spacing, 10f, 0); // Y축 10 위에서 소환
                 Meteor meteor = meteorPool.GetObject(meteorSpawnPos);
                 if (meteor != null && setting != null)
                 {
@@ -104,14 +106,18 @@ public class FinalBoss : BossMonster
 
         if (PlayerTransform != null)
         {
-            MeteorWarning trackingWarning = meteorWarningPool.GetObject(PlayerTransform.position);
+            Vector3 InitTrackingPos = new Vector3(PlayerTransform.position.x, groundYPos, 0);
+            MeteorWarning trackingWarning = meteorWarningPool.GetObject(InitTrackingPos);
             float timer = 0f;
 
             while (timer < 2f)
             {
-                if (PlayerTransform == null || trackingWarning == null) yield break;
+                if (PlayerTransform == null || trackingWarning == null)
+                {
+                    yield break;
+                }
 
-                trackingWarning.transform.position = PlayerTransform.position;
+                trackingWarning.transform.position = new Vector3(PlayerTransform.position.x, groundYPos, 0);
                 timer += Time.deltaTime;
                 yield return null;
             }
@@ -157,10 +163,12 @@ public class FinalBoss : BossMonster
 
     private IEnumerator Laser()
     {
-        if (PlayerTransform == null) yield break;
+        if (PlayerTransform == null) 
+        {
+            yield break;
+        }
 
-        float groundYPosition = -3f;
-        Vector3 spawnPos = new Vector3(0f, groundYPosition, 0f);
+        Vector3 spawnPos = new Vector3(0f, groundYPos, 0f);
 
         Quaternion horizontalRotation = Quaternion.Euler(0f, 0f, 90f);
 
@@ -195,12 +203,11 @@ public class FinalBoss : BossMonster
         }
 
         yield return waitTwo;
-        stateMachine.ChangeState(idleState);
+        stateMachine.ChangeState(groggyState);
     }
 
     public void EnterGroggy()
     {
-        // 패턴 파훼 후 그로기
         isInvincible = false;
         weakness.SetActive(true);
     }
