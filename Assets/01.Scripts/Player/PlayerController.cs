@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 localScale;
 
+    private Coroutine dashTimeout;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -167,6 +169,25 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
         Debug.Log("대쉬 시작");
+        if (dashTimeout != null)
+        {
+            StopCoroutine(dashTimeout);
+        }
+        dashTimeout = StartCoroutine(DashTimeout(targetPos, dashDir));
+    }
+
+    private IEnumerator DashTimeout(Vector2 targetPos, Vector2 dashDir)
+    {
+        float distance = Vector2.Distance(transform.position, targetPos);
+        float maxDuration = (distance / setting.dashSpeed) + 0.2f;
+
+        yield return new WaitForSeconds(maxDuration);
+
+        if (isDash)
+        {
+            Vector2 reboundDir = new Vector2(-dashDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+            StopDash(reboundDir);
+        }
     }
 
     void DashJump()
@@ -180,6 +201,11 @@ public class PlayerController : MonoBehaviour
 
     void StopDash(Vector2 reboundDir)
     {
+        if (dashTimeout != null)
+        {
+            StopCoroutine(dashTimeout);
+        }
+
         isDash = false;
         isAttack = false;
         rb.gravityScale = 1f;
@@ -251,7 +277,7 @@ public class PlayerController : MonoBehaviour
                 StopDash(reboundDir);
                 return;
             }
-            if (layerName == "Ground" || layerName == "Wall")
+            if (layerName == "Ground" || layerName == "Wall" || layerName == "Monster")
             {
                 Vector2 normalDir = collision.contacts[0].normal;
                 Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;
