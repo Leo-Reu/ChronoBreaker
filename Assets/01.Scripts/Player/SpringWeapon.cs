@@ -29,7 +29,7 @@ public class SpringWeapon : Weapon
 
     private LineRenderer lr;    // 조준선
 
-    CameraMove cam;
+    private CameraMove cam;
 
     protected override void Start()
     {
