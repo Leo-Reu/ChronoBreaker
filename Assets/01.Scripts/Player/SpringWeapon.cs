@@ -29,6 +29,8 @@ public class SpringWeapon : Weapon
 
     private LineRenderer lr;    // 조준선
 
+    CameraMove cam;
+
     protected override void Start()
     {
         base.Start();
@@ -36,6 +38,7 @@ public class SpringWeapon : Weapon
 
         windUp = GetComponentInParent<WindUp>();
         lr = GetComponent<LineRenderer>();
+        cam = Camera.main.GetComponent<CameraMove>();
     }
 
 
@@ -102,6 +105,14 @@ public class SpringWeapon : Weapon
             lr.endColor = color;
         }
 
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            cam.ZoomIn(true);
+        }
+        else if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            cam.ZoomIn(false);
+        }
     }
 
     protected override void Fire()
