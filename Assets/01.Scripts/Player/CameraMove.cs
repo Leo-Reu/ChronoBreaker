@@ -38,4 +38,11 @@ public class CameraMove : MonoBehaviour
 
         cam.DOOrthoSize(size, 0.2f).SetUpdate(true);
     }
+
+    public void ShakeCamera(float duration = 0.2f, float strength = 0.4f, int vibrato = 20)
+    {
+        cam.transform.DOComplete();
+
+        cam.transform.DOShakePosition(duration, strength, vibrato).SetUpdate(true);
+    }
 }

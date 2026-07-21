@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
 
     private Coroutine dashTimeout;
 
+    private CameraMove cam;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        cam = Camera.main.GetComponent<CameraMove>();
         setting = DataManager.instance.PlayerSetting;
         jumpCount = 0;
         jumpCountMax = 2;
@@ -266,6 +269,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("약점과 충돌");
                 BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
+                cam?.ShakeCamera(0.25f, 0.6f);
                 if (boss != null)
                 {
                     Debug.Log("보스를 공격");
@@ -309,6 +313,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             hp -= damage;
+            cam?.ShakeCamera(0.3f, 0.5f);
             Debug.Log("플레이어 체력 감소");
         }
 

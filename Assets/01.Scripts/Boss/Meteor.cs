@@ -10,6 +10,8 @@ public class Meteor : MonoBehaviour, IPoolable
 
     private Action<Component> reAction;
 
+    CameraMove cam;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,6 +20,7 @@ public class Meteor : MonoBehaviour, IPoolable
     public void Init(Action<Component> returnAction)
     {
         reAction = returnAction;
+        cam = Camera.main.GetComponent<CameraMove>();
     }
 
     public void SetDamage(int Bossdamage)
@@ -46,7 +49,8 @@ public class Meteor : MonoBehaviour, IPoolable
         string layerName = LayerMask.LayerToName(hitLayer);
         if (layerName == "Ground" || layerName == "Player")
         {
-            if(layerName == "Player")
+            cam?.ShakeCamera(0.2f, 0.4f);
+            if (layerName == "Player")
             {
                 PlayerController player = collision.gameObject.GetComponent<PlayerController>();
                 if (player != null)
