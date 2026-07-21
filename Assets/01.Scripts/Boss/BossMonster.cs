@@ -16,6 +16,7 @@ public abstract class BossMonster : MonoBehaviour
 
     protected bool isHitInvincible;
     protected bool isStateInvincible;
+    protected bool isPhaseTwo;
 
     public bool IsInvincible => isHitInvincible || isStateInvincible;
 
@@ -32,6 +33,7 @@ public abstract class BossMonster : MonoBehaviour
         hp = setting.maxHp;
         isHitInvincible = false;
         isStateInvincible = false;
+        isPhaseTwo = false;
     }
 
     public virtual void TakeDamage(int damage)
@@ -41,10 +43,14 @@ public abstract class BossMonster : MonoBehaviour
             Debug.Log("보스 무적 상태");
             return;
         }
-        else
+
+        hp -= damage;
+        Debug.Log("보스 공격 성공");
+
+        if (!isPhaseTwo && hp <= setting.maxHp / 2)
         {
-            hp -= damage;
-            Debug.Log("보스 공격 성공");
+            isPhaseTwo = true;
+            EnterPhaseTwo();
         }
 
         if(hp <= 0)
@@ -65,6 +71,11 @@ public abstract class BossMonster : MonoBehaviour
         yield return new WaitForSeconds(setting.hitCoolTime);
 
         isHitInvincible = false;
+    }
+
+    protected virtual void EnterPhaseTwo()
+    {
+        Debug.Log("보스 2페이즈 진입");
     }
 
     protected abstract void Die();
