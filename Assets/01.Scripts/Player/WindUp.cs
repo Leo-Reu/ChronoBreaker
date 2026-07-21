@@ -22,7 +22,7 @@ public class WindUp : MonoBehaviour
 {
     private PlayerSetting setting;
 
-    private List<WindUpData> history;
+    private LinkedList<WindUpData> history;
 
     private Rigidbody2D rb;
     private Collider2D col;
@@ -48,7 +48,7 @@ public class WindUp : MonoBehaviour
     void Start()
     {
         setting = DataManager.instance.PlayerSetting;
-        history = new List<WindUpData>();
+        history = new LinkedList<WindUpData>();
         isWindUp = false;
 
         StartCoroutine(WindUpCoolTime());
@@ -80,26 +80,25 @@ public class WindUp : MonoBehaviour
 
         if(history.Count >= maxCount)   // windUpDuration을 넘어가면 오래된 데이터부터 삭제
         {
-            history.RemoveAt(0);
+            history.RemoveFirst();
         }
 
         // 현재 상태 리스트에 추가
         WindUpData data = new WindUpData(transform.position, transform.rotation, weaponTransform.rotation);
-        history.Add(data);
+        history.AddLast(data);
     }
 
     private void PlayWindUp()
     {
         if(history.Count > 0)
         {
-            int lastidx = history.Count - 1;
-            WindUpData target = history[lastidx];
+            WindUpData target = history.Last.Value;
 
             transform.position = target.position;
             transform.rotation = target.rotation;
             weaponTransform.rotation = target.weaponRotation;
 
-            history.RemoveAt(lastidx);
+            history.RemoveLast();
         }
         else
         {
