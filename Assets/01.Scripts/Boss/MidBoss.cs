@@ -5,6 +5,8 @@ public class MidBoss : BossMonster
     [SerializeField] GameObject weakness;
     [SerializeField] private Transform playerTransform;
     public Transform PlayerTransform { get { return playerTransform; } }
+    public float CurrentSpeed => isPhaseTwo ? setting.speed * 1.3f : setting.speed;
+    public float CurrentDashSpeed => isPhaseTwo ? setting.dashSpeed * 1.3f : setting.dashSpeed;
 
     public StateMachine<MidBoss> stateMachine;
 
@@ -17,6 +19,8 @@ public class MidBoss : BossMonster
     public bool canDash;
 
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
+    private CameraMove cam;
 
     private Vector3 localScale;
 
@@ -24,6 +28,7 @@ public class MidBoss : BossMonster
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void Start()
@@ -41,6 +46,8 @@ public class MidBoss : BossMonster
         canDash = false;
 
         localScale = transform.localScale;
+
+        cam = Camera.main.GetComponent<CameraMove>();
     }
 
     public void Update()
@@ -72,7 +79,7 @@ public class MidBoss : BossMonster
 
     public void Move(float dirX)
     {
-        rb.linearVelocity = new Vector2(dirX * setting.speed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dirX * CurrentSpeed, rb.linearVelocity.y);
 
         if (CheckFlip())
         {
@@ -91,7 +98,7 @@ public class MidBoss : BossMonster
 
     public void Dash(float dashDirX)
     {
-        rb.linearVelocity = new Vector2(dashDirX * setting.dashSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dashDirX * CurrentDashSpeed, rb.linearVelocity.y);
         
         if (CheckFlip())
         {
@@ -101,6 +108,13 @@ public class MidBoss : BossMonster
         {
             transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
         }
+    }
+
+    protected override void EnterPhaseTwo()
+    {
+        base.EnterPhaseTwo();
+        sr.color = new Color(1f, 0.3f, 0.3f);
+        cam?.ShakeCamera(0.6f, 0.7f);
     }
 
     protected override void Die()

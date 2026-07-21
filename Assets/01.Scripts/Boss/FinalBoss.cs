@@ -6,6 +6,9 @@ public class FinalBoss : BossMonster
     [SerializeField] GameObject weakness;
     [SerializeField] private Transform playerTransform;
     public Transform PlayerTransform { get { return playerTransform; } }
+ 
+    private SpriteRenderer sr;
+    private CameraMove cam;
 
     [SerializeField] float groundYPos = -3.5f;
 
@@ -30,6 +33,7 @@ public class FinalBoss : BossMonster
     protected override void Awake()
     {
         base.Awake();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void Start()
@@ -46,6 +50,8 @@ public class FinalBoss : BossMonster
         isStateInvincible = true;    // 평소엔 무적(약점이 노출될때만 공격가능)
 
         weakness.SetActive(false);  // 약점 비활성화
+
+        cam = Camera.main.GetComponent<CameraMove>();
     }
     public void Update()
     {
@@ -111,8 +117,9 @@ public class FinalBoss : BossMonster
             Vector3 InitTrackingPos = new Vector3(PlayerTransform.position.x, groundYPos, 0);
             MeteorWarning trackingWarning = meteorWarningPool.GetObject(InitTrackingPos);
             float timer = 0f;
+            float trackingTime = isPhaseTwo ? 1f : 2f;
 
-            while (timer < 2f)
+            while (timer < trackingTime)
             {
                 if (PlayerTransform == null || trackingWarning == null)
                 {
@@ -220,6 +227,15 @@ public class FinalBoss : BossMonster
         weakness.SetActive(false);
     }
 
+    protected override void EnterPhaseTwo()
+    {
+        base.EnterPhaseTwo();
+        sr.color = new Color(1f, 0.3f, 0.3f);
+        cam?.ShakeCamera(0.6f, 0.7f);
+
+        waitTwo = new WaitForSeconds(1f);
+        waitOne = new WaitForSeconds(0.5f);
+    }
 
     protected override void Die()
     {
