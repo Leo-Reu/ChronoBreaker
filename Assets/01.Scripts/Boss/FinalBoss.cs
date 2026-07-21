@@ -43,7 +43,7 @@ public class FinalBoss : BossMonster
 
         stateMachine = new StateMachine<FinalBoss>(this, idleState);
 
-        isInvincible = true;    // 평소엔 무적(약점이 노출될때만 공격가능)
+        isStateInvincible = true;    // 평소엔 무적(약점이 노출될때만 공격가능)
 
         weakness.SetActive(false);  // 약점 비활성화
     }
@@ -210,13 +210,13 @@ public class FinalBoss : BossMonster
 
     public void EnterGroggy()
     {
-        isInvincible = false;
+        isStateInvincible = false;
         weakness.SetActive(true);
     }
 
     public void ExitGroggy()
     {
-        isInvincible = true;
+        isStateInvincible = true;
         weakness.SetActive(false);
     }
 
