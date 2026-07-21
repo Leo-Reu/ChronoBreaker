@@ -14,7 +14,10 @@ public abstract class BossMonster : MonoBehaviour
 
     [SerializeField] protected float hp;
 
-    protected bool isInvincible;
+    protected bool isHitInvincible;
+    protected bool isStateInvincible;
+
+    public bool IsInvincible => isHitInvincible || isStateInvincible;
 
     protected Collider2D col;
 
@@ -27,12 +30,13 @@ public abstract class BossMonster : MonoBehaviour
     protected virtual void Start()
     {
         hp = setting.maxHp;
-        isInvincible = false;
+        isHitInvincible = false;
+        isStateInvincible = false;
     }
 
     public virtual void TakeDamage(int damage)
     {
-        if (isInvincible)
+        if (IsInvincible)
         {
             Debug.Log("보스 무적 상태");
             return;
@@ -56,11 +60,11 @@ public abstract class BossMonster : MonoBehaviour
 
     IEnumerator BossHitCoolTime()
     {
-        isInvincible = true;
+        isHitInvincible = true;
 
         yield return new WaitForSeconds(setting.hitCoolTime);
 
-        isInvincible = false;
+        isHitInvincible = false;
     }
 
     protected abstract void Die();
