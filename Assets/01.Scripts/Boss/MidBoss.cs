@@ -4,7 +4,7 @@ public class MidBoss : BossMonster
 {
     [SerializeField] GameObject weakness;
     [SerializeField] private Transform playerTransform;
-    public Transform PlayerTransform { get { return playerTransform; } }
+    public Transform PlayerTransform => playerTransform;
     public float CurrentSpeed => isPhaseTwo ? setting.speed * 1.3f : setting.speed;
     public float CurrentDashSpeed => isPhaseTwo ? setting.dashSpeed * 1.3f : setting.dashSpeed;
 
@@ -64,7 +64,7 @@ public class MidBoss : BossMonster
         }
     }
 
-    public override BossType BossType { get { return BossType.MidBoss; } }
+    public override BossType BossType => BossType.MidBoss;
 
     public void DashCoolTime()
     {
@@ -74,7 +74,7 @@ public class MidBoss : BossMonster
 
     bool CheckFlip()
     {
-        return transform.position.x > playerTransform.position.x ? true : false;
+        return transform.position.x > playerTransform.position.x;
     }
 
     public void Move(float dirX)

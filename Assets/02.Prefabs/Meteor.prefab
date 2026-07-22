@@ -169,4 +169,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6632eaa425eb1c4c8778c159d8f9586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meteor
-  fallSpeed: 6
+  fallSpeed: 12

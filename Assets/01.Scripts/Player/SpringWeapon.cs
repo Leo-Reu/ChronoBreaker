@@ -107,11 +107,11 @@ public class SpringWeapon : Weapon
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            cam.ZoomIn(true);
+            cam?.ZoomIn(true);
         }
         else if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
-            cam.ZoomIn(false);
+            cam?.ZoomIn(false);
         }
     }
 

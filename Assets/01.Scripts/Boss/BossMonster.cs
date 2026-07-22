@@ -10,7 +10,7 @@ public enum BossType
 public abstract class BossMonster : MonoBehaviour
 {
     [SerializeField] protected BossSetting setting;
-    public BossSetting Setting { get { return setting; } }
+    public BossSetting Setting => setting;
 
     [SerializeField] protected float hp;
 

@@ -23,6 +23,10 @@ public class CameraMove : MonoBehaviour
 
     void LateUpdate()
     {
+        if(target == null)
+        {
+            return;
+        }
         targetPos = new Vector3(target.position.x, target.position.y, transform.position.z);
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);

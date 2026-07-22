@@ -13,6 +13,10 @@ public class MidBoss_TraceState : IState<MidBoss>
     }
     public void Update(MidBoss obj)
     {
+        if(playerTransform == null)
+        {
+            return;
+        }
         float distance = Vector2.Distance(obj.transform.position, playerTransform.position);
         if(distance <= dashRange && obj.canDash)
         {
