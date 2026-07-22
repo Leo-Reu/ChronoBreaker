@@ -90,19 +90,22 @@ public class WindUp : MonoBehaviour
 
     private void PlayWindUp()
     {
-        if(history.Count > 0)
+        for(int i = 0; i < setting.windUpSpeed; i++)    // 배속
         {
-            WindUpData target = history.Last.Value;
+            if (history.Count > 0)
+            {
+                WindUpData target = history.Last.Value;
 
-            transform.position = target.position;
-            transform.rotation = target.rotation;
-            weaponTransform.rotation = target.weaponRotation;
+                transform.position = target.position;
+                transform.rotation = target.rotation;
+                weaponTransform.rotation = target.weaponRotation;
 
-            history.RemoveLast();
-        }
-        else
-        {
-            StopWindUp();
+                history.RemoveLast();
+            }
+            else
+            {
+                StopWindUp();
+            }
         }
     }
 

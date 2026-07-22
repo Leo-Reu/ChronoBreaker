@@ -6,7 +6,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private string targetScene;
     private bool isInPortal;
 
-    private void Start()
+    private void Awake()
     {
         if(GameManager.instance != null)
         {
