@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (optionPanel != null && optionPanel.activeSelf)
             {
@@ -100,12 +101,18 @@ public class UIManager : MonoBehaviour
 
     public void UpdateWindUpCool(float currentCool, float maxCool)
     {
-        windUpCoolImg.fillAmount = currentCool / maxCool;
+        if(windUpCoolImg != null)
+        {
+            windUpCoolImg.fillAmount = currentCool / maxCool;
+        }
     }
 
     public void UpdateDashCool(float currentCool, float maxCool)
     {
-        dashCoolImg.fillAmount = currentCool / maxCool;
+        if (dashCoolImg != null)
+        {
+            dashCoolImg.fillAmount = currentCool / maxCool;
+        }
     }
 
     public void GamePause()
