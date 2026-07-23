@@ -123,6 +123,10 @@ public class FinalBoss : BossMonster
             {
                 if (PlayerTransform == null || trackingWarning == null)
                 {
+                    if(trackingWarning != null)
+                    {
+                        meteorWarningPool.ReturnPool(trackingWarning);
+                    }
                     yield break;
                 }
 

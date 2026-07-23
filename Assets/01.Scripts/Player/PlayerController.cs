@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
         jumpCountMax = 2;
         hp = setting.maxHp;
 
+        UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
+
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
 
         localScale = transform.localScale;
@@ -222,13 +224,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("대쉬 종료");
     }
 
-    IEnumerator Rebounding()
-    {
-        isBound = true;
-        yield return new WaitForSeconds(setting.reboundTime);
-        isBound = false;
-    }
-
     IEnumerator DashCoolTime()
     {
         while (true)
@@ -240,14 +235,28 @@ public class PlayerController : MonoBehaviour
             while (dashCoolTimeTimer > 0f)
             {
                 dashCoolTimeTimer -= Time.deltaTime;
+
+                UIManager.instance?.UpdateDashCool(dashCoolTimeTimer, setting.dashCoolTime);
+
                 yield return null;
             }
             dashCoolTimeTimer = 0f;
+
+            UIManager.instance?.UpdateDashCool(0f, setting.dashCoolTime);
+
             canDash = true;
 
             Debug.Log("대쉬 쿨타임 끝");
         }
     }
+
+    IEnumerator Rebounding()
+    {
+        isBound = true;
+        yield return new WaitForSeconds(setting.reboundTime);
+        isBound = false;
+    }
+
     IEnumerator PlayerHitCoolTime()
     {
         isInvincible = true;
@@ -314,6 +323,7 @@ public class PlayerController : MonoBehaviour
         {
             hp -= damage;
             cam?.ShakeCamera(0.3f, 0.5f);
+            UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
             Debug.Log("플레이어 체력 감소");
         }
 
@@ -337,7 +347,11 @@ public class PlayerController : MonoBehaviour
         }
         isDead = true;
 
+        Time.timeScale = 0f;
+
         StartCoroutine(PlayerDie());
+
+
     }
 
     private IEnumerator PlayerDie()
@@ -349,10 +363,11 @@ public class PlayerController : MonoBehaviour
         {
             boss.StopAllCoroutines();
         }
+        cam?.ShakeCamera(0.5f, 0.8f);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(1.5f);  // timeScale이 0일때도 작동
 
-        Time.timeScale = 0f;
+        UIManager.instance?.ShowGameOver();
     }
 
     private void OnDrawGizmos()

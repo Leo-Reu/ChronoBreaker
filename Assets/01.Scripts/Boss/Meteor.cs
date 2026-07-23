@@ -41,6 +41,11 @@ public class Meteor : MonoBehaviour, IPoolable
     void Update()
     {
         rb.linearVelocity = new Vector2(0, -fallSpeed);
+
+        if(transform.position.y < -20f)
+        {
+            reAction?.Invoke(this);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

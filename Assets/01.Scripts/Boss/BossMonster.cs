@@ -45,6 +45,7 @@ public abstract class BossMonster : MonoBehaviour
         }
 
         hp -= damage;
+        UIManager.instance?.UpdateBossHp(hp, setting.maxHp);
         Debug.Log("보스 공격 성공");
 
         if (!isPhaseTwo && hp <= setting.maxHp / 2)
