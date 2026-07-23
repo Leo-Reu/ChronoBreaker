@@ -5,7 +5,7 @@ public class FinalBoss : BossMonster
 {
     [SerializeField] GameObject weakness;
     [SerializeField] private Transform playerTransform;
-    public Transform PlayerTransform { get { return playerTransform; } }
+    public Transform PlayerTransform => playerTransform;
  
     private SpriteRenderer sr;
     private CameraMove cam;
@@ -58,7 +58,7 @@ public class FinalBoss : BossMonster
         stateMachine?.Update();
     }
 
-    public override BossType BossType { get { return BossType.FinalBoss; } }
+    public override BossType BossType => BossType.FinalBoss;
 
     public void FallMeteor()
     {
@@ -92,7 +92,7 @@ public class FinalBoss : BossMonster
                 Vector3 warningSpawnPos = new Vector3(targetXPos + spacing, groundYPos, 0);
                 normalWarning[j] = meteorWarningPool.GetObject(warningSpawnPos);
             }
-            yield return waitTwo;
+            yield return waitOne;
 
             for (int j = 0; j < normalCount; j++)
             {

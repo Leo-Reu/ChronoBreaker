@@ -6,7 +6,7 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private PlayerSetting playerSetting;
 
-    public PlayerSetting PlayerSetting { get { return playerSetting; } }
+    public PlayerSetting PlayerSetting => playerSetting;
 
     private void Awake()
     {

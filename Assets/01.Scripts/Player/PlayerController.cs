@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
     private float dashCoolTimeTimer = 0f;
     private bool canDash = true;
 
+    private Vector2 dashDir;
+    private Vector2 currentDashDir;
+
     private int weaknessLayerIndex;
 
     private WindUp windUp;
@@ -130,10 +133,14 @@ public class PlayerController : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, 0.3f, Vector2.down, 0.8f, groundLayer);
 
-        isGround = hit.collider == null ? false : true;
-        if(isGround && rb.linearVelocity.y <= 0.01f)
+        if(hit.collider != null && rb.linearVelocity.y <= 0.05f)
         {
+            isGround = true;
             jumpCount = 0;
+        }
+        else
+        {
+            isGround = false;
         }
     }
 
@@ -145,10 +152,26 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        rb.linearVelocity = new Vector2(dir * setting.moveSpeed, rb.linearVelocity.y);
+        float moveX = dir * setting.moveSpeed;
+        if (isGround)
+        {
+            rb.linearVelocity = new Vector2(moveX, rb.linearVelocity.y);
+        }
+        else
+        {
+            if (dir != 0f)
+            {
+                rb.linearVelocity = new Vector2(moveX, rb.linearVelocity.y);
+            }
+            else
+            {
+                float boundX = Mathf.MoveTowards(rb.linearVelocity.x, 0f, 4f * Time.fixedDeltaTime);
+                rb.linearVelocity = new Vector2(boundX, rb.linearVelocity.y);
+            }
+        }
         if (dir != 0f)
         {
-            transform.localScale = new Vector3(dir * localScale.x, localScale.y, localScale.z);
+            transform.localScale = new Vector3(dir * localScale.x, localScale.y, localScale.z); 
         }
     }
 
@@ -168,12 +191,16 @@ public class PlayerController : MonoBehaviour
     public void Dash(Vector2 targetPos, bool isAttack)
     {
         this.isAttack = isAttack;
-        Vector2 dashDir = (targetPos - (Vector2)transform.position).normalized;
+        dashDir = (targetPos - (Vector2)transform.position).normalized;
+        currentDashDir = dashDir;
         isDash = true;
+
+        jumpCount = 0;
 
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
         Debug.Log("대쉬 시작");
+
         if (dashTimeout != null)
         {
             StopCoroutine(dashTimeout);
@@ -274,7 +301,27 @@ public class PlayerController : MonoBehaviour
 
         if (isDash)
         {
-            if(hitLayer == weaknessLayerIndex)
+            Vector2 normalDir = collision.contacts[0].normal;
+            Vector2 reboundDir;
+            if(normalDir.y < -0.5f)
+            {
+                float dashDirX = 0f;
+                if(currentDashDir.x > 0f)
+                {
+                    dashDirX = 1f;
+                }
+                else if(currentDashDir.x < 0f)
+                {
+                    dashDirX = -1f;
+                }
+                reboundDir = new Vector2(dashDirX, -0.3f).normalized;
+            }
+            else
+            {
+                reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+            }
+
+            if (hitLayer == weaknessLayerIndex)
             {
                 Debug.Log("약점과 충돌");
                 BossMonster boss = collision.gameObject.GetComponentInParent<BossMonster>();
@@ -285,15 +332,12 @@ public class PlayerController : MonoBehaviour
 
                     boss.TakeDamage(setting.playerDamage);
                 }
-                Vector2 normalDir = collision.contacts[0].normal;
-                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;  // 튕겨나갈 방향
+
                 StopDash(reboundDir);
                 return;
             }
             if (layerName == "Ground" || layerName == "Wall" || layerName == "Monster")
             {
-                Vector2 normalDir = collision.contacts[0].normal;
-                Vector2 reboundDir = new Vector2(normalDir.x, setting.upForce).normalized;
                 StopDash(reboundDir);
                 return;
             }

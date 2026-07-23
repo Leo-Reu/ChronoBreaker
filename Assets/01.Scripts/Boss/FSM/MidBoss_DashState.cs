@@ -6,6 +6,7 @@ public class MidBoss_DashState : IState<MidBoss>
     private bool isDash;
     private float dashDirX;
     private float timer;
+    private int wallLayerMask = LayerMask.GetMask("Wall");
 
     public void Enter(MidBoss obj)
     {
@@ -36,7 +37,7 @@ public class MidBoss_DashState : IState<MidBoss>
         else
         {
             Vector2 rayDirection = new Vector2(dashDirX, 0);
-            RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, rayDirection, 1.1f, LayerMask.GetMask("Wall"));
+            RaycastHit2D hit = Physics2D.Raycast(obj.transform.position, rayDirection, 1.1f, wallLayerMask);
             if( hit.collider != null)
             {
                 Debug.Log("벽과 충돌해 그로기 상태");

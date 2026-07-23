@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour, IPoolable
 {
-    [SerializeField] private float fallSpeed = 6f;
+    [SerializeField] private float fallSpeed = 12f;
     private int damage;
 
     private Rigidbody2D rb;
@@ -31,6 +31,7 @@ public class Meteor : MonoBehaviour, IPoolable
     public void OnSpawn()
     {
         Debug.Log("메테오 생성");
+        rb.linearVelocity = new Vector2(0, -fallSpeed);
     }
 
     public void OnDeSpawn()
