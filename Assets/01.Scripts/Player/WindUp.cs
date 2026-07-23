@@ -159,9 +159,15 @@ public class WindUp : MonoBehaviour
             while (windUpCoolTimeTimer > 0f)
             {
                 windUpCoolTimeTimer -= Time.deltaTime;
+
+                UIManager.instance?.UpdateWindUpCool(windUpCoolTimeTimer, setting.windUpCoolTime);
+
                 yield return null;
             }
             windUpCoolTimeTimer = 0f;
+
+            UIManager.instance?.UpdateWindUpCool(0f, setting.windUpCoolTime);
+
             canWindUp = true;
 
             Debug.Log("시간역행 쿨타임 끝");

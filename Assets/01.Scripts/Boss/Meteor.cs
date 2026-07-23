@@ -39,6 +39,16 @@ public class Meteor : MonoBehaviour, IPoolable
         Debug.Log("메테오 회수");
     }
 
+    void Update()
+    {
+        rb.linearVelocity = new Vector2(0, -fallSpeed);
+
+        if(transform.position.y < -20f)
+        {
+            reAction?.Invoke(this);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         int hitLayer = collision.collider.gameObject.layer;

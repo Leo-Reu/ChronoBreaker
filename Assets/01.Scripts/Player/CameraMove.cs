@@ -35,10 +35,12 @@ public class CameraMove : MonoBehaviour
     public void ZoomIn(bool isZoom)
     {
         float size = isZoom ? zoomSize : defaultSize;
-        float timeScale = isZoom ? 0.3f : 1f;
-
-        Time.timeScale = timeScale;
-        Time.fixedDeltaTime = 0.02f * timeScale;
+        if(Time.timeScale > 0f)
+        {
+            float timeScale = isZoom ? 0.3f : 1f;
+            Time.timeScale = timeScale;
+            Time.fixedDeltaTime = 0.02f * timeScale;
+        }
 
         cam.DOOrthoSize(size, 0.2f).SetUpdate(true);
     }

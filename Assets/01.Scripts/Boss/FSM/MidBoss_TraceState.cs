@@ -13,7 +13,7 @@ public class MidBoss_TraceState : IState<MidBoss>
     }
     public void Update(MidBoss obj)
     {
-        if(playerTransform == null)
+        if (playerTransform == null)
         {
             return;
         }

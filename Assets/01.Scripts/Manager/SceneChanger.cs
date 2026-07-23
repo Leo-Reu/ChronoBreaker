@@ -29,4 +29,38 @@ public class SceneChanger : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void ContinueScene()
+    {
+        if ((SaveLoadManager.instance.gameSaveData != null))
+        {
+            GameSaveData data = SaveLoadManager.instance.gameSaveData;
+
+            if (data.isFinalBossClear)
+            {
+                ChangeScene("ClearScene");
+            }
+            else if (data.isMidBossClear)
+            {
+                ChangeScene("FinalBossScene");
+            }
+            else
+            {
+                ChangeScene("MidBossScene");
+            }
+        }
+        else
+        {
+            ChangeScene("TutorialScene");
+        }
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
 }
