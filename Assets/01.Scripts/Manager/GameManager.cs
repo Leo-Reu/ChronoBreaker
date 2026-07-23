@@ -35,8 +35,16 @@ public class GameManager : MonoBehaviour
 
     public void BossDead(BossMonster boss)
     {
-        if(boss.BossType == BossType.MidBoss || boss.BossType == BossType.FinalBoss)
+        if(boss.BossType == BossType.MidBoss)
         {
+            SaveLoadManager.instance.gameSaveData.isMidBossClear = true;
+            SaveLoadManager.instance.Save();
+            OpenPortal();
+        }
+        else if (boss.BossType == BossType.FinalBoss)
+        {
+            SaveLoadManager.instance.gameSaveData.isFinalBossClear = true;
+            SaveLoadManager.instance.Save();
             OpenPortal();
         }
     }
