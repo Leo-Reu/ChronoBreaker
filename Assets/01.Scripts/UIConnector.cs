@@ -73,7 +73,11 @@ public class UIConnector : MonoBehaviour
         if (startButton != null)
         {
             startButton.onClick.RemoveAllListeners();
-            startButton.onClick.AddListener(() => SceneChanger.instance?.ChangeScene("TutorialScene"));
+            startButton.onClick.AddListener(() => {
+                SaveLoadManager.instance?.ResetProgress();
+                GameManager.instance?.ResetData();
+                SceneChanger.instance?.ChangeScene("TutorialScene");
+            });
         }
         if (continueButton != null)
         {

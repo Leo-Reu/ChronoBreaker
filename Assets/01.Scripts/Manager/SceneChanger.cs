@@ -5,6 +5,8 @@ public class SceneChanger : MonoBehaviour
 {
     public static SceneChanger instance;
 
+    public string CurrentSceneName {  get; private set; }
+
     private void Awake()
     {
         if(instance == null)
@@ -18,8 +20,14 @@ public class SceneChanger : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        CurrentSceneName = SceneManager.GetActiveScene().name;
+    }
+
     public void ChangeScene(string sceneName)
     {
+        CurrentSceneName = sceneName;
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
     }

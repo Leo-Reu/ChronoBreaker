@@ -60,6 +60,7 @@ public class SaveLoadManager : MonoBehaviour
         }
         gameSaveData.isMidBossClear = false;
         gameSaveData.isFinalBossClear = false;
+        gameSaveData.deathCount = 0;
 
         Save();
 

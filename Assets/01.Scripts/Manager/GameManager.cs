@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour
 
     private Portal currentPortal;
 
+    public float CurrentPlayTime {  get; private set; }
+    public int CurrentDeathCount {  get; private set; }
+
     private void Awake()
     {
         if(instance == null)
@@ -17,6 +20,28 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (SceneChanger.instance?.CurrentSceneName == "MidBossScene" || SceneChanger.instance?.CurrentSceneName == "FinalBossScene")
+        {
+            if (Time.timeScale > 0f)
+            {
+                CurrentPlayTime += Time.deltaTime;
+            }
+        }
+    }
+
+    public void AddDeathCount()
+    {
+        CurrentDeathCount++;
+    }
+
+    public void ResetData()
+    {
+        CurrentPlayTime = 0f;
+        CurrentDeathCount = 0;
     }
 
     public void SetPortal(Portal portal)
