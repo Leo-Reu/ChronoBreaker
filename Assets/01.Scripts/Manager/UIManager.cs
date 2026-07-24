@@ -8,8 +8,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject option;
     private GameObject optionPanel;
-    [SerializeField] private Canvas UICanvas;
-    [SerializeField] private GameObject dim;
+    [SerializeField] private Canvas uiCanvas;
 
     [SerializeField] private Slider playerHpBar;
     [SerializeField] private Slider bossHpBar;
@@ -18,6 +17,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject dim;
 
     private bool isPaused = false;
 
@@ -49,11 +49,37 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SetUI(
+        Canvas _uiCanvas,
+        Slider _playerHpBar,
+        Slider _bossHpBar,
+        Image _windUpCoolImg,
+        Image _dashCoolImg,
+        GameObject _pausePanel,
+        GameObject _gameOverPanel,
+        GameObject _dim
+    )
+    {
+        uiCanvas = _uiCanvas;
+        playerHpBar = _playerHpBar;
+        bossHpBar = _bossHpBar;
+        windUpCoolImg = _windUpCoolImg;
+        dashCoolImg = _dashCoolImg;
+        pausePanel = _pausePanel;
+        gameOverPanel = _gameOverPanel;
+        dim = _dim;
+
+        if (bossHpBar != null)
+        {
+            bossHpBar.gameObject.SetActive(false);
+        }
+    }
+
     public void OpenOptionPanel()
     {
         if(optionPanel == null)
         {
-            optionPanel = Instantiate(option, UICanvas.transform);
+            optionPanel = Instantiate(option, uiCanvas.transform);
         }
         else{
             optionPanel.SetActive(true);

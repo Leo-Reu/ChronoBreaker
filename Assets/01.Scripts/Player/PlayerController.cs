@@ -74,6 +74,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(Time.timeScale == 0f)
+        {
+            return;
+        }
+
         if (isDead)
         {
             return;
@@ -113,6 +118,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         if (isDead)
         {
             return;
@@ -253,6 +263,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DashCoolTime()
     {
+        UIManager.instance?.UpdateDashCool(setting.dashCoolTime, setting.dashCoolTime);
         while (true)
         {
             yield return new WaitWhile(() => canDash);
@@ -263,13 +274,14 @@ public class PlayerController : MonoBehaviour
             {
                 dashCoolTimeTimer -= Time.deltaTime;
 
-                UIManager.instance?.UpdateDashCool(dashCoolTimeTimer, setting.dashCoolTime);
+                float currentCool = setting.dashCoolTime - dashCoolTimeTimer;
+                UIManager.instance?.UpdateDashCool(currentCool, setting.dashCoolTime);
 
                 yield return null;
             }
             dashCoolTimeTimer = 0f;
 
-            UIManager.instance?.UpdateDashCool(0f, setting.dashCoolTime);
+            UIManager.instance?.UpdateDashCool(setting.dashCoolTime, setting.dashCoolTime);
 
             canDash = true;
 
