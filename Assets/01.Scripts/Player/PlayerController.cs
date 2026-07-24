@@ -403,6 +403,8 @@ public class PlayerController : MonoBehaviour
         }
         isDead = true;
 
+        GameManager.instance?.AddDeathCount();
+
         Time.timeScale = 0f;
 
         StartCoroutine(PlayerDie());
