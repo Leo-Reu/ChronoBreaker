@@ -50,4 +50,19 @@ public class SaveLoadManager : MonoBehaviour
         gameSaveData = JsonUtility.FromJson<GameSaveData>(json);
         Debug.Log("데이터 불러오기 성공");
     }
+
+    public void ResetProgress()
+    {
+        if(gameSaveData == null)
+        {
+            gameSaveData = new GameSaveData();
+
+        }
+        gameSaveData.isMidBossClear = false;
+        gameSaveData.isFinalBossClear = false;
+
+        Save();
+
+        Debug.Log("진행도 초기화");
+    }
 }

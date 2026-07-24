@@ -28,22 +28,38 @@ public class SoundManager : MonoBehaviour
 
     public void SetBGMVolume(float volume)
     {
+        if (BGMSource == null)
+        {
+            return;
+        }
         BGMSource.volume = volume;
         PlayerPrefs.SetFloat("BGMVolume", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
+        if (SFXSource == null)
+        {
+            return;
+        }
         SFXSource.volume = volume;
         PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 
     public float GetBGMVolume()
     {
+        if(BGMSource == null)
+        {
+            return 0;
+        }
         return BGMSource.volume;
     }
     public float GetSFXVolume()
     {
+        if(SFXSource == null)
+        {
+            return 0;
+        }
         return SFXSource.volume;
     }
 }
