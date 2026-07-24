@@ -891,6 +891,8 @@ GameObject:
   - component: {fileID: 587181878}
   - component: {fileID: 587181877}
   - component: {fileID: 587181876}
+  - component: {fileID: 587181880}
+  - component: {fileID: 587181881}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -986,6 +988,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &587181880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587181875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e01ea96b530274aa24d98392c169b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainSceneUIConnector
+  startButton: {fileID: 1887438840}
+  continueButton: {fileID: 412799705}
+  optionButton: {fileID: 989172992}
+  quitButton: {fileID: 733258224}
+--- !u!114 &587181881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587181875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa1ffffb5b907b48bcdfd75cee67f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIConnector
+  uiCanvas: {fileID: 0}
+  playerHpBar: {fileID: 0}
+  bossHpBar: {fileID: 0}
+  windUpCoolImg: {fileID: 0}
+  dashCoolImg: {fileID: 0}
+  pausePanel: {fileID: 0}
+  gameOverPanel: {fileID: 0}
+  dim: {fileID: 0}
+  pauseResumeButton: {fileID: 0}
+  pauseOptionButton: {fileID: 0}
+  pauseMainMenuButton: {fileID: 0}
+  restartButton: {fileID: 0}
+  GameOverMainMenuButton: {fileID: 0}
+  startButton: {fileID: 1887438840}
+  continueButton: {fileID: 412799705}
+  optionButton: {fileID: 989172992}
+  quitButton: {fileID: 733258224}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,6 +2044,10 @@ PrefabInstance:
       objectReference: {fileID: 1084454998}
     - target: {fileID: 7259250567618640720, guid: 4bf8bad44dfc50b4f8129421669c3204, type: 3}
       propertyPath: UICanvas
+      value: 
+      objectReference: {fileID: 587181878}
+    - target: {fileID: 7259250567618640720, guid: 4bf8bad44dfc50b4f8129421669c3204, type: 3}
+      propertyPath: uiCanvas
       value: 
       objectReference: {fileID: 587181878}
     - target: {fileID: 9071105513071546417, guid: 4bf8bad44dfc50b4f8129421669c3204, type: 3}

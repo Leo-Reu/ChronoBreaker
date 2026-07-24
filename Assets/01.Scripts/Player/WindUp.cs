@@ -64,6 +64,11 @@ public class WindUp : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         if (isWindUp)   // isWindUp이 true이면 Play
         {
             PlayWindUp();
@@ -150,6 +155,7 @@ public class WindUp : MonoBehaviour
 
     IEnumerator WindUpCoolTime()
     {
+        UIManager.instance?.UpdateWindUpCool(setting.windUpCoolTime, setting.windUpCoolTime);
         while (true)
         {
             yield return new WaitWhile(() => canWindUp);
@@ -160,13 +166,14 @@ public class WindUp : MonoBehaviour
             {
                 windUpCoolTimeTimer -= Time.deltaTime;
 
-                UIManager.instance?.UpdateWindUpCool(windUpCoolTimeTimer, setting.windUpCoolTime);
+                float currentCool = setting.windUpCoolTime - windUpCoolTimeTimer;
+                UIManager.instance?.UpdateWindUpCool(currentCool, setting.windUpCoolTime);
 
                 yield return null;
             }
             windUpCoolTimeTimer = 0f;
 
-            UIManager.instance?.UpdateWindUpCool(0f, setting.windUpCoolTime);
+            UIManager.instance?.UpdateWindUpCool(setting.windUpCoolTime, setting.windUpCoolTime);
 
             canWindUp = true;
 
