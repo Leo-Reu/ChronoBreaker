@@ -38,7 +38,7 @@ public class SceneChanger : MonoBehaviour
 
             if (data.isFinalBossClear)
             {
-                ChangeScene("ClearScene");
+                ChangeScene("TutorialScene");   // 클리어했다면 이어할땐 처음부터
             }
             else if (data.isMidBossClear)
             {

@@ -77,8 +77,18 @@ public class UIConnector : MonoBehaviour
         }
         if (continueButton != null)
         {
+            bool hasSaveData = SaveLoadManager.instance?.gameSaveData != null;
+            bool isCleared = hasSaveData && SaveLoadManager.instance.gameSaveData.isFinalBossClear;
+
+            bool canContinue = hasSaveData && !isCleared;
+
+            continueButton.interactable = canContinue;
+
             continueButton.onClick.RemoveAllListeners();
-            continueButton.onClick.AddListener(() => SceneChanger.instance?.ContinueScene());
+            if (canContinue)
+            {
+                continueButton.onClick.AddListener(() => SceneChanger.instance?.ContinueScene());
+            }
         }
         if (optionButton != null)
         {
