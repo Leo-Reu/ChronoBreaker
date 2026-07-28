@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 6f8b621c1a016a343a8f3a4af328ca69
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2225399226731186037
+    second: sRobotDeath_strip8_0
+  - first:
+      213: 7452115220462421596
+    second: sRobotDeath_strip8_1
+  - first:
+      213: -4594014816636058121
+    second: sRobotDeath_strip8_2
+  - first:
+      213: -7017671128525834163
+    second: sRobotDeath_strip8_3
+  - first:
+      213: -6521322323226674612
+    second: sRobotDeath_strip8_4
+  - first:
+      213: -5717945882346065791
+    second: sRobotDeath_strip8_5
+  - first:
+      213: -5192345192567188513
+    second: sRobotDeath_strip8_6
+  - first:
+      213: -2960228289323386733
+    second: sRobotDeath_strip8_7
+  - first:
+      213: -3276049377259954940
+    second: sRobotDeath_strip8_8
+  - first:
+      213: -9214601061688553701
+    second: sRobotDeath_strip8_9
+  - first:
+      213: 4804867472681140636
+    second: sRobotDeath_strip8_10
+  - first:
+      213: 146078270570376677
+    second: sRobotDeath_strip8_11
+  - first:
+      213: -2559162594718263504
+    second: sRobotDeath_strip8_12
+  - first:
+      213: 8681190652480114920
+    second: sRobotDeath_strip8_13
+  - first:
+      213: -2504902349187773002
+    second: sRobotDeath_strip8_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_0
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 32
+        width: 286
+        height: 349
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b883247a13bcd11e0800000000000000
+      internalID: -2225399226731186037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_1
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 32
+        width: 351
+        height: 356
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56c1fc5f4b3b6760800000000000000
+      internalID: 7452115220462421596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_2
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 32
+        width: 291
+        height: 357
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f5c6894dd7ce30c0800000000000000
+      internalID: -4594014816636058121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_3
+      rect:
+        serializedVersion: 2
+        x: 1459
+        y: 32
+        width: 285
+        height: 357
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d48f3b13a493c9e90800000000000000
+      internalID: -7017671128525834163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_4
+      rect:
+        serializedVersion: 2
+        x: 1740
+        y: 242
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4abf3206eb9f75a0800000000000000
+      internalID: -6521322323226674612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_5
+      rect:
+        serializedVersion: 2
+        x: 1909
+        y: 32
+        width: 295
+        height: 355
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 180fad5d386c5a0b0800000000000000
+      internalID: -5717945882346065791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_6
+      rect:
+        serializedVersion: 2
+        x: 2369
+        y: 231
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd353ddbe8511f7b0800000000000000
+      internalID: -5192345192567188513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_7
+      rect:
+        serializedVersion: 2
+        x: 2373
+        y: 32
+        width: 300
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39831d80e082be6d0800000000000000
+      internalID: -2960228289323386733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_8
+      rect:
+        serializedVersion: 2
+        x: 2830
+        y: 26
+        width: 311
+        height: 376
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40dd7c9d2722982d0800000000000000
+      internalID: -3276049377259954940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_9
+      rect:
+        serializedVersion: 2
+        x: 3270
+        y: 28
+        width: 339
+        height: 361
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1fcd1bc7292f1080800000000000000
+      internalID: -9214601061688553701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_10
+      rect:
+        serializedVersion: 2
+        x: 2196
+        y: 196
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c910df552815ea240800000000000000
+      internalID: 4804867472681140636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_11
+      rect:
+        serializedVersion: 2
+        x: 2809
+        y: 208
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ed20c2c969f60200800000000000000
+      internalID: 146078270570376677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_12
+      rect:
+        serializedVersion: 2
+        x: 3260
+        y: 184
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 037d95bdd270c7cd0800000000000000
+      internalID: -2559162594718263504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_13
+      rect:
+        serializedVersion: 2
+        x: 2663
+        y: 141
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e0d48c47e8c97870800000000000000
+      internalID: 8681190652480114920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sRobotDeath_strip8_14
+      rect:
+        serializedVersion: 2
+        x: 3125
+        y: 111
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd0f9fb59ccc3dd0800000000000000
+      internalID: -2504902349187773002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sRobotDeath_strip8_0: -2225399226731186037
+      sRobotDeath_strip8_1: 7452115220462421596
+      sRobotDeath_strip8_10: 4804867472681140636
+      sRobotDeath_strip8_11: 146078270570376677
+      sRobotDeath_strip8_12: -2559162594718263504
+      sRobotDeath_strip8_13: 8681190652480114920
+      sRobotDeath_strip8_14: -2504902349187773002
+      sRobotDeath_strip8_2: -4594014816636058121
+      sRobotDeath_strip8_3: -7017671128525834163
+      sRobotDeath_strip8_4: -6521322323226674612
+      sRobotDeath_strip8_5: -5717945882346065791
+      sRobotDeath_strip8_6: -5192345192567188513
+      sRobotDeath_strip8_7: -2960228289323386733
+      sRobotDeath_strip8_8: -3276049377259954940
+      sRobotDeath_strip8_9: -9214601061688553701
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

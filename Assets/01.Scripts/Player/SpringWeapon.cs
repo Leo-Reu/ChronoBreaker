@@ -31,14 +31,24 @@ public class SpringWeapon : Weapon
 
     private CameraMove cam;
 
+    private void Awake()
+    {
+        weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+        windUp = GetComponentInParent<WindUp>();
+        lr = GetComponent<LineRenderer>();
+        if (player == null)
+        {
+            player = GetComponentInParent<PlayerController>();
+        }
+    }
+
     protected override void Start()
     {
         base.Start();
-        weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
-
-        windUp = GetComponentInParent<WindUp>();
-        lr = GetComponent<LineRenderer>();
-        cam = Camera.main.GetComponent<CameraMove>();
+        if (Camera.main != null)
+        {
+            cam = Camera.main.GetComponent<CameraMove>();
+        }
     }
 
 
@@ -49,14 +59,14 @@ public class SpringWeapon : Weapon
             return;
         }
 
-        if (windUp.isWindUp)
+        if (windUp != null && windUp.isWindUp)
         {
             isAnchored = false;
-            lr.enabled = false;
+            if (lr != null) lr.enabled = false;
             return;
         }
 
-        if(lr != null)
+        if (lr != null)
         {
             if(isAnchored || isTargetHit)
             {
@@ -91,7 +101,7 @@ public class SpringWeapon : Weapon
             player.Dash(anchorPoint, isWeaknessAnchored);
         }
 
-        if (lr.enabled)
+        if (lr != null && lr.enabled)
         {
             lr.positionCount = 2;
             lr.SetPosition(0, transform.position);
