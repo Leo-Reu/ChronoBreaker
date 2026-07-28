@@ -82,8 +82,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -57852713
+  m_SortingLayer: 5
   m_SortingOrder: 12
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f77152913b6e0249af7937494f82759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WindUp
+  ghostPrefab: {fileID: 903682732577741280, guid: 382979cc27ba29d46b9006380d684061, type: 3}
 --- !u!1 &5549931519526587831
 GameObject:
   m_ObjectHideFlags: 0
