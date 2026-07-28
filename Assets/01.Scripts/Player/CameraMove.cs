@@ -8,12 +8,18 @@ public class CameraMove : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float smoothTime = 0.2f;
 
+    [SerializeField] private bool useBounds = true;
+    [SerializeField] private float minX = -6f;
+    [SerializeField] private float maxX = 6f;
+    [SerializeField] private float minY = -1.5f;
+    [SerializeField] private float maxY = 3f;
+
     private Vector3 velocity = Vector3.zero;
     private Vector3 targetPos;
 
 
     private float defaultSize;
-    [SerializeField] private float zoomSize = 7f;
+    [SerializeField] private float zoomSize = 4f;
 
     private void Awake()
     {
@@ -28,6 +34,12 @@ public class CameraMove : MonoBehaviour
             return;
         }
         targetPos = new Vector3(target.position.x, target.position.y, transform.position.z);
+        
+        if (useBounds)
+        {
+            targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
+            targetPos.y = Mathf.Clamp(targetPos.y, minY, maxY);
+        }
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
     }
