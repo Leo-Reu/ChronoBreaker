@@ -12,7 +12,6 @@ public class ClearSceneUI : MonoBehaviour
 
     private void Start()
     {
-        // 1. 이번 판 결과 가져오기
         float currentRunTime = GameManager.instance != null ? GameManager.instance.CurrentPlayTime : 0f;
         int currentRunDeaths = GameManager.instance != null ? GameManager.instance.CurrentDeathCount : 0;
 
