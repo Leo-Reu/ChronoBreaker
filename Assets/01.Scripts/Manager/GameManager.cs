@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     public void SetPortal(Portal portal)
     {
         currentPortal = portal;
+        currentPortal.gameObject.SetActive(false);
     }
 
     public void OpenPortal()
