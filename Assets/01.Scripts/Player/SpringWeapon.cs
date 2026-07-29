@@ -31,6 +31,10 @@ public class SpringWeapon : Weapon
 
     private CameraMove cam;
 
+    private Animator playerAnim;
+
+    [SerializeField] private GameObject anchorVisual;
+
     private void Awake()
     {
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
@@ -45,10 +49,18 @@ public class SpringWeapon : Weapon
     protected override void Start()
     {
         base.Start();
+
+        if (anchorVisual != null)
+        {
+            anchorVisual.transform.SetParent(null);
+            anchorVisual.SetActive(false);
+        }
+
         if (Camera.main != null)
         {
             cam = Camera.main.GetComponent<CameraMove>();
         }
+        playerAnim = player.GetComponent<Animator>();
     }
 
 
@@ -63,8 +75,11 @@ public class SpringWeapon : Weapon
         {
             isAnchored = false;
             if (lr != null) lr.enabled = false;
+            UpdateAnchorVisual();
             return;
         }
+
+        UpdateAnchorVisual();
 
         if (lr != null)
         {
@@ -130,21 +145,42 @@ public class SpringWeapon : Weapon
         }
     }
 
+
+
     protected override void Fire()
     {
         isAnchored = true;
         anchorPoint = hitPoint;
         isWeaknessAnchored = isWeaknessHit;
 
+        if (anchorVisual != null)
+        {
+            anchorVisual.transform.position = anchorPoint;
+            float angle = Mathf.Atan2(mouseDir.y, mouseDir.x) * Mathf.Rad2Deg;
+            anchorVisual.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        if (playerAnim != null)
+        {
+            playerAnim.SetTrigger("TriggerAttack");
+        }
         Debug.Log($"태엽 {SpringDuration}초간 고정");
 
         springTimerCoroutine = StartCoroutine(SpringTimer());
     }
 
+    private void UpdateAnchorVisual()
+    {
+        if (anchorVisual != null)
+        {
+            anchorVisual.SetActive(isAnchored);
+        }
+    }
+
     void AimCheck()
     {
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-        mousePos = camera.ScreenToWorldPoint(mouseScreenPos);
+        mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
         mouseDir = (mousePos - (Vector2)transform.position).normalized;
 
@@ -170,6 +206,15 @@ public class SpringWeapon : Weapon
         isAnchored = false;
         Debug.Log($"{SpringDuration}초가 지나 태엽 자동 회수");
     }
+
+    private void OnDestroy()
+    {
+        if (anchorVisual != null)
+        {
+            Destroy(anchorVisual);
+        }
+    }
+
 
     //private void OnDrawGizmos()
     //{

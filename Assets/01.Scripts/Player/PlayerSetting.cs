@@ -19,6 +19,6 @@ public class PlayerSetting : ScriptableObject
 
     public float maxHp = 10;
     public int playerDamage = 10;
-    public float hitCoolTime = 1.0f;
+    public float hitCoolTime = 1.5f;
 
 }

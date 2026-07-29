@@ -1,0 +1,949 @@
+fileFormatVersion: 2
+guid: 2dd6bc48c932b1e4bb36429df55d74d9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1027746702485866418
+    second: steampunk_tileset_0
+  - first:
+      213: 7594392439153535333
+    second: steampunk_tileset_1
+  - first:
+      213: -2583645441729000969
+    second: steampunk_tileset_2
+  - first:
+      213: -5244746306065428966
+    second: steampunk_tileset_3
+  - first:
+      213: -6889222463023678476
+    second: steampunk_tileset_4
+  - first:
+      213: 1391537882819843736
+    second: steampunk_tileset_5
+  - first:
+      213: 9148920580030307066
+    second: steampunk_tileset_6
+  - first:
+      213: 9843206469553265
+    second: steampunk_tileset_7
+  - first:
+      213: -8862718379820466462
+    second: steampunk_tileset_8
+  - first:
+      213: -7320715631800683341
+    second: steampunk_tileset_9
+  - first:
+      213: -1432465793269067367
+    second: steampunk_tileset_10
+  - first:
+      213: -4398082102844905557
+    second: steampunk_tileset_11
+  - first:
+      213: -3879948899318870151
+    second: steampunk_tileset_12
+  - first:
+      213: -2000699037843684434
+    second: steampunk_tileset_13
+  - first:
+      213: 8211666968118284871
+    second: steampunk_tileset_14
+  - first:
+      213: -5376589756203559797
+    second: steampunk_tileset_15
+  - first:
+      213: 8110471708241227511
+    second: steampunk_tileset_16
+  - first:
+      213: -869594669458948924
+    second: steampunk_tileset_17
+  - first:
+      213: -4967937486751010133
+    second: steampunk_tileset_18
+  - first:
+      213: -2341264694522722669
+    second: steampunk_tileset_19
+  - first:
+      213: 7293337051333846639
+    second: steampunk_tileset_20
+  - first:
+      213: 3686746341703707855
+    second: steampunk_tileset_21
+  - first:
+      213: 1327860054675813349
+    second: steampunk_tileset_22
+  - first:
+      213: 8984827103872553811
+    second: steampunk_tileset_23
+  - first:
+      213: 5070310381119404139
+    second: steampunk_tileset_24
+  - first:
+      213: 337309909852139861
+    second: steampunk_tileset_25
+  - first:
+      213: -813008185619994641
+    second: steampunk_tileset_26
+  - first:
+      213: 1188292424479581459
+    second: steampunk_tileset_27
+  - first:
+      213: 8732423591212470429
+    second: steampunk_tileset_28
+  - first:
+      213: -897177628264551238
+    second: steampunk_tileset_29
+  - first:
+      213: 1051812228859366245
+    second: steampunk_tileset_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: steampunk_tileset_0
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 703
+        width: 261
+        height: 298
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b7cfb04e2a434e00800000000000000
+      internalID: 1027746702485866418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_1
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 729
+        width: 236
+        height: 264
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 569a8a4cfa3b46960800000000000000
+      internalID: 7594392439153535333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_2
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 678
+        width: 300
+        height: 323
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f98f24d82c052cd0800000000000000
+      internalID: -2583645441729000969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_3
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 616
+        width: 179
+        height: 258
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1e8de1c50be637b0800000000000000
+      internalID: -5244746306065428966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_4
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 770
+        width: 172
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fbf4d8aba09460a0800000000000000
+      internalID: -6889222463023678476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_5
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 590
+        width: 354
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 896d9fce45cbf4310800000000000000
+      internalID: 1391537882819843736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_6
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 615
+        width: 258
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afa97f26bce77fe70800000000000000
+      internalID: 9148920580030307066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_7
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 556
+        width: 65
+        height: 109
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17c81191858f22000800000000000000
+      internalID: 9843206469553265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_8
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 503
+        width: 109
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eeb97a179c410580800000000000000
+      internalID: -8862718379820466462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_9
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 427
+        width: 349
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b4fed07be7976a90800000000000000
+      internalID: -7320715631800683341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_10
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 430
+        width: 204
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9919c4753fbde1ce0800000000000000
+      internalID: -1432465793269067367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_11
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 487
+        width: 131
+        height: 123
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba72de621afd6f2c0800000000000000
+      internalID: -4398082102844905557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_12
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 479
+        width: 130
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97f4e6d6807a72ac0800000000000000
+      internalID: -3879948899318870151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_13
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 302
+        width: 92
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea38cd243d61c34e0800000000000000
+      internalID: -2000699037843684434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_14
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 421
+        width: 60
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 742df78a993b5f170800000000000000
+      internalID: 8211666968118284871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_15
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 310
+        width: 84
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b849b766a148265b0800000000000000
+      internalID: -5376589756203559797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_16
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 310
+        width: 91
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fee29a2c0f2e8070800000000000000
+      internalID: 8110471708241227511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_17
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 287
+        width: 292
+        height: 123
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cc735461449ee3f0800000000000000
+      internalID: -869594669458948924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_18
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 247
+        width: 74
+        height: 150
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba2fbd35d275e0bb0800000000000000
+      internalID: -4967937486751010133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_19
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 271
+        width: 203
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3964fc53a28228fd0800000000000000
+      internalID: -2341264694522722669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_20
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 22
+        width: 348
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f66e2fb0863273560800000000000000
+      internalID: 7293337051333846639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_21
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 90
+        width: 156
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcc683ab344f92330800000000000000
+      internalID: 3686746341703707855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_22
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 156
+        width: 69
+        height: 117
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e3f1663fa18d6210800000000000000
+      internalID: 1327860054675813349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_23
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 30
+        width: 140
+        height: 188
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35310a6b5a480bc70800000000000000
+      internalID: 8984827103872553811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_24
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 216
+        width: 24
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b68f89f8d6c5d5640800000000000000
+      internalID: 5070310381119404139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_25
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 184
+        width: 56
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 551b4fb639d5ea400800000000000000
+      internalID: 337309909852139861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_26
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 197
+        width: 33
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe7a2a8dc5d97b4f0800000000000000
+      internalID: -813008185619994641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_27
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 135
+        width: 75
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 315a46a0aa9ad7010800000000000000
+      internalID: 1188292424479581459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_28
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 23
+        width: 147
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d90d5766dfccf2970800000000000000
+      internalID: 8732423591212470429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_29
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 31
+        width: 71
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abc2dd653b59c83f0800000000000000
+      internalID: -897177628264551238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: steampunk_tileset_30
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 54
+        width: 71
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b039f36a9c89e00800000000000000
+      internalID: 1051812228859366245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: a706bee982dc8f342a2b53cbd057584c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      steampunk_tileset_0: 1027746702485866418
+      steampunk_tileset_1: 7594392439153535333
+      steampunk_tileset_10: -1432465793269067367
+      steampunk_tileset_11: -4398082102844905557
+      steampunk_tileset_12: -3879948899318870151
+      steampunk_tileset_13: -2000699037843684434
+      steampunk_tileset_14: 8211666968118284871
+      steampunk_tileset_15: -5376589756203559797
+      steampunk_tileset_16: 8110471708241227511
+      steampunk_tileset_17: -869594669458948924
+      steampunk_tileset_18: -4967937486751010133
+      steampunk_tileset_19: -2341264694522722669
+      steampunk_tileset_2: -2583645441729000969
+      steampunk_tileset_20: 7293337051333846639
+      steampunk_tileset_21: 3686746341703707855
+      steampunk_tileset_22: 1327860054675813349
+      steampunk_tileset_23: 8984827103872553811
+      steampunk_tileset_24: 5070310381119404139
+      steampunk_tileset_25: 337309909852139861
+      steampunk_tileset_26: -813008185619994641
+      steampunk_tileset_27: 1188292424479581459
+      steampunk_tileset_28: 8732423591212470429
+      steampunk_tileset_29: -897177628264551238
+      steampunk_tileset_3: -5244746306065428966
+      steampunk_tileset_30: 1051812228859366245
+      steampunk_tileset_4: -6889222463023678476
+      steampunk_tileset_5: 1391537882819843736
+      steampunk_tileset_6: 9148920580030307066
+      steampunk_tileset_7: 9843206469553265
+      steampunk_tileset_8: -8862718379820466462
+      steampunk_tileset_9: -7320715631800683341
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

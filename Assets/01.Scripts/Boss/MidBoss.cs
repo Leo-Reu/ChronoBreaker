@@ -21,6 +21,7 @@ public class MidBoss : BossMonster
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private CameraMove cam;
+    public Animator Anim { get; private set; }
 
     private Vector3 localScale;
 
@@ -29,6 +30,7 @@ public class MidBoss : BossMonster
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        Anim = GetComponent<Animator>();
     }
 
     protected override void Start()
@@ -72,23 +74,22 @@ public class MidBoss : BossMonster
         canDash = false;
     }
 
-    bool CheckFlip()
+    public void LookDirection(float dirX)
     {
-        return transform.position.x > playerTransform.position.x;
+        if(dirX < 0f)
+        {
+            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
+        }
+        else if (dirX > 0f)
+        {
+            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+        }
     }
 
     public void Move(float dirX)
     {
         rb.linearVelocity = new Vector2(dirX * CurrentSpeed, rb.linearVelocity.y);
-
-        if (CheckFlip())
-        {
-            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
-        }
+        LookDirection(dirX);
     }
 
     public void Stop()
@@ -99,15 +100,7 @@ public class MidBoss : BossMonster
     public void Dash(float dashDirX)
     {
         rb.linearVelocity = new Vector2(dashDirX * CurrentDashSpeed, rb.linearVelocity.y);
-        
-        if (CheckFlip())
-        {
-            transform.localScale = new Vector3(localScale.x, localScale.y, localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
-        }
+        LookDirection(dashDirX);
     }
 
     protected override void EnterPhaseTwo()

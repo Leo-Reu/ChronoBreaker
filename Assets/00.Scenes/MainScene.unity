@@ -824,7 +824,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2318850175068859235, guid: 60b6613e3bd5de942aed44678e720058, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7408309, g: 0.6273585, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1091,10 +1091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e01ea96b530274aa24d98392c169b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainSceneUIConnector
-  startButton: {fileID: 1887438840}
-  continueButton: {fileID: 412799705}
-  optionButton: {fileID: 989172992}
-  quitButton: {fileID: 733258224}
 --- !u!114 &587181881
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class MidBoss_IdleState : IState<MidBoss>
     public void Enter(MidBoss obj)
     {
         Debug.Log("중간보스 Idle상태 돌입");
+        obj.Anim.Play("MidBoss_Idle");
         timer = 0f;
         obj.Stop();
     }

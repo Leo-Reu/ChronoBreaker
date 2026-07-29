@@ -8,13 +8,15 @@ public struct WindUpData
     public Quaternion rotation;
     public Quaternion weaponRotation;
     public Vector3 scale;
+    public Sprite sprite;
 
-    public WindUpData(Vector2 _position, Quaternion _rotation, Quaternion _weaponRotation, Vector3 _scale)
+    public WindUpData(Vector2 _position, Quaternion _rotation, Quaternion _weaponRotation, Vector3 _scale, Sprite _sprite)
     {
         position = _position;
         rotation = _rotation;
         weaponRotation = _weaponRotation;
         scale = _scale;
+        sprite = _sprite;
     }
 }
 
@@ -107,7 +109,8 @@ public class WindUp : MonoBehaviour
             transform.position,
             transform.rotation,
             weaponTransform != null ? weaponTransform.rotation : Quaternion.identity,
-            transform.localScale
+            transform.localScale,
+            sr != null ? sr.sprite : null
         );
 
         history[nextIndex] = data;
@@ -147,6 +150,11 @@ public class WindUp : MonoBehaviour
     {
         isWindUp = true;
 
+        if(anim != null)
+        {
+            anim.SetBool("isWindUp", true);
+        }
+
         rb.gravityScale = 0f;
         col.isTrigger = true;
         rb.linearVelocity = Vector2.zero;
@@ -163,6 +171,11 @@ public class WindUp : MonoBehaviour
     private void StopWindUp()
     {
         isWindUp = false;
+
+        if (anim != null)
+        {
+            anim.SetBool("isWindUp", false);
+        }
 
         // 원상복구
         rb.gravityScale = 1f;
@@ -243,10 +256,13 @@ public class WindUp : MonoBehaviour
 
             if (ghostSr != null && sr != null)
             {
-                ghostSr.sprite = sr.sprite;
+                ghostSr.sprite = ghostData.sprite;
                 ghostSr.color = new Color(0.3f, 0.7f, 1f, 0.45f);
-                ghostSr.sortingLayerID = sr.sortingLayerID;
-                ghostSr.sortingOrder = sr.sortingOrder - 1;
+                if (sr != null)
+                {
+                    ghostSr.sortingLayerID = sr.sortingLayerID;
+                    ghostSr.sortingOrder = sr.sortingOrder - 1;
+                }
             }
         }
         else
@@ -254,6 +270,14 @@ public class WindUp : MonoBehaviour
             ghost.SetActive(false);
         }
     }
+    public void HideGhost()
+    {
+        if (ghost != null)
+        {
+            ghost.SetActive(false);
+        }
+    }
+
     private void OnDestroy()
     {
         if (ghost != null)

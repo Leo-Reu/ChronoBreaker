@@ -5,6 +5,9 @@ public abstract class Weapon : MonoBehaviour
 {
     protected new Camera camera;
 
+    [SerializeField] float angleOffset = -90f;
+
+
     protected virtual void Start()
     {
         camera = Camera.main;
@@ -23,6 +26,6 @@ public abstract class Weapon : MonoBehaviour
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + angleOffset);
     }
 }

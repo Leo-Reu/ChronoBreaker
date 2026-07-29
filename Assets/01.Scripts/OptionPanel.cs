@@ -10,23 +10,38 @@ public class OptionPanel : MonoBehaviour
     
     private void Start()
     {
-        bgmSlider.onValueChanged.AddListener(BGMVolumeChanged);
-        sfxSlider.onValueChanged.AddListener(SFXVolumeChanged);
-        closeBtn.onClick.AddListener(UIManager.instance.CloseOptionPanel);
+        if(bgmSlider != null)
+        {
+            bgmSlider.onValueChanged.AddListener(BGMVolumeChanged);
+        }
+        if(sfxSlider != null)
+        {
+            sfxSlider.onValueChanged.AddListener(SFXVolumeChanged);
+        }
+        if(closeBtn != null)
+        {
+            closeBtn.onClick.AddListener(UIManager.instance.CloseOptionPanel);
+        }
     }
 
     private void OnEnable()
     {
-        bgmSlider.value = SoundManager.instance.GetBGMVolume();
-        sfxSlider.value = SoundManager.instance.GetSFXVolume();
+        if(bgmSlider != null)
+        {
+            bgmSlider.value = SoundManager.instance.GetBGMVolume();
+        }
+        if(sfxSlider != null)
+        {
+            sfxSlider.value = SoundManager.instance.GetSFXVolume();
+        }
     }
 
     public void BGMVolumeChanged(float vol)
     {
-        SoundManager.instance.SetBGMVolume(vol);
+        SoundManager.instance?.SetBGMVolume(vol);
     }
     public void SFXVolumeChanged(float vol)
     {
-        SoundManager.instance.SetSFXVolume(vol);
+        SoundManager.instance?.SetSFXVolume(vol);
     }
 }
