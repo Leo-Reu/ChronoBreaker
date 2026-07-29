@@ -44,7 +44,7 @@ public class GObjectPool<T> : MonoBehaviour where T : Component, IPoolable
     public void ReturnPool(Component comp)
     {
         T obj = comp as T;
-        if (obj != null)
+        if (obj != null && obj.gameObject.activeSelf)
         {
             obj.OnDeSpawn();
             obj.gameObject.SetActive(false);
