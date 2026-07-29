@@ -9,6 +9,7 @@ public class FinalBoss : BossMonster
  
     private SpriteRenderer sr;
     private CameraMove cam;
+    public Animator Anim { get; private set; }
 
     [SerializeField] float groundYPos = -3.5f;
 
@@ -34,6 +35,7 @@ public class FinalBoss : BossMonster
     {
         base.Awake();
         sr = GetComponent<SpriteRenderer>();
+        Anim = GetComponent<Animator>();
     }
 
     protected override void Start()
@@ -223,12 +225,22 @@ public class FinalBoss : BossMonster
     {
         isStateInvincible = false;
         weakness.SetActive(true);
+
+        if (sr != null)
+        {
+            sr.color = new Color(0.6f, 0.6f, 0.6f, 1f);
+        }
     }
 
     public void ExitGroggy()
     {
         isStateInvincible = true;
         weakness.SetActive(false);
+
+        if (sr != null)
+        {
+            sr.color = isPhaseTwo ? new Color(1f, 0.3f, 0.3f) : Color.white;
+        }
     }
 
     protected override void EnterPhaseTwo()
@@ -243,11 +255,37 @@ public class FinalBoss : BossMonster
 
     protected override void Die()
     {
-        Debug.Log("최종보스 처치");
+        StopAllCoroutines();
+        StartCoroutine(DieRoutine());
+    }
+
+    private IEnumerator DieRoutine()
+    {
+        Debug.Log("최종보스 사망");
+
+        if (stateMachine != null)
+        {
+            stateMachine = null;
+        }
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        if (weakness != null) weakness.SetActive(false);
+
+        if (Anim != null)
+        {
+            Anim.speed = 1.0f;
+            Anim.Play("FinalBoss_Death");
+        }
+
+        yield return new WaitForSeconds(1.3f);
+
         if (GameManager.instance != null)
         {
             GameManager.instance.BossDead(this);
         }
+
         Destroy(gameObject);
     }
 }

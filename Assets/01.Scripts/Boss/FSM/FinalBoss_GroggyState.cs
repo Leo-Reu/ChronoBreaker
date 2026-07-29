@@ -9,6 +9,11 @@ public class FinalBoss_GroggyState : IState<FinalBoss>
         Debug.Log("최종보스 Groggy상태 돌입");
         timer = 0f;
         obj.EnterGroggy();
+        if (obj.Anim != null)
+        {
+            obj.Anim.speed = 0.4f;
+            obj.Anim.Play("Boss_Idle");
+        }
     }
     public void Update(FinalBoss obj)
     {
@@ -23,6 +28,10 @@ public class FinalBoss_GroggyState : IState<FinalBoss>
     public void Exit(FinalBoss obj)
     {
         Debug.Log("최종보스 Groggy상태 종료");
+        if (obj.Anim != null)
+        {
+            obj.Anim.speed = 1.0f;
+        }
         obj.ExitGroggy();
     }
 }
