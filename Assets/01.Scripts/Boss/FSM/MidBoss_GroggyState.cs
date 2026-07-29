@@ -7,6 +7,7 @@ public class MidBoss_GroggyState : IState<MidBoss>
     public void Enter(MidBoss obj)
     {
         Debug.Log("중간보스 Groggy상태 돌입");
+        obj.Anim.Play("MidBoss_Groggy");
         timer = 0f;
         obj.Stop();
     }

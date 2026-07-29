@@ -11,6 +11,7 @@ public class MidBoss_DashState : IState<MidBoss>
     public void Enter(MidBoss obj)
     {
         Debug.Log("중간보스 Dash상태 돌입");
+        obj.Anim.Play("MidBoss_Dash");
         timer = 0f;
         isDash = false;
 
@@ -19,6 +20,7 @@ public class MidBoss_DashState : IState<MidBoss>
         if (obj.PlayerTransform != null)
         {
             dashDirX = obj.PlayerTransform.position.x > obj.transform.position.x ? 1f : -1f;
+            obj.LookDirection(dashDirX);
         }
     }
     public void Update(MidBoss obj)

@@ -9,6 +9,7 @@ public class MidBoss_TraceState : IState<MidBoss>
     public void Enter(MidBoss obj)
     {
         Debug.Log("중간보스 Trace상태 돌입");
+        obj.Anim.Play("MidBoss_Trace");
         playerTransform = obj.PlayerTransform;
     }
     public void Update(MidBoss obj)

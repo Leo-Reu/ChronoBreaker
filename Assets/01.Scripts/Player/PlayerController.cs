@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.LowLevelPhysics2D.PhysicsLayers;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,7 +25,8 @@ public class PlayerController : MonoBehaviour
     private int jumpCountMax;
 
     private Rigidbody2D rb;
-    private Collider2D col;
+    private CapsuleCollider2D col;
+    private Animator anim;
 
     [SerializeField] private LayerMask groundLayer;
 
@@ -51,12 +50,14 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
+        col = GetComponent<CapsuleCollider2D>();
         windUp = GetComponent<WindUp>();
+        anim = GetComponent<Animator>();
     }
 
     void Start()
     {
+
         cam = Camera.main.GetComponent<CameraMove>();
         setting = DataManager.instance.PlayerSetting;
         jumpCount = 0;
@@ -78,6 +79,8 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
+        GroundCheck();
 
         if (isDead)
         {
@@ -101,8 +104,6 @@ public class PlayerController : MonoBehaviour
             dir += 1;
         }
 
-        GroundCheck();
-
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             if (isDash && isAttack == false)
@@ -113,6 +114,12 @@ public class PlayerController : MonoBehaviour
             {
                 jump();
             }
+        }
+
+        if(anim != null)
+        {
+            anim.SetBool("isMoving", dir != 0f && isGround);
+            anim.SetBool("isGround", isGround);
         }
     }
 
@@ -195,6 +202,11 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, setting.jumpPower);
 
         jumpCount++;
+
+        if(jumpCount >= 2 && anim != null)
+        {
+            anim.SetTrigger("TriggerDoubleJump");
+        }
         Debug.Log("점프");
     }
 
@@ -210,6 +222,11 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
         Debug.Log("대쉬 시작");
+
+        if(anim != null)
+        {
+            anim.SetTrigger("TriggerDash");
+        }
 
         if (dashTimeout != null)
         {
@@ -300,8 +317,12 @@ public class PlayerController : MonoBehaviour
     {
         isInvincible = true;
 
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Monster"), true);
+
         yield return new WaitForSeconds(setting.hitCoolTime);
 
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Monster"), false);
+        
         isInvincible = false;
     }
 
@@ -370,7 +391,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isInvincible)
+        if (isInvincible || isDead)
         {
             Debug.Log("플레이어 무적 상태");
             return;
@@ -378,6 +399,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             hp -= damage;
+            if (anim != null)
+            {
+                anim.SetTrigger("TriggerHurt");
+            }
             cam?.ShakeCamera(0.3f, 0.5f);
             UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
             Debug.Log("플레이어 체력 감소");
@@ -396,37 +421,65 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("플레이어 사망");
         if (isDead)
         {
             return;
         }
         isDead = true;
 
+        Debug.Log("플레이어 사망");
+
+        SpringWeapon weapon = GetComponentInChildren<SpringWeapon>();
+        if (weapon != null)
+        {
+            weapon.gameObject.SetActive(false);
+        }
+
+        if (windUp != null)
+        {
+            windUp.HideGhost();
+            windUp.enabled = false;
+        }
+
         GameManager.instance?.AddDeathCount();
 
-        Time.timeScale = 0f;
-
         StartCoroutine(PlayerDie());
-
-
     }
 
     private IEnumerator PlayerDie()
     {
-        rb.linearVelocity = Vector3.zero;
+        if (anim != null)
+        {
+            anim.SetBool("isDead", true);
+        }
+
+        float timer = 0f;
+        while (!isGround && Mathf.Abs(rb.linearVelocity.y) > 0.01f && timer < 1.5f)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.linearVelocity = Vector2.zero;
+        Time.timeScale = 0f;
+
+        if (anim != null)
+        {
+            anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        }
 
         BossMonster boss = FindFirstObjectByType<BossMonster>();
-        if(boss != null)
+        if (boss != null)
         {
             boss.StopAllCoroutines();
         }
         cam?.ShakeCamera(0.5f, 0.8f);
 
-        yield return new WaitForSecondsRealtime(1.5f);  // timeScale이 0일때도 작동
+        yield return new WaitForSecondsRealtime(1.5f);
 
         UIManager.instance?.ShowGameOver();
     }
+
 
     private void OnDrawGizmos()
     {
