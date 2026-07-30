@@ -506,12 +506,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GamePause
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2324,6 +2324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa1ffffb5b907b48bcdfd75cee67f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIConnector
+  uiCanvas: {fileID: 0}
   playerHpBar: {fileID: 8745718693683052379}
   bossHpBar: {fileID: 8844099059831168211}
   windUpCoolImg: {fileID: 1410181697929867888}
@@ -2336,6 +2337,10 @@ MonoBehaviour:
   pauseMainMenuButton: {fileID: 440283943875607835}
   restartButton: {fileID: 8580515558837881447}
   GameOverMainMenuButton: {fileID: 1121212452268722372}
+  startButton: {fileID: 0}
+  continueButton: {fileID: 0}
+  optionButton: {fileID: 0}
+  quitButton: {fileID: 0}
 --- !u!1 &8599194759010020293
 GameObject:
   m_ObjectHideFlags: 0

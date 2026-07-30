@@ -12,7 +12,7 @@ public class LaserWarning : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
-
+        SoundManager.instance?.PlaySFX(SFXType.LaserWarning);
     }
 
     public void OnDeSpawn()

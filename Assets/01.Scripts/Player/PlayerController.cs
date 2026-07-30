@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentDashDir;
 
     private int weaknessLayerIndex;
+    private int playerLayerIndex;
+    private int monsterLayerIndex;
 
     private WindUp windUp;
 
@@ -57,7 +59,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
         cam = Camera.main.GetComponent<CameraMove>();
         setting = DataManager.instance.PlayerSetting;
         jumpCount = 0;
@@ -67,6 +68,8 @@ public class PlayerController : MonoBehaviour
         UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
 
         weaknessLayerIndex = LayerMask.NameToLayer("Weakness");
+        playerLayerIndex = LayerMask.NameToLayer("Player");
+        monsterLayerIndex = LayerMask.NameToLayer("Monster");
 
         localScale = transform.localScale;
 
@@ -152,6 +155,10 @@ public class PlayerController : MonoBehaviour
 
         if(hit.collider != null && rb.linearVelocity.y <= 0.05f)
         {
+            if (!isGround)
+            {
+                SoundManager.instance?.PlaySFX(SFXType.PlayerJumpLand);
+            }
             isGround = true;
             jumpCount = 0;
         }
@@ -203,7 +210,9 @@ public class PlayerController : MonoBehaviour
 
         jumpCount++;
 
-        if(jumpCount >= 2 && anim != null)
+        SoundManager.instance?.PlaySFX(SFXType.PlayerJumpStart);
+
+        if (jumpCount >= 2 && anim != null)
         {
             anim.SetTrigger("TriggerDoubleJump");
         }
@@ -221,6 +230,7 @@ public class PlayerController : MonoBehaviour
 
         rb.gravityScale = 0f;
         rb.linearVelocity = dashDir * setting.dashSpeed;
+        SoundManager.instance?.PlaySFX(SFXType.PlayerDash);
         Debug.Log("대쉬 시작");
 
         if(anim != null)
@@ -283,7 +293,10 @@ public class PlayerController : MonoBehaviour
         UIManager.instance?.UpdateDashCool(setting.dashCoolTime, setting.dashCoolTime);
         while (true)
         {
-            yield return new WaitWhile(() => canDash);
+            while (canDash)
+            {
+                yield return null;
+            }
 
             dashCoolTimeTimer = setting.dashCoolTime;
 
@@ -317,12 +330,10 @@ public class PlayerController : MonoBehaviour
     {
         isInvincible = true;
 
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Monster"), true);
-
+        Physics2D.IgnoreLayerCollision(playerLayerIndex, monsterLayerIndex, true);
         yield return new WaitForSeconds(setting.hitCoolTime);
 
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Monster"), false);
-        
+        Physics2D.IgnoreLayerCollision(playerLayerIndex, monsterLayerIndex, false);
         isInvincible = false;
     }
 
@@ -364,6 +375,7 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("보스를 공격");
 
                     boss.TakeDamage(setting.playerDamage);
+                    SoundManager.instance?.PlaySFX(SFXType.PlayerHit);
                 }
 
                 StopDash(reboundDir);
@@ -396,17 +408,18 @@ public class PlayerController : MonoBehaviour
             Debug.Log("플레이어 무적 상태");
             return;
         }
-        else
+
+        hp -= damage;
+        if (anim != null) 
         {
-            hp -= damage;
-            if (anim != null)
-            {
-                anim.SetTrigger("TriggerHurt");
-            }
-            cam?.ShakeCamera(0.3f, 0.5f);
-            UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
-            Debug.Log("플레이어 체력 감소");
+            anim.SetTrigger("TriggerHurt");
         }
+
+
+        cam?.ShakeCamera(0.3f, 0.5f);
+        UIManager.instance?.UpdatePlayerHp(hp, setting.maxHp);
+        SoundManager.instance?.PlaySFX(SFXType.PlayerHurt);
+        Debug.Log("플레이어 체력 감소");
 
         if(hp <= 0)
         {
@@ -426,6 +439,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
         isDead = true;
+
+        SoundManager.instance?.PlaySFX(SFXType.PlayerDie);
 
         Debug.Log("플레이어 사망");
 
@@ -480,6 +495,10 @@ public class PlayerController : MonoBehaviour
         UIManager.instance?.ShowGameOver();
     }
 
+    private void OnDisable()
+    {
+        Physics2D.IgnoreLayerCollision(playerLayerIndex, monsterLayerIndex, false);
+    }
 
     private void OnDrawGizmos()
     {

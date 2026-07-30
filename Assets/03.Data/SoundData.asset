@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045b65777ddd4f842bfe2b3399446497, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: Assembly-CSharp::SoundData
+  bgmMain: {fileID: 8300000, guid: daa5d67e87bf1494388f4c0bc1df72b0, type: 3}
+  bgmTutorial: {fileID: 8300000, guid: f6a2f5a07daa4e647b46893dac5dee15, type: 3}
+  bgmMidBoss: {fileID: 8300000, guid: 2a427d7c721b05e409ace5aaa122c59c, type: 3}
+  bgmFinalBoss: {fileID: 8300000, guid: ebe2d250a6c792840a19f6066bb70094, type: 3}
+  bgmClear: {fileID: 8300000, guid: 8fac1b1ff682ffa429d0ca1f3b0f5ec4, type: 3}
+  sfxList:
+  - sfxType: 0
+    clip: {fileID: 8300000, guid: c87db825ab8e3744e97011c236a8d484, type: 3}
+    volume: 0.5
+  - sfxType: 1
+    clip: {fileID: 8300000, guid: 3da82d595b1926948abb72312b8235f0, type: 3}
+    volume: 0.5
+  - sfxType: 2
+    clip: {fileID: 8300000, guid: a2d731626f020f04383659fc0be03c61, type: 3}
+    volume: 0.5
+  - sfxType: 3
+    clip: {fileID: 8300000, guid: 6834305b98024df45b06368162146ea7, type: 3}
+    volume: 0.6
+  - sfxType: 4
+    clip: {fileID: 8300000, guid: e02dc1812ef59c144900c4a41a8b4f10, type: 3}
+    volume: 0.5
+  - sfxType: 5
+    clip: {fileID: 8300000, guid: 4a9fad1e8cf1fd94387c0860ddecd8b0, type: 3}
+    volume: 0.5
+  - sfxType: 6
+    clip: {fileID: 8300000, guid: 4de3886c48c026a429b67c8b368f427a, type: 3}
+    volume: 0.6
+  - sfxType: 7
+    clip: {fileID: 8300000, guid: c4372d2098961e54487aea8177bcbd5c, type: 3}
+    volume: 0.5
+  - sfxType: 8
+    clip: {fileID: 8300000, guid: 514fc2ff3a2faf247bc0258657f4243e, type: 3}
+    volume: 0.5
+  - sfxType: 9
+    clip: {fileID: 8300000, guid: 5d13c7c756a8e164da1ffb9dc572d7c0, type: 3}
+    volume: 0.5
+  - sfxType: 10
+    clip: {fileID: 8300000, guid: ebf0d8c3142cb074cba5e30cb470538d, type: 3}
+    volume: 0.5
+  - sfxType: 11
+    clip: {fileID: 8300000, guid: 554390d400148dc4281c3afdc62eb877, type: 3}
+    volume: 0.5
+  - sfxType: 12
+    clip: {fileID: 8300000, guid: 2ea8259c08df61643ab2f760659ab1ac, type: 3}
+    volume: 0.4
+  - sfxType: 13
+    clip: {fileID: 8300000, guid: d6ae0b3d13def9c4db4b05fd6461e13a, type: 3}
+    volume: 0.05
+  - sfxType: 14
+    clip: {fileID: 8300000, guid: 1e98b928f2ed63e489426d3e6b8c4b01, type: 3}
+    volume: 0.1
+  - sfxType: 15
+    clip: {fileID: 8300000, guid: da941ccbf99e8d14a8116d4cc182078e, type: 3}
+    volume: 0.3
+  - sfxType: 16
+    clip: {fileID: 8300000, guid: c751c9dc77e41bf47a1104281b620b17, type: 3}
+    volume: 0.5
+  - sfxType: 17
+    clip: {fileID: 8300000, guid: 376fb24ddd6041d41a6979e6684097ce, type: 3}
+    volume: 0.5
+  - sfxType: 18
+    clip: {fileID: 8300000, guid: 0afa1a6676c067e42a12c92892cd6b69, type: 3}
+    volume: 0.5

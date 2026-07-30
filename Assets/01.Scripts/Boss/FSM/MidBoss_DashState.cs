@@ -7,14 +7,14 @@ public class MidBoss_DashState : IState<MidBoss>
     private float dashDirX;
     private float timer;
     private int wallLayerMask = LayerMask.GetMask("Wall");
-
+    CameraMove cam;
     public void Enter(MidBoss obj)
     {
         Debug.Log("중간보스 Dash상태 돌입");
         obj.Anim.Play("MidBoss_Dash");
         timer = 0f;
         isDash = false;
-
+        cam = Camera.main?.GetComponent<CameraMove>();
         obj.Stop();
 
         if (obj.PlayerTransform != null)
@@ -43,6 +43,10 @@ public class MidBoss_DashState : IState<MidBoss>
             if( hit.collider != null)
             {
                 Debug.Log("벽과 충돌해 그로기 상태");
+                SoundManager.instance?.PlaySFX(SFXType.BossDashHit);
+
+                cam?.ShakeCamera(0.4f, 0.6f);
+
                 obj.stateMachine.ChangeState(obj.groggyState);
                 return;
             }

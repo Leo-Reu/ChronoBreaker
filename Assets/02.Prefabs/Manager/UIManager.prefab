@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   option: {fileID: 8078964769051214100, guid: fa73eab01c4e1d84abe7b28c2ef89185, type: 3}
-  UICanvas: {fileID: 0}
-  dim: {fileID: 0}
+  uiCanvas: {fileID: 0}
   playerHpBar: {fileID: 0}
   bossHpBar: {fileID: 0}
   windUpCoolImg: {fileID: 0}
+  dashCoolImg: {fileID: 0}
   pausePanel: {fileID: 0}
   gameOverPanel: {fileID: 0}
+  dim: {fileID: 0}
+  cursor: {fileID: 2800000, guid: 8cb8c9310c519e845bd9adaa7aecfc78, type: 3}

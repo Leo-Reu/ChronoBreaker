@@ -165,6 +165,7 @@ public class WindUp : MonoBehaviour
 
         if (ghost != null) ghost.SetActive(false);
 
+        SoundManager.instance?.PlaySFX(SFXType.WindUpStart);
         Debug.Log("역행 시작");
     }
 
@@ -193,6 +194,10 @@ public class WindUp : MonoBehaviour
 
         canWindUp = false;
 
+        SoundManager.instance?.PlaySFX(SFXType.WindUpEnd);
+        CameraMove cam = Camera.main?.GetComponent<CameraMove>();
+        cam?.ShakeCamera(0.15f, 0.3f);
+
         Debug.Log("역행 종료");
     }
 
@@ -201,7 +206,10 @@ public class WindUp : MonoBehaviour
         UIManager.instance?.UpdateWindUpCool(setting.windUpCoolTime, setting.windUpCoolTime);
         while (true)
         {
-            yield return new WaitWhile(() => canWindUp);
+            while (canWindUp)
+            {
+                yield return null;
+            }
 
             windUpCoolTimeTimer = setting.windUpCoolTime;
 

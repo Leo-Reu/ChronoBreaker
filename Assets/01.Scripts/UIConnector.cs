@@ -47,33 +47,49 @@ public class UIConnector : MonoBehaviour
         if(pauseResumeButton != null)
         {
             pauseResumeButton.onClick.RemoveAllListeners();
-            pauseResumeButton.onClick.AddListener(() => UIManager.instance?.GamePause());
+            pauseResumeButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.ResumeGame();
+            });
         }
         if(pauseOptionButton != null)
         {
             pauseOptionButton.onClick.RemoveAllListeners();
-            pauseOptionButton.onClick.AddListener(() => UIManager.instance?.OpenOptionPanel());
+            pauseOptionButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.OpenOptionPanel();
+            });
         }
         if(pauseMainMenuButton != null)
         {
             pauseMainMenuButton.onClick.RemoveAllListeners();
-            pauseMainMenuButton.onClick.AddListener(() => UIManager.instance?.OnClickMainMenu());
+            pauseMainMenuButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.OnClickMainMenu();
+            });
         }
         if(restartButton != null)
         {
             restartButton.onClick.RemoveAllListeners();
-            restartButton.onClick.AddListener(() => UIManager.instance?.OnClickRestart());
+            restartButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.OnClickRestart();
+            });
         }
         if (GameOverMainMenuButton != null)
         {
             GameOverMainMenuButton.onClick.RemoveAllListeners();
-            GameOverMainMenuButton.onClick.AddListener(() => UIManager.instance?.OnClickMainMenu());
+            GameOverMainMenuButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.OnClickMainMenu();
+            });
         }
 
         if (startButton != null)
         {
             startButton.onClick.RemoveAllListeners();
             startButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
                 SaveLoadManager.instance?.ResetProgress();
                 GameManager.instance?.ResetData();
                 SceneChanger.instance?.ChangeScene("TutorialScene");
@@ -91,18 +107,27 @@ public class UIConnector : MonoBehaviour
             continueButton.onClick.RemoveAllListeners();
             if (canContinue)
             {
-                continueButton.onClick.AddListener(() => SceneChanger.instance?.ContinueScene());
+                continueButton.onClick.AddListener(() => {
+                    SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                    SceneChanger.instance?.ContinueScene();
+                });
             }
         }
         if (optionButton != null)
         {
             optionButton.onClick.RemoveAllListeners();
-            optionButton.onClick.AddListener(() => UIManager.instance?.OpenOptionPanel());
+            optionButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.OpenOptionPanel();
+            });
         }
         if (quitButton != null)
         {
             quitButton.onClick.RemoveAllListeners();
-            quitButton.onClick.AddListener(() => SceneChanger.instance?.QuitGame());
+            quitButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                SceneChanger.instance?.QuitGame();
+            });
         }
     }
 }

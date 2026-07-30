@@ -1,2 +1,21 @@
 fileFormatVersion: 2
 guid: 6b012b16c697dc44aaa4524bed86e46a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - option: {instanceID: 0}
+  - uiCanvas: {instanceID: 0}
+  - playerHpBar: {instanceID: 0}
+  - bossHpBar: {instanceID: 0}
+  - windUpCoolImg: {instanceID: 0}
+  - dashCoolImg: {instanceID: 0}
+  - pausePanel: {instanceID: 0}
+  - gameOverPanel: {instanceID: 0}
+  - dim: {instanceID: 0}
+  - cursor: {fileID: 2800000, guid: 8cb8c9310c519e845bd9adaa7aecfc78, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
