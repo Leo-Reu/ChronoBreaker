@@ -255,14 +255,14 @@ public class FinalBoss : BossMonster
         waitOne = new WaitForSeconds(0.5f);
     }
 
-    protected override void Die()
+protected override void Die()
     {
         Debug.Log("최종보스 처치");
         StopAllCoroutines();
         StartCoroutine(DieRoutine());
     }
 
-    private IEnumerator DieRoutine()
+private IEnumerator DieRoutine()
     {
         Debug.Log("최종보스 사망");
         SoundManager.instance?.PlaySFX(SFXType.BossDie);
