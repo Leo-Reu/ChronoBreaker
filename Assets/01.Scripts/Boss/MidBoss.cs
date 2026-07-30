@@ -113,6 +113,7 @@ public class MidBoss : BossMonster
     protected override void Die()
     {
         Debug.Log("중간보스 처치");
+        SoundManager.instance?.PlaySFX(SFXType.BossDie);
         if (GameManager.instance != null)
         {
             GameManager.instance.BossDead(this);

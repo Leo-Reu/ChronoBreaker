@@ -19,7 +19,8 @@ public class Portal : MonoBehaviour
         if(isInPortal && Keyboard.current.wKey.wasPressedThisFrame)
         {
             Debug.Log($"포탈 작동 {targetScene}으로 이동합니다");
-            if(SceneChanger.instance != null)
+            SoundManager.instance?.PlaySFX(SFXType.PortalEnter);
+            if (SceneChanger.instance != null)
             {
                 SceneChanger.instance.ChangeScene(targetScene);
             }

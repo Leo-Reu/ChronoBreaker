@@ -28,12 +28,14 @@ public class SpringWeapon : Weapon
     private WindUp windUp;
 
     private LineRenderer lr;    // 조준선
+    private Material lrMat;
 
     private CameraMove cam;
 
     private Animator playerAnim;
 
-    [SerializeField] private GameObject anchorVisual;
+    [SerializeField] private Texture2D crosshair;
+    private bool isCrosshairOn = false;
 
     private void Awake()
     {
@@ -44,17 +46,12 @@ public class SpringWeapon : Weapon
         {
             player = GetComponentInParent<PlayerController>();
         }
+        lrMat = lr.material;
     }
 
     protected override void Start()
     {
         base.Start();
-
-        if (anchorVisual != null)
-        {
-            anchorVisual.transform.SetParent(null);
-            anchorVisual.SetActive(false);
-        }
 
         if (Camera.main != null)
         {
@@ -68,18 +65,25 @@ public class SpringWeapon : Weapon
     {
         if (Time.timeScale == 0f)
         {
+            if (isCrosshairOn)
+            {
+                UIManager.instance?.SetCursor();
+                isCrosshairOn = false;
+            }
             return;
+        }
+
+        if (!isCrosshairOn)
+        {
+            SetCrosshair();
         }
 
         if (windUp != null && windUp.isWindUp)
         {
             isAnchored = false;
             if (lr != null) lr.enabled = false;
-            UpdateAnchorVisual();
             return;
         }
-
-        UpdateAnchorVisual();
 
         if (lr != null)
         {
@@ -118,21 +122,27 @@ public class SpringWeapon : Weapon
 
         if (lr != null && lr.enabled)
         {
+            Vector3 startPos = transform.position;
+            Vector3 endPos = isAnchored ? anchorPoint : hitPoint;
+
             lr.positionCount = 2;
-            lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, isAnchored ? anchorPoint : hitPoint);
-            Color color;
-            if (isAnchored)
+            lr.SetPosition(0, startPos);
+            lr.SetPosition(1, endPos);
+
+            lr.startWidth = 0.15f;
+            lr.endWidth = 0.15f;
+
+            float distance = Vector2.Distance(startPos, endPos);
+            if (lrMat != null)
             {
-                color = isWeaknessAnchored == true ? Color.yellow : Color.green;
+                lrMat.mainTextureScale = new Vector2(distance * 1.5f, 1f);
             }
 
-            else
-            {
-                color = isTargetHit ? (isWeaknessHit ? Color.yellow : Color.green) : Color.red;
-            }
-            lr.startColor = color;
-            lr.endColor = color;
+            float alpha = isAnchored ? 1.0f : 0.4f;
+            Color chainColor = new Color(1f, 1f, 1f, alpha);
+
+            lr.startColor = chainColor;
+            lr.endColor = chainColor;       
         }
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
@@ -144,7 +154,15 @@ public class SpringWeapon : Weapon
             cam?.ZoomIn(false);
         }
     }
-
+    private void SetCrosshair()
+    {
+        if (crosshair != null)
+        {
+            Vector2 hotspot = new Vector2(crosshair.width / 2f, crosshair.height / 2f);
+            Cursor.SetCursor(crosshair, hotspot, CursorMode.Auto);
+            isCrosshairOn = true;
+        }
+    }
 
 
     protected override void Fire()
@@ -153,34 +171,27 @@ public class SpringWeapon : Weapon
         anchorPoint = hitPoint;
         isWeaknessAnchored = isWeaknessHit;
 
-        if (anchorVisual != null)
-        {
-            anchorVisual.transform.position = anchorPoint;
-            float angle = Mathf.Atan2(mouseDir.y, mouseDir.x) * Mathf.Rad2Deg;
-            anchorVisual.transform.rotation = Quaternion.Euler(0, 0, angle);
-        }
-
         if (playerAnim != null)
         {
             playerAnim.SetTrigger("TriggerAttack");
         }
+        SoundManager.instance?.PlaySFX(SFXType.SpringFire);
+        StartCoroutine(PlaySpringHitSound());
+
         Debug.Log($"태엽 {SpringDuration}초간 고정");
 
         springTimerCoroutine = StartCoroutine(SpringTimer());
     }
-
-    private void UpdateAnchorVisual()
+    private IEnumerator PlaySpringHitSound()
     {
-        if (anchorVisual != null)
-        {
-            anchorVisual.SetActive(isAnchored);
-        }
+        yield return new WaitForSeconds(0.06f);
+        SoundManager.instance?.PlaySFX(SFXType.SpringHit);
     }
 
     void AimCheck()
     {
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-        mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        mousePos = camera.ScreenToWorldPoint(mouseScreenPos);
 
         mouseDir = (mousePos - (Vector2)transform.position).normalized;
 
@@ -207,12 +218,14 @@ public class SpringWeapon : Weapon
         Debug.Log($"{SpringDuration}초가 지나 태엽 자동 회수");
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        if (anchorVisual != null)
-        {
-            Destroy(anchorVisual);
-        }
+        isCrosshairOn = false;
+    }
+    private void OnDisable()
+    {
+        isCrosshairOn = false;
+        UIManager.instance?.SetCursor();
     }
 
 

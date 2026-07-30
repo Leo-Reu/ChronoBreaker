@@ -15,6 +15,7 @@ public class Laser : MonoBehaviour, IPoolable
     public void OnSpawn()
     {
         Debug.Log("레이저 발사");
+        SoundManager.instance?.PlaySFX(SFXType.LaserShoot);
     }
 
     public void OnDeSpawn()

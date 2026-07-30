@@ -12,7 +12,7 @@ public class MeteorWarning : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
-
+        SoundManager.instance?.PlaySFX(SFXType.MeteorWarning);
     }
 
     public void OnDeSpawn()

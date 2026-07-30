@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
 
     private bool isPaused = false;
 
+    [SerializeField] private Texture2D cursor;
+
     private void Awake()
     {
         if(instance == null)
@@ -32,6 +34,11 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        SetCursor();
     }
 
     private void Update()
@@ -75,9 +82,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SetCursor()
+    {
+        if(cursor != null)
+        {
+            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
+        }
+        else{
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+    }
+
     public void OpenOptionPanel()
     {
-        if(optionPanel == null)
+        SetCursor();
+        if (optionPanel == null)
         {
             optionPanel = Instantiate(option, uiCanvas.transform);
         }
@@ -144,20 +163,36 @@ public class UIManager : MonoBehaviour
     public void GamePause()
     {
         isPaused = !isPaused;
-        if(isPaused)
+        ChangePauseState();
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        ChangePauseState();
+    }
+
+    private void ChangePauseState()
+    {
+        if (isPaused)
         {
             Time.timeScale = 0f;
+            SetCursor();
         }
         else
         {
             Time.timeScale = 1f;
         }
 
-        pausePanel.SetActive(isPaused);
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(isPaused);
+        }
     }
 
     public void ShowGameOver()
     {
+        SetCursor();
         gameOverPanel.SetActive(true);
     }
 

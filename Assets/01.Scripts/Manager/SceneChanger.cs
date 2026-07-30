@@ -23,18 +23,21 @@ public class SceneChanger : MonoBehaviour
     private void Start()
     {
         CurrentSceneName = SceneManager.GetActiveScene().name;
+        PlaySceneBGM(CurrentSceneName);
     }
 
     public void ChangeScene(string sceneName)
     {
         CurrentSceneName = sceneName;
         Time.timeScale = 1f;
+        PlaySceneBGM(sceneName);
         SceneManager.LoadScene(sceneName);
     }
 
     public void RestartScene()
     {
         Time.timeScale = 1f;
+        PlaySceneBGM(SceneManager.GetActiveScene().name);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -60,6 +63,31 @@ public class SceneChanger : MonoBehaviour
         else
         {
             ChangeScene("TutorialScene");
+        }
+    }
+
+    private void PlaySceneBGM(string sceneName)
+    {
+        SoundData soundData = SoundManager.instance?.GetSoundData();
+        if (soundData == null) return;
+
+        switch (sceneName)
+        {
+            case "MainScene":
+                SoundManager.instance?.PlayBGM(soundData.bgmMain);
+                break;
+            case "TutorialScene":
+                SoundManager.instance?.PlayBGM(soundData.bgmTutorial);
+                break;
+            case "MidBossScene":
+                SoundManager.instance?.PlayBGM(soundData.bgmMidBoss);
+                break;
+            case "FinalBossScene":
+                SoundManager.instance?.PlayBGM(soundData.bgmFinalBoss);
+                break;
+            case "ClearScene":
+                SoundManager.instance?.PlayBGM(soundData.bgmClear);
+                break;
         }
     }
 
