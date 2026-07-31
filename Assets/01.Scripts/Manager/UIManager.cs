@@ -78,8 +78,12 @@ public class UIManager : MonoBehaviour
 
         if (bossHpBar != null)
         {
-            bossHpBar.gameObject.SetActive(false);
+            bossHpBar.transform.parent.gameObject.SetActive(false);
         }
+
+        if (pausePanel != null) pausePanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (dim != null) dim.SetActive(false);
     }
 
     public void SetCursor()
@@ -121,7 +125,22 @@ public class UIManager : MonoBehaviour
         }
         if (dim != null)
         {
-            dim.SetActive(false);
+            bool isGameOverActive = (gameOverPanel != null && gameOverPanel.activeSelf);
+
+            if (isPaused && pausePanel != null)
+            {
+                dim.transform.SetAsLastSibling();
+                pausePanel.transform.SetAsLastSibling();
+            }
+            else if (isGameOverActive)
+            {
+                dim.transform.SetAsLastSibling();
+                gameOverPanel.transform.SetAsLastSibling();
+            }
+            else
+            {
+                dim.SetActive(false);
+            }
         }
     }
 
@@ -136,9 +155,9 @@ public class UIManager : MonoBehaviour
     {
         if (bossHpBar != null)
         {
-            if(bossHpBar.gameObject.activeSelf == false)
+            if(bossHpBar.transform.parent.gameObject.activeSelf == false)
             {
-                bossHpBar.gameObject.SetActive(true);
+                bossHpBar.transform.parent.gameObject.SetActive(true);
             }
             bossHpBar.value = currentHp / maxHp;
         }
@@ -178,31 +197,62 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             SetCursor();
+
+            if (dim != null)
+            {
+                dim.SetActive(true);
+                dim.transform.SetAsLastSibling();
+            }
+
+            if (pausePanel != null)
+            {
+                pausePanel.SetActive(true);
+                pausePanel.transform.SetAsLastSibling();
+            }
         }
         else
         {
             Time.timeScale = 1f;
-        }
 
-        if (pausePanel != null)
-        {
-            pausePanel.SetActive(isPaused);
+            if (pausePanel != null)
+            {
+                pausePanel.SetActive(false);
+            }
+
+            bool isOptionActive = (optionPanel != null && optionPanel.activeSelf);
+            if (dim != null && !isOptionActive)
+            {
+                dim.SetActive(false);
+            }
         }
     }
 
     public void ShowGameOver()
     {
         SetCursor();
-        gameOverPanel.SetActive(true);
+
+        if (dim != null)
+        {
+            dim.SetActive(true);
+            dim.transform.SetAsLastSibling();
+        }
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+            gameOverPanel.transform.SetAsLastSibling();
+        }
     }
 
     public void OnClickRestart()
     {
+        isPaused = false;
         SceneChanger.instance.RestartScene();
     }
 
     public void OnClickMainMenu()
     {
+        isPaused = false;
         SceneChanger.instance.ChangeScene("MainScene");
     }
 }

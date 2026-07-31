@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour
 
     private CameraMove cam;
 
+    [SerializeField] private float stepInterval = 0.3f;
+    private float stepTimer = 0f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -106,6 +109,8 @@ public class PlayerController : MonoBehaviour
         {
             dir += 1;
         }
+
+        RunSound();
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
@@ -196,6 +201,23 @@ public class PlayerController : MonoBehaviour
         if (dir != 0f)
         {
             transform.localScale = new Vector3(dir * localScale.x, localScale.y, localScale.z); 
+        }
+    }
+
+    private void RunSound()
+    {
+        if(isGround && dir != 0f && !isDash && !windUp.isWindUp)
+        {
+            stepTimer += Time.deltaTime;
+            if(stepTimer >= stepInterval)
+            {
+                SoundManager.instance?.PlaySFX(SFXType.PlayerRun);
+                stepTimer = 0f;
+            }
+        }
+        else
+        {
+            stepTimer = stepInterval;
         }
     }
 

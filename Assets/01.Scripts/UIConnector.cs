@@ -104,6 +104,12 @@ public class UIConnector : MonoBehaviour
 
             continueButton.interactable = canContinue;
 
+            CanvasGroup cg = continueButton.GetComponent<CanvasGroup>();
+            if(cg != null)
+            {
+                cg.alpha = canContinue ? 1.0f : 0.7f;
+            }
+
             continueButton.onClick.RemoveAllListeners();
             if (canContinue)
             {
