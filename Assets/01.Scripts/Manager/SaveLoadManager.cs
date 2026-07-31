@@ -38,12 +38,11 @@ public class SaveLoadManager : MonoBehaviour
 
     private void Load()
     {
-        if(File.Exists(savePath) == false)
+        if (File.Exists(savePath) == false)
         {
             Debug.Log("불러올 데이터가 없습니다");
-            gameSaveData = new GameSaveData();
-            Save();
-            Debug.Log("새로운 데이터 생성");
+            gameSaveData = null;
+            return;
         }
 
         string json = File.ReadAllText(savePath);
