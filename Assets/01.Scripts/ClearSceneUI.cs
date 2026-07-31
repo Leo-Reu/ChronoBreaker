@@ -42,10 +42,12 @@ public class ClearSceneUI : MonoBehaviour
         {
             mainMenuButton.onClick.RemoveAllListeners();
             mainMenuButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
                 SceneChanger.instance?.ChangeScene("MainScene");
             });
         }
     }
+
     private string FormatTime(float timeInSeconds)
     {
         if (timeInSeconds >= 9999f) return "--:--";

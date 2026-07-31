@@ -47,10 +47,12 @@ public class UIManager : MonoBehaviour
         {
             if (optionPanel != null && optionPanel.activeSelf)
             {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
                 CloseOptionPanel();
             }
-            else if(pausePanel != null)
+            else if (pausePanel != null)
             {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
                 GamePause();
             }
         }

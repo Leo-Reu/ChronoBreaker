@@ -107,9 +107,9 @@ public class FinalBoss : BossMonster
                 float spacing = (j - 1) * normalSpacing;
                 Vector3 meteorSpawnPos = new Vector3(targetXPos + spacing, 10f, 0); // Y축 10 위에서 소환
                 Meteor meteor = meteorPool.GetObject(meteorSpawnPos);
-                if (meteor != null && setting != null)
+                if (meteor != null)
                 {
-                    meteor.SetDamage(setting.bossDamage);
+                    meteor.SetDamage(CurrentDamage);
                 }
             }
             yield return waitOne;
@@ -167,9 +167,9 @@ public class FinalBoss : BossMonster
                 float spacing = (j - 2) * trackingSpacing;
                 Vector3 meteorSpawnPos = lockedPosition + new Vector3(spacing, 10f, 0);
                 Meteor meteor = meteorPool.GetObject(meteorSpawnPos);
-                if (meteor != null && setting != null)
+                if (meteor != null)
                 {
-                    meteor.SetDamage(setting.bossDamage);
+                    meteor.SetDamage(CurrentDamage);
                 }
             }
         }
@@ -205,10 +205,7 @@ public class FinalBoss : BossMonster
         if (laser != null)
         {
             laser.transform.rotation = horizontalRotation;
-            if (setting != null)
-            {
-                laser.SetDamage(setting.bossDamage);
-            }
+            laser.SetDamage(CurrentDamage);
         }
 
         yield return waitOne;
@@ -266,14 +263,14 @@ public class FinalBoss : BossMonster
         waitOne = new WaitForSeconds(0.5f);
     }
 
-protected override void Die()
+    protected override void Die()
     {
         Debug.Log("최종보스 처치");
         StopAllCoroutines();
         StartCoroutine(DieRoutine());
     }
 
-private IEnumerator DieRoutine()
+    private IEnumerator DieRoutine()
     {
         Debug.Log("최종보스 사망");
         SoundManager.instance?.PlaySFX(SFXType.BossDie);

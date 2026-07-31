@@ -66,7 +66,7 @@ public class WindUp : MonoBehaviour
         }
         else
         {
-            maxSize = 150; // setting을 못 불러와도 3초(150프레임) 기본값 지정
+            maxSize = 150;
         }
 
         history = new WindUpData[maxSize];
@@ -84,7 +84,7 @@ public class WindUp : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame && isWindUp == false && canWindUp) // R키를 누르고 WindUp중이 아니면 Start
+        if (Keyboard.current.rKey.wasPressedThisFrame && isWindUp == false && canWindUp)
         {
             StartWindUp();
         }

@@ -12,6 +12,8 @@ public abstract class BossMonster : MonoBehaviour
     [SerializeField] protected BossSetting setting;
     public BossSetting Setting => setting;
 
+    public virtual int CurrentDamage => isPhaseTwo ? 2 : setting.bossDamage;
+
     [SerializeField] protected float hp;
 
     protected bool isHitInvincible;
