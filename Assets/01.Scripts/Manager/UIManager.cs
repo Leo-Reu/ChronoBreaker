@@ -167,7 +167,7 @@ public class UIManager : MonoBehaviour
     {
         if(windUpCoolImg != null)
         {
-            windUpCoolImg.fillAmount = currentCool / maxCool;
+            windUpCoolImg.fillAmount = 1f - (currentCool / maxCool);
         }
     }
 
@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
     {
         if (dashCoolImg != null)
         {
-            dashCoolImg.fillAmount = currentCool / maxCool;
+            dashCoolImg.fillAmount = 1f - (currentCool / maxCool);
         }
     }
 

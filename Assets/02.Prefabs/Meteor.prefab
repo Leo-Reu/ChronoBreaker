@@ -170,5 +170,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meteor
   fallSpeed: 12
-  lifeTime: 5
+  lifeTime: 3
   rotateSpeed: 500

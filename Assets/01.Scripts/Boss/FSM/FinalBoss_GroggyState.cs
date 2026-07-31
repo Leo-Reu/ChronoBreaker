@@ -12,7 +12,7 @@ public class FinalBoss_GroggyState : IState<FinalBoss>
         if (obj.Anim != null)
         {
             obj.Anim.speed = 0.4f;
-            obj.Anim.Play("Boss_Idle");
+            obj.Anim.Play("FinalBoss_Idle");
         }
     }
     public void Update(FinalBoss obj)
