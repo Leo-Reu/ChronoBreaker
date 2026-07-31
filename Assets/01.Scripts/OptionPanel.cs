@@ -7,32 +7,53 @@ public class OptionPanel : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
-    
+    [Header("Sub Panels")]
+    [SerializeField] private GameObject controlGuidePanel;
+
     private void Start()
     {
-        if(bgmSlider != null)
+        if (bgmSlider != null)
         {
             bgmSlider.onValueChanged.AddListener(BGMVolumeChanged);
         }
-        if(sfxSlider != null)
+        if (sfxSlider != null)
         {
             sfxSlider.onValueChanged.AddListener(SFXVolumeChanged);
         }
-        if(closeBtn != null)
+        if (closeBtn != null)
         {
-            closeBtn.onClick.AddListener(UIManager.instance.CloseOptionPanel);
+            closeBtn.onClick.RemoveAllListeners();
+            closeBtn.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                UIManager.instance?.CloseOptionPanel();
+            });
         }
     }
 
     private void OnEnable()
     {
-        if(bgmSlider != null)
+        ResetSubPanels();
+
+        if (bgmSlider != null)
         {
             bgmSlider.value = SoundManager.instance.GetBGMVolume();
         }
-        if(sfxSlider != null)
+        if (sfxSlider != null)
         {
             sfxSlider.value = SoundManager.instance.GetSFXVolume();
+        }
+    }
+
+    private void OnDisable()
+    {
+        ResetSubPanels();
+    }
+
+    private void ResetSubPanels()
+    {
+        if (controlGuidePanel != null)
+        {
+            controlGuidePanel.SetActive(false);
         }
     }
 
@@ -40,6 +61,7 @@ public class OptionPanel : MonoBehaviour
     {
         SoundManager.instance?.SetBGMVolume(vol);
     }
+
     public void SFXVolumeChanged(float vol)
     {
         SoundManager.instance?.SetSFXVolume(vol);

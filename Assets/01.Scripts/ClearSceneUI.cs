@@ -21,7 +21,7 @@ public class ClearSceneUI : MonoBehaviour
         {
             saveData.deathCount += currentRunDeaths;
 
-            if (currentRunTime < saveData.bestClearTime)
+            if (saveData.bestClearTime <= 0f || currentRunTime < saveData.bestClearTime)
             {
                 saveData.bestClearTime = currentRunTime;
             }
