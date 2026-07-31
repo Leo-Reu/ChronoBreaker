@@ -7,6 +7,13 @@ public class Laser : MonoBehaviour, IPoolable
 
     private Action<Component> reAction;
 
+    private CameraMove cam;
+
+    private void Awake()
+    {
+        cam = Camera.main?.GetComponent<CameraMove>();
+    }
+
     public void Init(Action<Component> returnAction)
     {
         reAction = returnAction;
@@ -16,6 +23,7 @@ public class Laser : MonoBehaviour, IPoolable
     {
         Debug.Log("레이저 발사");
         SoundManager.instance?.PlaySFX(SFXType.LaserShoot);
+        cam?.ShakeCamera(0.5f, 0.8f);
     }
 
     public void OnDeSpawn()
