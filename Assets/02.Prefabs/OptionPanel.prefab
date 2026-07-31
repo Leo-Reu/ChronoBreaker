@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 1711202785071187122}
   - component: {fileID: 6561697512312487306}
   m_Layer: 5
-  m_Name: CloseButton
+  m_Name: ControlGuideCloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2405,7 +2405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552140576649ad347abced82f85fcfef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionPanel
-  closeBtn: {fileID: 6523964086181631632}
+  closeButton: {fileID: 6523964086181631632}
+  controlGuideButton: {fileID: 4221273719883847637}
   bgmSlider: {fileID: 4840244227960238901}
   sfxSlider: {fileID: 4216067516888341019}
   controlGuidePanel: {fileID: 1483479207721422365}

@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 public class OptionPanel : MonoBehaviour
 {
-    public Button closeBtn;
+    public Button closeButton;
+    public Button controlGuideButton;
+
     public Slider bgmSlider;
     public Slider sfxSlider;
 
@@ -20,12 +22,24 @@ public class OptionPanel : MonoBehaviour
         {
             sfxSlider.onValueChanged.AddListener(SFXVolumeChanged);
         }
-        if (closeBtn != null)
+        if (closeButton != null)
         {
-            closeBtn.onClick.RemoveAllListeners();
-            closeBtn.onClick.AddListener(() => {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(() => {
                 SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
                 UIManager.instance?.CloseOptionPanel();
+            });
+        }
+
+        if (controlGuideButton != null)
+        {
+            controlGuideButton.onClick.RemoveAllListeners();
+            controlGuideButton.onClick.AddListener(() => {
+                SoundManager.instance?.PlaySFX(SFXType.ButtonClick);
+                if (controlGuidePanel != null)
+                {
+                    controlGuidePanel.SetActive(true);
+                }
             });
         }
     }

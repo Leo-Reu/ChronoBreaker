@@ -414,11 +414,11 @@ public class PlayerController : MonoBehaviour
             BossMonster boss = collision.gameObject.GetComponent<BossMonster>();
             if (boss == null)
             {
-                boss = collision.gameObject.GetComponentInParent<BossMonster>();  
+                boss = collision.gameObject.GetComponentInParent<BossMonster>();
             }
             if (boss != null)
             {
-                TakeDamage(boss.Setting.bossDamage);
+                TakeDamage(boss.CurrentDamage);
             }
         }
     }
