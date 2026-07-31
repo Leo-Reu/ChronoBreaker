@@ -11,7 +11,7 @@ public class FinalBoss : BossMonster
     private CameraMove cam;
     public Animator Anim { get; private set; }
 
-    [SerializeField] float groundYPos = -3.5f;
+    [SerializeField] float groundYPos = -4.5f;
 
     public StateMachine<FinalBoss> stateMachine;
 
@@ -95,6 +95,7 @@ public class FinalBoss : BossMonster
                 normalWarning[j] = meteorWarningPool.GetObject(warningSpawnPos);
             }
             yield return waitOne;
+
 
             for (int j = 0; j < normalCount; j++)
             {
@@ -226,6 +227,11 @@ public class FinalBoss : BossMonster
         isStateInvincible = false;
         weakness.SetActive(true);
 
+        if(Anim != null)
+        {
+            Anim.speed = 0.05f;
+        }
+
         if (sr != null)
         {
             sr.color = new Color(0.6f, 0.6f, 0.6f, 1f);
@@ -237,6 +243,11 @@ public class FinalBoss : BossMonster
     {
         isStateInvincible = true;
         weakness.SetActive(false);
+
+        if (Anim != null)
+        {
+            Anim.speed = 1f;
+        }
 
         if (sr != null)
         {

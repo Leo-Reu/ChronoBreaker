@@ -6,6 +6,7 @@ public class Meteor : MonoBehaviour, IPoolable
 {
     [SerializeField] private float fallSpeed = 12f;
     [SerializeField] private float lifeTime = 3f;
+    [SerializeField] private float rotateSpeed = 500f;
 
     private int damage;
 
@@ -68,6 +69,7 @@ public class Meteor : MonoBehaviour, IPoolable
 
     void Update()
     {
+        transform.Rotate(0, 0, -rotateSpeed * Time.deltaTime);
         if(transform.position.y < -20f)
         {
             reAction?.Invoke(this);
