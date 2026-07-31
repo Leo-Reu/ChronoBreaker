@@ -97,15 +97,14 @@ public class UIConnector : MonoBehaviour
         }
         if (continueButton != null)
         {
-            bool hasSaveData = SaveLoadManager.instance?.gameSaveData != null;
-            bool isCleared = hasSaveData && SaveLoadManager.instance.gameSaveData.isFinalBossClear;
+            var saveData = SaveLoadManager.instance?.gameSaveData;
 
-            bool canContinue = hasSaveData && !isCleared;
+            bool canContinue = saveData != null && !saveData.isFinalBossClear;
 
             continueButton.interactable = canContinue;
 
             CanvasGroup cg = continueButton.GetComponent<CanvasGroup>();
-            if(cg != null)
+            if (cg != null)
             {
                 cg.alpha = canContinue ? 1.0f : 0.7f;
             }
