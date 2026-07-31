@@ -79,6 +79,11 @@ public class WindUp : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         if (Keyboard.current.rKey.wasPressedThisFrame && isWindUp == false && canWindUp) // R키를 누르고 WindUp중이 아니면 Start
         {
             StartWindUp();
